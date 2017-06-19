@@ -71,11 +71,6 @@ function init(){
     dataTable = new google.visualization.DataTable(parsedData);
   }
 
-  for (i=0; i<dataTable.getNumberOfRows(); i++){
-    allRows.push(i);
-    selectAllArray.push({'row': i, 'column': null});
-  }
-
   // Draw initial chart
   initialiseChart();
 
@@ -92,6 +87,11 @@ function reloadMOFdata(){
 }
 
 function initialiseChart(){
+  for (i=0; i<dataTable.getNumberOfRows(); i++){
+    allRows.push(i);
+    selectAllArray.push({'row': i, 'column': null});
+  }
+
   onSliderUpdate();
   chart = new google.visualization.BubbleChart(document.getElementById('chart_div'));
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
