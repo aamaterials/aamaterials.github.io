@@ -1,23 +1,23 @@
-google.charts.load("current", {'packages':["corechart"]});
-google.charts.load("upcoming", {'packages':["table"]});
+google.charts.load("current", {'packages':["corechart", "table", "controls"]});
 google.charts.setOnLoadCallback(init);
 
 // 1. Create data table
 var dataTable, chart, options;
-var table, view, selection;
+var table, view;
+var tableView, filterView;
 var slider, colorSelector, sizeSelector, xSelect, ySelect;
 var pressureOverlay;
 var minSizeText; var maxSizeText; var sizeTitle;
 var coarseSliderValue; var oldSliderValue = 5;
 var filterRows = [];
-var allRows = [];
+var allRows = []; selectAllArray = [];
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
   pressureOverlay = document.getElementById('pressureOverlay');
 
   slider = document.getElementById('slider');
-  slider.addEventListener('input', sliderUpdate);
+  slider.addEventListener('input', onSliderUpdate);
 
   colorSelector = document.getElementById('colorSelect');
   colorSelector.addEventListener('change', selectChange);
@@ -69,41 +69,57 @@ function init(){
     console.log('Loading table from local storage.');
     var parsedData = JSON.parse(dataString);
     dataTable = new google.visualization.DataTable(parsedData);
-
-    // Draw initial chart
-    initialiseChart();
   }
 
   for (i=0; i<dataTable.getNumberOfRows(); i++){
     allRows.push(i);
+    selectAllArray.push({'row': i, 'column': null});
   }
+
+  // Draw initial chart
+  initialiseChart();
 
 }
 
 function reloadMOFdata(){
+  // Set up query
   var rangeString = encodeURIComponent('range=A:AQ');
   var query = new google.visualization.Query(
     'https://docs.google.com/spreadsheets/d/1BXpfTXTDeg_gcDEWyjUmx_SUkWzwkZDSLilBQaabPO0/gviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
+  // Close help dialog
   document.getElementById('help-modal').style.display='none';
-
 }
 
 function initialiseChart(){
-  sliderUpdate();
-  table = new google.visualization.Table(document.getElementById('table_div'));
+  onSliderUpdate();
   chart = new google.visualization.BubbleChart(document.getElementById('chart_div'));
+  dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
+  filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
 
-  google.visualization.events.addListener(table, 'ready', function() {
-    table.setSelection(selection);
+  var stringFilter = new google.visualization.ControlWrapper({
+    'controlType': 'StringFilter',
+    'containerId': 'control1',
+    'options': {
+      'filterColumnIndex': 0
+    }
   });
+  table = new google.visualization.ChartWrapper({
+    'chartType': 'Table',
+    'containerId': 'table_div',
+    'options': {'height': '100%', 'width': '100%'}
+  });
+  dash.bind(stringFilter, table);
+
+  // Set up views
+  tableView = new google.visualization.DataView(dataTable);
+  filterView = new google.visualization.DataView(dataTable);
+  view = new google.visualization.DataView(dataTable);
 
   drawBubbleChart();
 }
 
 function drawBubbleChart(){
-  view = new google.visualization.DataView(dataTable);
-
   columns = getColumns();
 
   var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
@@ -112,6 +128,9 @@ function drawBubbleChart(){
   view.setColumns(columns);
   if (filterRows.length > 0){
     view.setRows(filterRows);
+  } else {
+    // Empty filter means plot all rows
+    view.setRows(allRows);
   }
 
   options.title = axesLabels[cValue]; // Acts as the colour axis title
@@ -146,10 +165,6 @@ function handleQueryResponse(response) {
   var dataString = JSON.stringify(dataTable);
   localStorage['mofdata'] = dataString;
   console.log('Saved remote MOF data to local storage.');
-
-  // Draw initial chart
-  initialiseChart();
-
 }
 
 function setAxisSize(){
@@ -206,10 +221,10 @@ function getColumnFromSelectorValue(selectorValue){
 
 function selectChange(){
   oldSliderValue = 100;
-  sliderUpdate();
+  onSliderUpdate();
 }
 
-function sliderUpdate(){
+function onSliderUpdate(){
   // Slider varies between 0 and 1.
   var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
   var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
@@ -234,34 +249,78 @@ function sliderUpdate(){
 
 }
 
+// FILTER AND SEARCH
 var oldColumns = [];
 function openFilterWindow(){
-  document.getElementById('filter-modal').style.display='block';
+  // Set columns of data table to match graph
   currentColumns = getColumns();
   if (oldColumns.toString() != currentColumns.toString()){
-    tableView = new google.visualization.DataView(dataTable);
     tableView.setColumns(currentColumns);
-    table.draw(tableView);
+    dash.draw(tableView);
   }
   oldcolumns = currentColumns;
+
+  // Set rows of filter
+  if (filterRows.length == allRows.length){
+    filterView.setRows([]);
+  }else{
+    filterView.setRows(filterRows);
+  }
+
+  // Draw the filtered table with just the name column
+  filterView.setColumns([0]);
+  filterTable.draw(filterView);
+
+  // Finally, show the modal box
+  document.getElementById('filter-modal').style.display='block';
 }
 
 function applyFilter(){
-  filterRows = [];
-  selection = table.getSelection();
-  for (i=0; i<selection.length; i++){
-    filterRows.push(selection[i].row);
-  }
   document.getElementById('filter-modal').style.display='none';
   drawBubbleChart();
 }
 
 function tableSelectAll(){
   filterRows = allRows;
-  //table.setSelection(filterRows);
+  table.getChart().setSelection(selectAllArray);
 }
 
 function tableSelectNone(){
+  // Empty filter means plot all points on graph
   filterRows = [];
-  table.setSelection(filterRows);
+
+  // But show no points in filter column
+  filterView.setRows([]);
+  filterTable.draw(filterView);
+}
+
+function addToSelection(){
+  // Get selection from chart
+  var selection = table.getChart().getSelection();
+
+  // Add selection to filtered rows
+  for (i=0; i<selection.length; i++){
+    filterRows.push( table.getDataTable().getTableRowIndex(selection[i].row) );
+  }
+
+  // Update filter table
+  filterView.setRows(filterRows);
+  filterTable.draw(filterView);
+
+  // Unselect rows in main data table
+  table.getChart().setSelection([]);
+}
+
+function removeFromSelection(){
+  // Grab selection in filter table.
+  var filterSelection = filterTable.getSelection();
+
+  // And remove it from filtered rows
+  for (i=0; i<filterSelection.length; i++){
+    filterRows.splice(filterSelection[i].row, 1);
+  }
+
+  // Update filter table
+  filterView.setRows(filterRows);
+  filterTable.draw(filterView);
 }
