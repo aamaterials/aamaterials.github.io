@@ -11,6 +11,7 @@ var minSizeText; var maxSizeText; var sizeTitle;
 var coarseSliderValue; var oldSliderValue = 5;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
+var allowPointSelection = false;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
@@ -96,6 +97,7 @@ function initialiseChart(){
   chart = new google.visualization.BubbleChart(document.getElementById('chart_div'));
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
+  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'))
 
   var stringFilter = new google.visualization.ControlWrapper({
     'controlType': 'StringFilter',
@@ -111,9 +113,12 @@ function initialiseChart(){
   });
   dash.bind(stringFilter, table);
 
+  google.visualization.events.addListener(chart, 'select', pointSelected);
+
   // Set up views
   tableView = new google.visualization.DataView(dataTable);
   filterView = new google.visualization.DataView(dataTable);
+  graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
   drawBubbleChart();
@@ -300,7 +305,9 @@ function addToSelection(){
 
   // Add selection to filtered rows
   for (i=0; i<selection.length; i++){
-    filterRows.push( table.getDataTable().getTableRowIndex(selection[i].row) );
+    if (filterRows.indexOf(selection[i].row)<0){
+      filterRows.push( table.getDataTable().getTableRowIndex(selection[i].row) );
+    }
   }
 
   // Update filter table
@@ -324,3 +331,71 @@ function removeFromSelection(){
   filterView.setRows(filterRows);
   filterTable.draw(filterView);
 }
+
+function selectFromGraph(){
+  allowPointSelection = true;
+  graphFilterView.setColumns([0]);
+  graphFilterView.setRows(filterRows);
+  graphFilterTable.draw(graphFilterView);
+  document.getElementById("graph-filter-modal").style.display = "block";
+  document.getElementById('filter-modal').style.display='none';
+}
+
+function pointSelected(){
+  if(allowPointSelection){
+    var selectedPoint = chart.getSelection();
+    if (filterRows.indexOf(selectedPoint[0].row)<0){
+      filterRows.push(selectedPoint[0].row);
+      graphFilterView.setRows(filterRows);
+      graphFilterTable.draw(graphFilterView);
+    }
+  }
+}
+
+function removeFromGraphSelection(){
+  var filterSelection = graphFilterTable.getSelection();
+  for (i=0; i<filterSelection.length; i++){
+    filterRows.splice(filterSelection[i].row, 1);
+  }
+    graphFilterView.setRows(filterRows);
+    graphFilterTable.draw(graphFilterView);
+}
+
+function applyGraphSelection(){
+  document.getElementById('graph-filter-modal').style.display='none';
+  drawBubbleChart();
+}
+
+function windowResizeFunction(){
+  switch(document.getElementById('filter-modal').style.display){
+    case '':
+    case 'none':
+      drawBubbleChart();
+      break;
+    case 'block':
+      document.getElementById('graph-filter-modal').style.display='none';
+  }
+}
+
+function debounce(func, wait, immediate) {
+  // Debounce function from https://john-dugan.com/javascript-debounce/
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        var later = function() {
+            timeout = null;
+            if ( !immediate ) {
+                func.apply(context, args);
+            }
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait || 200);
+        if ( callNow ) {
+            func.apply(context, args);
+        }
+    };
+};
+
+window.addEventListener('resize', debounce(windowResizeFunction, 400));

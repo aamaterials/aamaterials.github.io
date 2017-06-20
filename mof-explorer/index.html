@@ -9,7 +9,7 @@
     <script type="text/javascript" src="mofcharts.js"></script>
   </head>
 
-  <body onresize="drawBubbleChart();">
+  <body>
     <div id="title">MOF Data Explorer</div>
     <div id="chartHolder" style="width: 100vw; height: 70vh; position:relative; margin-top:-20px;">
       <div id="chart_div" style="width: 100%; height: 100%;"></div>
@@ -131,6 +131,7 @@
           class="w3-button w3-display-topright"><b>APPLY</b></span>
         <h3> Search and Filter </h3>
         <button class="w3-button w3-border" onclick="tableSelectAll();">Select all</button>
+        <button class="w3-button w3-border" onclick="selectFromGraph();">Select from graph</button>
         <button class="w3-button w3-border" onclick="tableSelectNone();" style="float: right;">Clear filter</button>
       </div>
       <div class="w3-row">
@@ -150,6 +151,23 @@
           <div id="filterTable_div" style="height: 65vh; overflow: auto;"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="graph-filter-modal" class="w3-row" style="display:none;">
+    <div class="w3-col m4 l5">
+      <h3 style="color:#fff; text-align:center">Filtering</h3>
+      <p style="color:#fff; text-align:center">Click on points to add them to the filter, then click Apply.<br />
+      Remove points using the &times; button.</p>
+    </div>
+    <div class="w3-col m2 l1" style="background-color: #fff">
+      <div id="graph-filterTable_div" style="height: 30vh; overflow: auto;"></div>
+    </div>
+    <div class="w3-col m2 l1">
+      <button class="w3-button w3-border" onclick="removeFromGraphSelection();" style="background: #fff">&times;</button>
+    </div>
+    <div class="w3-col m4 l5">
+      <button class="w3-button w3-border" onclick="applyGraphSelection();" style="background: #fff">Apply</button><br />
     </div>
   </div>
 

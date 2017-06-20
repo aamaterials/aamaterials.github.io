@@ -35,3 +35,12 @@ select{
   border-color: initial;
   border-radius: 5px;
 }
+
+#graph-filter-modal {
+    position: fixed;
+    bottom: 0;
+    height: 30vh;
+    opacity: 0.95;
+    background-color: #bbb;
+    width: 100%;
+}
