@@ -181,10 +181,6 @@ function handleQueryResponse(response) {
 }
 
 function setAxisSize(append){
-  var svgCanvas = document.querySelector('#chartHolder #chart_div div div div svg');
-  var oldHeight = Number(svgCanvas.getAttribute('height'));
-  svgCanvas.setAttribute('height', oldHeight + 30);
-
   var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
 
   var circ1 = document.getElementById('sizeAxisMinCirc');
@@ -199,22 +195,25 @@ function setAxisSize(append){
   var textLength = 30;
   var offset = 6;
 
-  var yStart = Number(guideBox.getAttribute('y')) + Number(guideBox.getAttribute('height')) + offset;
+  var fontSize = document.querySelector('#chartHolder #chart_div div div div svg text').getAttribute('font-size');
 
+  // set text locations
   sizeTitle.setAttribute('x', xStart);
   minSizeText.setAttribute('x', xStart+textLength);
   maxSizeText.setAttribute('x', xEnd-textLength);
+
+  // Set text sizes
+  sizeTitle.setAttribute('font-size', fontSize);
+  minSizeText.setAttribute('font-size', fontSize);
+  maxSizeText.setAttribute('font-size', fontSize);
+
+  // Set shape locations
   circ1.setAttribute('cx', xStart + textLength + offset + 2);
   circ2.setAttribute('cx', xEnd - textLength - offset - 7);
 
   var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',39 ' + (xEnd-textLength-2*offset-14) + ',31';
   tri.setAttribute('points', triPoints);
 
-  sizeAxisGroup.setAttribute('transform', 'translate(0, ' + yStart + ')');
-
-  if(append){
-    svgCanvas.appendChild(sizeAxisGroup);
-  }
 }
 
 
@@ -429,4 +428,4 @@ function debounce(func, wait, immediate) {
     };
 };
 
-window.addEventListener('resize', debounce(windowResizeFunction, 400));
+window.addEventListener('resize', debounce(windowResizeFunction, 200));
