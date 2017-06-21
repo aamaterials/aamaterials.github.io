@@ -12,6 +12,7 @@ var coarseSliderValue; var oldSliderValue = 5;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var allowPointSelection = false;
+var sizeAxisGroup = null;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
@@ -114,6 +115,8 @@ function initialiseChart(){
   dash.bind(stringFilter, table);
 
   google.visualization.events.addListener(chart, 'select', pointSelected);
+  google.visualization.events.addListener(chart, 'ready', chartReadyFunction);
+  google.visualization.events.addListener(chart, 'animationfinish', chartReadyFunction);
 
   // Set up views
   tableView = new google.visualization.DataView(dataTable);
@@ -122,6 +125,12 @@ function initialiseChart(){
   view = new google.visualization.DataView(dataTable);
 
   drawBubbleChart();
+}
+
+function chartReadyFunction(){
+  options.animation.duration = 1000;
+  setAxisSize(false);
+  setAxisSize(true); // Strange but necessary
 }
 
 function drawBubbleChart(){
@@ -155,7 +164,6 @@ function drawBubbleChart(){
 
   var pressure = pressureList[coarseSliderValue];
   pressureOverlay.innerHTML = pressure + ' bar';
-  setAxisSize();
 }
 
 ///////////////
@@ -172,20 +180,41 @@ function handleQueryResponse(response) {
   console.log('Saved remote MOF data to local storage.');
 }
 
-function setAxisSize(){
+function setAxisSize(append){
+  var svgCanvas = document.querySelector('#chartHolder #chart_div div div div svg');
+  var oldHeight = Number(svgCanvas.getAttribute('height'));
+  svgCanvas.setAttribute('height', oldHeight + 30);
+
+  var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
+
   var circ1 = document.getElementById('sizeAxisMinCirc');
   var circ2 = document.getElementById('sizeAxisMaxCirc');
   var tri   = document.getElementById('sizeAxisTriangle');
 
-  var boxWidth = document.getElementById('sizeAxisLegend').getBoundingClientRect().width;
+  var guideBox = document.querySelector('#chartHolder #chart_div div div div svg > g > g > rect');
+  var boxWidth = Number(guideBox.getAttribute('width'));
+  var xStart = Number(guideBox.getAttribute('x'));
+  var xEnd = xStart + boxWidth;
 
-  minSizeText.setAttribute('x', 40);
-  maxSizeText.setAttribute('x', boxWidth-40);
-  circ1.setAttribute('cx', 52);
-  circ2.setAttribute('cx', boxWidth-52);
+  var textLength = 30;
+  var offset = 6;
 
-  var triPoints = '65,35 ' + (boxWidth-65) +',39 ' + (boxWidth-65) + ',31';
+  var yStart = Number(guideBox.getAttribute('y')) + Number(guideBox.getAttribute('height')) + offset;
+
+  sizeTitle.setAttribute('x', xStart);
+  minSizeText.setAttribute('x', xStart+textLength);
+  maxSizeText.setAttribute('x', xEnd-textLength);
+  circ1.setAttribute('cx', xStart + textLength + offset + 2);
+  circ2.setAttribute('cx', xEnd - textLength - offset - 7);
+
+  var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',39 ' + (xEnd-textLength-2*offset-14) + ',31';
   tri.setAttribute('points', triPoints);
+
+  sizeAxisGroup.setAttribute('transform', 'translate(0, ' + yStart + ')');
+
+  if(append){
+    svgCanvas.appendChild(sizeAxisGroup);
+  }
 }
 
 
@@ -344,8 +373,9 @@ function selectFromGraph(){
 function pointSelected(){
   if(allowPointSelection){
     var selectedPoint = chart.getSelection();
-    if (filterRows.indexOf(selectedPoint[0].row)<0){
-      filterRows.push(selectedPoint[0].row);
+    var pointIndex = view.getTableRowIndex(selectedPoint[0].row);
+    if (filterRows.indexOf(pointIndex)<0){ // this line to remove duplicates isn't working
+      filterRows.push(pointIndex);
       graphFilterView.setRows(filterRows);
       graphFilterTable.draw(graphFilterView);
     }
@@ -367,6 +397,7 @@ function applyGraphSelection(){
 }
 
 function windowResizeFunction(){
+  options.animation.duration = 0;
   switch(document.getElementById('filter-modal').style.display){
     case '':
     case 'none':
