@@ -44,3 +44,14 @@ select{
     background-color: #bbb;
     width: 100%;
 }
+
+.control_axis_title{
+  width: 3.5em;
+  display: inline-block;
+  text-align: right;
+}
+
+#pressureTitle{
+   font-style: italic;
+   text-align: left;
+}

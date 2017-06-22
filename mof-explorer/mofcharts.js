@@ -214,6 +214,12 @@ function setAxisSize(append){
   var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',39 ' + (xEnd-textLength-2*offset-14) + ',31';
   tri.setAttribute('points', triPoints);
 
+  var pressureBar = document.getElementById('pressureBar');
+  var pressureIndicatorText = document.getElementById('pressureOverlay');
+
+  pressureBar.setAttribute('style', "font-family:'Arial'; font-size: " + fontSize + "px; width: " + boxWidth + ";");
+  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + (Number(fontSize) +2) + "px");
+
 }
 
 

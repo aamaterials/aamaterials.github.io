@@ -43,15 +43,15 @@
 
 
       <div id="controls" class="w3-col m8 l8">
-        <div id="pressureBar"  style="font-family:'Arial'; font-size:12pt;">
-        <p style="font-style:italic; text-align: left">Pressure, bar: &nbsp;<span id="pressureOverlay"></span></p>
+        <div id="pressureBar" style="font-family:'Arial';">
+        <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span></p>
         1 &nbsp; <input id="slider" type="range" min="0" max="1" value="0.5" step="0.002" style="width: calc(100% - 100px);">
         &nbsp; 200
         </div>
 
         <div class="w3-row">
           <form>
-          <div class="w3-col m6 l3">x-axis:
+          <div class="w3-col m6 l3"><span class="control_axis_title">x-axis:</span>
           <select id="xSelect">
             <option value="0">Density</option>
             <option value="1">PLD</option>
@@ -65,7 +65,7 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3">y-axis:
+          <div class="w3-col m6 l3"><span class="control_axis_title">y-axis:</span>
           <select id="ySelect">
             <option value="0">Density</option>
             <option value="1">PLD</option>
@@ -79,7 +79,7 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3">c-axis:
+          <div class="w3-col m6 l3"><span class="control_axis_title">c-axis:</span>
           <select id="colorSelect">
             <option value="0" selected>Density</option>
             <option value="1">PLD</option>
@@ -93,7 +93,7 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3">s-axis:
+          <div class="w3-col m6 l3"><span class="control_axis_title">s-axis:</span>
           <select id="sizeSelect">
             <option value="0">Density</option>
             <option value="1" selected>PLD</option>
@@ -116,12 +116,19 @@
         <button class="w3-button w3-border" style="width: 7em" onclick="window.open(chart.getImageURI());">Grab Image</button>
     </div>
 
-    <div class="w3-col s6 m2 l2" style="text-align:center">
+    <div class="w3-col s6 m2 l2 w3-hide-small" style="text-align:center">
         <button class="w3-button w3-border" style="width: 7em">About</button><br />
         <button class="w3-button w3-border" style="width: 7em" onclick="document.getElementById('help-modal').style.display='block'">Help...</button>
     </div>
+
+    <div class="w3-col s6 m2 l2 w3-hide-medium w3-hide-large" style="text-align:center">
+        <button class="w3-button w3-border" style="width: 7em">About</button>
+        <button class="w3-button w3-border" style="width: 7em" onclick="document.getElementById('help-modal').style.display='block'">Help...</button>
+    </div>
+
   </div>
 
+  <!-- Help pop-up box -->
   <div id="help-modal" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
@@ -134,6 +141,7 @@
     </div>
   </div>
 
+  <!-- Filtering pop-up box -->
   <div id="filter-modal" class="w3-modal">
     <div class="w3-modal-content">
       <div class="w3-container">
@@ -164,6 +172,7 @@
     </div>
   </div>
 
+  <!-- Graph filtering pop-up box -->
   <div id="graph-filter-modal" class="w3-row" style="display:none;">
     <div class="w3-col m4 l5">
       <h3 style="color:#fff; text-align:center">Filtering</h3>
