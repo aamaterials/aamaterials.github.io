@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MOF Data Explorer | Adsorption &amp; Advanced Materials Group, University of Cambridge</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="mofcharts.css">
@@ -10,23 +11,19 @@
   </head>
 
   <body>
+    <!-- Title -->
     <div id="title">MOF Data Explorer</div>
+
+    <!-- Chart -->
     <div id="chartHolder" style="width: 100vw; height: 70vh; position:relative; margin-top:-20px;">
       <div id="chart_div" style="width: 100%; height: 100%;"></div>
     </div>
 
     <!-- Bubble Size Axis -->
-    <script>
-      var svgns = "http://www.w3.org/2000/svg";
-      var svgCanvas = document.querySelector('#chartHolder #chart_div div div div svg');
-      var group = document.createElementNS(svgns, "g");
-
-    </script>
-
-    <!-- Bubble Size Axis -->
     <div id="sizeAxis_div" style="width:100%; margin-top:-20px;">
         <svg width="100%" height="70px">
           <g id="sizeAxisGroup">
+              <!-- The following default values are over-written every time the chart is drawn -->
               <text id="sizeAxisTitle" text-anchor="start" x="14" y="12" font-family="Arial" font-size="14" font-style="italic" stroke-width="0" fill="#000000">Size Axis</text>
               <text id="sizeAxisMinText" text-anchor="end" x="40" y="40" font-family="Arial" font-size="14" stroke="none" stroke-width="0" fill="#000000">10</text>
               <circle id="sizeAxisMinCirc" cx="50" cy="35" r="2" stroke="#cccccc" stroke-width="1" fill-opacity="0.8" fill="#ffb100" />
@@ -37,12 +34,12 @@
         </svg>
     </div>
 
-    <!-- Other controls -->
+    <!-- Controls -->
     <div class="w3-row">
-      <div class="w3-col m2 l2" style="text-align:center">
-          <button class="w3-button w3-border" onclick="openFilterWindow();">Filter Data</button> <br />
-          <button class="w3-button w3-border" onclick="window.open(chart.getImageURI());">Grab Image</button>
-     </div>
+      <div class="w3-col m2 l2 w3-hide-small" style="text-align:center">
+          <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Data</button><br />
+          <button class="w3-button w3-border" style="width: 7em" onclick="window.open(chart.getImageURI());">Grab Image</button>
+      </div>
 
 
       <div id="controls" class="w3-col m8 l8">
@@ -82,7 +79,7 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3">Color axis:
+          <div class="w3-col m6 l3">c-axis:
           <select id="colorSelect">
             <option value="0" selected>Density</option>
             <option value="1">PLD</option>
@@ -96,7 +93,7 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3">Bubble size:
+          <div class="w3-col m6 l3">s-axis:
           <select id="sizeSelect">
             <option value="0">Density</option>
             <option value="1" selected>PLD</option>
@@ -114,9 +111,14 @@
         </div>
     </div>
 
-    <div class="w3-col m2 l2" style="text-align:center">
-        <button class="w3-button w3-border">About</button> <br />
-        <button class="w3-button w3-border" onclick="document.getElementById('help-modal').style.display='block'">Help...</button>
+    <div class="w3-col s6 m2 l2 w3-hide-medium w3-hide-large" style="text-align:center">
+        <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Data</button>
+        <button class="w3-button w3-border" style="width: 7em" onclick="window.open(chart.getImageURI());">Grab Image</button>
+    </div>
+
+    <div class="w3-col s6 m2 l2" style="text-align:center">
+        <button class="w3-button w3-border" style="width: 7em">About</button><br />
+        <button class="w3-button w3-border" style="width: 7em" onclick="document.getElementById('help-modal').style.display='block'">Help...</button>
     </div>
   </div>
 
@@ -138,16 +140,16 @@
         <span onclick="applyFilter();"
           class="w3-button w3-display-topright"><b>APPLY</b></span>
         <h3> Search and Filter </h3>
-        <button class="w3-button w3-border" onclick="tableSelectAll();">Select all</button>
+        <button class="w3-button w3-border" style="width: 7em" onclick="tableSelectAll();">Select all</button>
         <button class="w3-button w3-border" onclick="selectFromGraph();">Select from graph</button>
-        <button class="w3-button w3-border" onclick="tableSelectNone();" style="float: right;">Clear filter</button>
+        <button class="w3-button w3-border" onclick="tableSelectNone();" style="width: 7em; float: right;">Clear filter</button>
       </div>
       <div class="w3-row">
         <div class="w3-col m8 l9">
           <div id="dashboard"><div id="control1"></div></div>
           <div id="table_div" style="height: 65vh; overflow: auto;"></div>
         </div>
-        <div class="w3-col m1 l1">
+        <div class="w3-col m1 l1" style="text-align:center">
           <div><br /><br /><br /></div>
           <div>
             <button class="w3-button w3-border" onclick="addToSelection();">>></button><br />
@@ -168,13 +170,13 @@
       <p style="color:#fff; text-align:center">Click on points to add them to the filter, then click Apply.<br />
       Remove points using the &times; button.</p>
     </div>
-    <div class="w3-col m2 l1" style="background-color: #fff">
+    <div class="w3-col m2 l1" style="background-color: #fff; text-align:center;">
       <div id="graph-filterTable_div" style="height: 30vh; overflow: auto;"></div>
     </div>
     <div class="w3-col m2 l1">
       <button class="w3-button w3-border" onclick="removeFromGraphSelection();" style="background: #fff">&times;</button>
     </div>
-    <div class="w3-col m4 l5">
+    <div class="w3-col m4 l5" style="width: 7em">
       <button class="w3-button w3-border" onclick="applyGraphSelection();" style="background: #fff">Apply</button><br />
     </div>
   </div>
