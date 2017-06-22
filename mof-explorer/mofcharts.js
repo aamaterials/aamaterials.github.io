@@ -217,8 +217,8 @@ function setAxisSize(append){
   var pressureBar = document.getElementById('pressureBar');
   var pressureIndicatorText = document.getElementById('pressureOverlay');
 
-  pressureBar.setAttribute('style', "font-family:'Arial'; font-size: " + fontSize + "px; width: " + boxWidth + ";");
-  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + (Number(fontSize) +2) + "px");
+  pressureBar.setAttribute('style', "font-family:'Arial'; margin:auto; font-size: " + fontSize + "px; width: " + boxWidth + "px;");
+  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + (Number(fontSize) +2) + "px;");
 
 }
 
