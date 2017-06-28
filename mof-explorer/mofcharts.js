@@ -71,10 +71,9 @@ function init(){
     console.log('Loading table from local storage.');
     var parsedData = JSON.parse(dataString);
     dataTable = new google.visualization.DataTable(parsedData);
+    // Draw initial chart
+    initialiseChart();
   }
-
-  // Draw initial chart
-  initialiseChart();
 
 }
 
@@ -178,6 +177,7 @@ function handleQueryResponse(response) {
   var dataString = JSON.stringify(dataTable);
   localStorage['mofdata'] = dataString;
   console.log('Saved remote MOF data to local storage.');
+  initialiseChart();
 }
 
 function setAxisSize(append){
