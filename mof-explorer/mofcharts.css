@@ -27,6 +27,11 @@ html,body {
   font-family: 'Arial';
 }
 
+#warningText{
+  font-size: 9px;
+  color: orange;
+}
+
 select{
   border: 2px;
   padding: 2px;

@@ -5,6 +5,7 @@
     <title>MOF Data Explorer | Adsorption &amp; Advanced Materials Group, University of Cambridge</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="mofcharts.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="mofcharts.js"></script>
@@ -44,7 +45,9 @@
 
       <div id="controls" class="w3-container w3-cell w3-mobile">
         <div id="pressureBar" style="font-family:'Arial'; margin:auto;">
-        <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span></p>
+        <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span>&nbsp;&nbsp;
+          <i class="material-icons"><input id="playButton" type="button" value="play_arrow" onclick="playButtonClick()"></i>&nbsp;&nbsp;
+          <span id="warningText"></span></p>
         1 &nbsp; <input id="slider" type="range" min="0" max="1" value="0.5" step="0.002" style="width: calc(100% - 4em);">
         &nbsp; 200
         </div>

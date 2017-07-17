@@ -11,8 +11,9 @@ var minSizeText; var maxSizeText; var sizeTitle;
 var coarseSliderValue; var oldSliderValue = 5;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
-var allowPointSelection = false;
+var gettingPointsFromGraph = false;
 var sizeAxisGroup = null;
+var pointIndex = -1;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
@@ -52,9 +53,10 @@ function init(){
           explorer: {keepInBounds: true, maxZoomOut: 1, maxZoomIn: 100, actions: ['dragToZoom', 'rightClickToReset'] },
           hAxis: {viewWindow: {min: 0, max: 28}, title: 'Uptake, mol/kg'},
           vAxis: {viewWindow: {min: 0, max: 320}, title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-          animation: {duration: 1000},
+          animation: {duration: 850},
           crosshair: {trigger: 'focus', opacity: 0.5,  selected: {opacity: 1}},
-          bubble: {textStyle: {color: 'none'}}
+          bubble: {textStyle: {color: 'none'}},
+          tooltip: {trigger: 'selection'}
         };
 
   // Check data isn't in browser already
@@ -115,7 +117,7 @@ function initialiseChart(){
 
   google.visualization.events.addListener(chart, 'select', pointSelected);
   google.visualization.events.addListener(chart, 'ready', chartReadyFunction);
-  google.visualization.events.addListener(chart, 'animationfinish', chartReadyFunction);
+  google.visualization.events.addListener(chart, 'animationfinish', chartAnimationFinish);
 
   // Set up views
   tableView = new google.visualization.DataView(dataTable);
@@ -127,12 +129,23 @@ function initialiseChart(){
 }
 
 function chartReadyFunction(){
-  options.animation.duration = 1000;
+  options.animation.duration = 750;
   setAxisSize(false);
   setAxisSize(true); // Strange but necessary
 }
 
+function chartAnimationFinish(){
+  if (pointIndex > -1){
+    var viewIndex = view.getViewRowIndex(pointIndex);
+    currentSelection = [{'row': viewIndex}];
+    chart.setSelection(currentSelection);
+  } else {
+    chart.setSelection([]);
+  }
+}
+
 function drawBubbleChart(){
+  var selectedPoint = chart.getSelection();
   columns = getColumns();
 
   var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
@@ -158,6 +171,12 @@ function drawBubbleChart(){
   options.vAxis.viewWindow.max = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : 'auto';
   options.colorAxis.maxValue = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
   options.sizeAxis.maxValue = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
+
+  if (selectedPoint.length != 0){
+    pointIndex = view.getUnderlyingTableRowIndex(selectedPoint[0].row);
+    } else {
+      pointIndex = -1;
+    }
 
   chart.draw(view, options);
 
@@ -292,6 +311,8 @@ function onSliderUpdate(){
 var oldColumns = [];
 function openFilterWindow(){
   // Set columns of data table to match graph
+  chart.setSelection([]);
+
   currentColumns = getColumns();
   if (oldColumns.toString() != currentColumns.toString()){
     tableView.setColumns(currentColumns);
@@ -367,7 +388,7 @@ function removeFromSelection(){
 }
 
 function selectFromGraph(){
-  allowPointSelection = true;
+  gettingPointsFromGraph = true;
   graphFilterView.setColumns([0]);
   graphFilterView.setRows(filterRows);
   graphFilterTable.draw(graphFilterView);
@@ -376,13 +397,15 @@ function selectFromGraph(){
 }
 
 function pointSelected(){
-  if(allowPointSelection){
+  if (gettingPointsFromGraph){
     var selectedPoint = chart.getSelection();
-    var pointIndex = view.getTableRowIndex(selectedPoint[0].row);
-    if (filterRows.indexOf(pointIndex)<0){ // this line to remove duplicates isn't working
-      filterRows.push(pointIndex);
-      graphFilterView.setRows(filterRows);
-      graphFilterTable.draw(graphFilterView);
+    if (selectedPoint.length != 0){
+      var pointIndex = view.getTableRowIndex(selectedPoint[0].row);
+      if (filterRows.indexOf(pointIndex)<0){
+        filterRows.push(pointIndex);
+        graphFilterView.setRows(filterRows);
+        graphFilterTable.draw(graphFilterView);
+      }
     }
   }
 }
@@ -398,7 +421,43 @@ function removeFromGraphSelection(){
 
 function applyGraphSelection(){
   document.getElementById('graph-filter-modal').style.display='none';
+  gettingPointsFromGraph = false;
   drawBubbleChart();
+}
+
+var playing = false;
+function playButtonClick(){
+  buttonHandle = document.getElementById('playButton');
+  if (!playing){
+    playing=true;
+    buttonHandle.value = 'pause';
+    playSequence();
+  } else {
+    playing=false;
+    buttonHandle.value = 'play_arrow';
+  }
+}
+
+function playSequence(){
+  warningBox = document.getElementById('warningText');
+  if (playing){
+    if (filterRows.length == 0 || filterRows.length > 500){
+      warningBox.innerHTML = "Animating more than 500 data points may be slow. Try filtering the data!";
+    } else {
+      warningBox.innerHTML = "";
+    }
+
+    if(slider.value<1){
+      slider.value = (parseFloat(slider.value) + 0.006).toString();
+      setTimeout(playSequence, 30);
+    }else{
+      slider.value = "0";
+      setTimeout(playSequence, 500);
+    }
+    onSliderUpdate();
+  } else {
+    warningBox.innerHTML = "";
+  }
 }
 
 function windowResizeFunction(){
