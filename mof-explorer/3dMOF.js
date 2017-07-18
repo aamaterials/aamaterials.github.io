@@ -186,7 +186,7 @@ function drawPlotlyChart(){
 	var trace = {
 		x:columnToArray(1), y: columnToArray(2), z: columnToArray(5),
 		mode: 'markers',
-    text: columnToArray(3),
+    text: columnToArray(0),
     hoverinfo: "text",
 		marker: {
 			size: columnToArray(4),
