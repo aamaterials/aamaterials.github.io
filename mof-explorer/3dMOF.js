@@ -15,7 +15,7 @@ var gettingPointsFromGraph = false;
 var reDraw = true;
 var sizeAxisGroup = null;
 var pointIndex = -1;
-var twoD = true; graphType = 'scatter';
+var twoD = true;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
@@ -48,11 +48,19 @@ function init(){
                 'Uptake, mol/kg', 'Uptake, cm\u00B3(STP)/cm\u00B3', 'Gravimetric Deliverable Capacity, mol/kg',
               'Volumetric Deliverable Capacity, cm\u00B3(STP)/cm\u00B3', 'Heat of Adsorption, kJ/mol'];
 
+  shortLabels = ['Den., g/cm\u00B3', 'PLD, \u212B', 'LCD, \u212B',
+                  'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'VF',
+                'Up., mol/kg', 'Up., cm\u00B3(STP)/cm\u00B3', 'Del., mol/kg',
+              'Del., cm\u00B3(STP)/cm\u00B3', 'QST, kJ/mol'];
+
 	layout = {
+          margin: {l: 50, r: 0, t:20, b:50},
 					scene: {
 						xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
 						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'}
+            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
+            aspectratio: {x: 3, y: 1, z: 1},
+            camera: {}
 					},
           xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
           yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
@@ -124,6 +132,7 @@ function initialiseChart(){
 }
 
 function drawBubbleChart(){
+  setAxisSize();
   var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
   var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
   var zValue = parseInt(zSelector.value);
@@ -142,10 +151,11 @@ function drawBubbleChart(){
   //options.title = axesLabels[cValue]; // Acts as the colour axis title
   layout.xaxis.title = axesLabels[xValue];
   layout.yaxis.title = axesLabels[yValue];
-  layout.zaxis.title = axesLabels[zValue];
   layout.scene.xaxis.title = axesLabels[xValue];
-  layout.scene.yaxis.title = axesLabels[yValue];
-  layout.scene.zaxis.title = axesLabels[zValue];
+  layout.scene.zaxis.title = shortLabels[yValue]; // Note z is vertical axis in 3D view
+  //layout.scene.yaxis.title = axesLabels[zValue].split(" ").join("<br>");
+  layout.scene.yaxis.title = shortLabels[zValue]; // Note z is vertical axis in 3D view
+
 
   sizeTitle.innerHTML = axesLabels[sValue];
   maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
@@ -157,10 +167,9 @@ function drawBubbleChart(){
 
   layout.xaxis.range = [0, hmax];
   layout.yaxis.range = [0, vmax];
-  layout.zaxis.range = [0, zmax];
   layout.scene.xaxis.range = [0, hmax];
-	layout.scene.yaxis.range = [0, vmax];
-  layout.scene.zaxis.range = [0, zmax];
+	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
+  layout.scene.yaxis.range = [0, zmax];
 
   //options.colorAxis.maxValue = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
   //options.sizeAxis.maxValue = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
@@ -183,25 +192,52 @@ function columnToArray(columnIndex){
 
 function drawPlotlyChart(){
   var cmax = view.getColumnRange(3).max;
-	var trace = {
-		x:columnToArray(1), y: columnToArray(2), z: columnToArray(5),
-		mode: 'markers',
-    text: columnToArray(0),
-    hoverinfo: "text",
-		marker: {
-			size: columnToArray(4),
-      sizeref: view.getColumnRange(4).max/20,
-			line: {width: 0.0},
-      color: columnToArray(3),
-      cmin: 0,
-      cmax: cmax,
-			colorscale: 'Jet',
-      autocolorscale: false,
-      showscale: true,
-      opacity: 0.9
-    },
-		type: graphType
+  var trace = {};
+  if (twoD){
+    trace = {
+    	x:columnToArray(1), y: columnToArray(2),
+  		mode: 'markers',
+      text: columnToArray(0),
+      hoverinfo: "text",
+  		marker: {
+  			size: columnToArray(4),
+        sizeref: view.getColumnRange(4).max/20,
+  			line: {width: 0.0},
+        color: columnToArray(3),
+        cmin: 0,
+        cmax: cmax,
+  			colorscale: 'Jet',
+        autocolorscale: false,
+        showscale: true,
+        opacity: 0.9
+      },
+  		type: 'scatter'
   	};
+  } else {
+    trace = {
+      x:columnToArray(1), y: columnToArray(5), z: columnToArray(2),
+      mode: 'markers',
+      text: columnToArray(0),
+      hoverinfo: "text",
+      marker: {
+        size: columnToArray(4),
+        sizeref: view.getColumnRange(4).max/20,
+        line: {width: 0.0},
+        color: columnToArray(3),
+        cmin: 0,
+        cmax: cmax,
+        colorscale: 'Jet',
+        autocolorscale: false,
+        showscale: true,
+        opacity: 0.9
+      },
+      type: 'scatter3d'
+    };
+      layout.aspectratio = {x: 3, y: 1, z: 1};
+      layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
+                      eye: {x: 0.02, y: -2.2, z: 0.1}};
+    }
+
 	var data = [trace];
 
 	if(reDraw){
@@ -214,13 +250,7 @@ function drawPlotlyChart(){
 
 function switch2D(){
   reDraw = true;
-  if (twoD==true){
-    twoD = false;
-    graphType = 'scatter3d';
-  } else {
-    twoD = true;
-    graphType = 'scatter';
-  }
+  twoD = !twoD;
   zSelector.disabled = twoD;
   drawBubbleChart();
 }
@@ -240,22 +270,25 @@ function handleQueryResponse(response) {
   initialiseChart();
 }
 
-function setAxisSize(append){
+function setAxisSize(){
   var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
 
   var circ1 = document.getElementById('sizeAxisMinCirc');
   var circ2 = document.getElementById('sizeAxisMaxCirc');
   var tri   = document.getElementById('sizeAxisTriangle');
 
-  var guideBox = document.querySelector('#chartHolder #chart_div div div div svg > g > g > rect');
-  var boxWidth = Number(guideBox.getAttribute('width'));
-  var xStart = Number(guideBox.getAttribute('x'));
+  var boxWidth = document.getElementById('title').offsetWidth -10;
+  var xStart = 10;
   var xEnd = xStart + boxWidth;
 
   var textLength = 30;
   var offset = 6;
 
-  var fontSize = document.querySelector('#chartHolder #chart_div div div div svg text').getAttribute('font-size');
+  var exampleText = document.querySelector('text.xtitle');
+  var fontSize = 14;
+  if (exampleText != null){
+    fontSize = exampleText.getAttribute('font-size');
+  }
 
   // set text locations
   sizeTitle.setAttribute('x', xStart);

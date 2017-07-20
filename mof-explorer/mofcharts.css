@@ -8,8 +8,7 @@ html,body {
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-  /*margin-top: 10px;
-  margin-bottom: -10px;*/
+  z-index: 2;
 }
 
 #pressureOverlay{
