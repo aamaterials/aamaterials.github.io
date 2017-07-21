@@ -47,6 +47,12 @@ select{
     opacity: 0.95;
     background-color: #bbb;
     width: 100%;
+    z-index: 3;
+}
+
+#graph-filter-div {
+  height: 30vh;
+  overflow: auto;
 }
 
 .control_axis_title{

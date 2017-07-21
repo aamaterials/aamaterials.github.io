@@ -178,7 +178,6 @@ function drawBubbleChart(){
   //chart.draw(view, options);
 	drawPlotlyChart();
 
-
   var pressure = pressureList[coarseSliderValue];
   pressureOverlay.innerHTML = pressure + ' bar';
 }
@@ -321,7 +320,8 @@ function setAxisSize(){
   var pressureIndicatorText = document.getElementById('pressureOverlay');
 
   pressureBar.setAttribute('style', "font-family:'Arial'; margin:auto; font-size: " + fontSize + ";");
-  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + fontSize + ";");
+  var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
+  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + indicatorFontSize + ";");
 
 }
 

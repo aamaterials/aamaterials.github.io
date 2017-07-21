@@ -17,7 +17,7 @@
     <div id="title">MOF Data Explorer</div>
 
     <!-- Chart -->
-    <div id="chartHolder" style="width: 100%; height: 70vh; position:relative; z-index:1">
+    <div id="chartHolder" style="width: 100%; position:relative; z-index:1">
       <div id="chart_div"></div>
     </div>
 
@@ -40,7 +40,7 @@
     <div class="w3-cell-row" style="width: 100%;">
       <div class="w3-container w3-cell w3-hide-small" style="text-align:center; margin:auto">
           <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Data</button><br />
-          <button class="w3-button w3-border" style="width: 7em" onclick="window.open(chart.getImageURI());">Grab Image</button>
+          <button class="w3-button w3-border" style="width: 7em" onclick="selectFromGraph();">Filter Graph</button>
       </div>
 
 
@@ -49,7 +49,7 @@
         <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span>&nbsp;&nbsp;
           <i class="material-icons"><input id="playButton" type="button" value="play_arrow" onclick="playButtonClick()"></i>&nbsp;&nbsp;
           <span id="warningText"></span></p>
-        1 &nbsp; <input id="slider" type="range" min="0" max="1" value="0.5" step="0.002" style="width: calc(100% - 4em);">
+        1 &nbsp; <input id="slider" type="range" min="0" max="1" value="0.53" step="0.002" style="width: calc(100% - 4em);">
         &nbsp; 200
         </div>
 
@@ -167,7 +167,6 @@
           class="w3-button w3-display-topright"><b>APPLY</b></span>
         <h3> Search and Filter </h3>
         <button class="w3-button w3-border" style="width: 7em" onclick="tableSelectAll();">Select all</button>
-        <button class="w3-button w3-border" onclick="selectFromGraph();">Select from graph</button>
         <button class="w3-button w3-border" onclick="tableSelectNone();" style="width: 7em; float: right;">Clear filter</button>
       </div>
       <div class="w3-row">
@@ -198,7 +197,7 @@
       Remove points using the &times; button.</p>
     </div>
     <div class="w3-col m2 l1" style="background-color: #fff; text-align:center;">
-      <div id="graph-filterTable_div" style="height: 30vh; overflow: auto;"></div>
+      <div id="graph-filterTable_div"></div>
     </div>
     <div class="w3-col m2 l1">
       <button class="w3-button w3-border" onclick="removeFromGraphSelection();" style="background: #fff">&times;</button>
