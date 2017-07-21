@@ -64,7 +64,8 @@ function init(){
 					},
           xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
           yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-          zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'}
+          zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
+          hovermode: 'closest'
 				};
 
   // Check data isn't in browser already
@@ -234,16 +235,25 @@ function drawPlotlyChart(){
       type: 'scatter3d'
     };
       layout.aspectratio = {x: 3, y: 1, z: 1};
-      layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
-                      eye: {x: 0.02, y: -2.2, z: 0.1}};
     }
 
 	var data = [trace];
 
 	if(reDraw){
+    layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
+                    eye: {x: 0.02, y: -2.2, z: 0.1}};
 		Plotly.newPlot('chart_div', data, layout);
 		reDraw = false;
 	}else{
+    if (!twoD){
+      layout.scene.camera = {center: {x: chart_div._fullLayout.scene._scene.camera.center[0],
+                                      y: chart_div._fullLayout.scene._scene.camera.center[1],
+                                      z: chart_div._fullLayout.scene._scene.camera.center[2]},
+                             eye:    {x: chart_div._fullLayout.scene._scene.camera.eye[0],
+                                      y: chart_div._fullLayout.scene._scene.camera.eye[1],
+                                      z: chart_div._fullLayout.scene._scene.camera.eye[2]}
+                          };
+                      }
 		Plotly.animate('chart_div', {data: data}, {transition: {duration: 1000, easing: 'cubic-in-out' }});
 	}
 }
@@ -277,7 +287,7 @@ function setAxisSize(){
   var circ2 = document.getElementById('sizeAxisMaxCirc');
   var tri   = document.getElementById('sizeAxisTriangle');
 
-  var boxWidth = document.getElementById('title').offsetWidth -10;
+  var boxWidth = document.documentElement.clientWidth - 30;
   var xStart = 10;
   var xEnd = xStart + boxWidth;
 
@@ -285,9 +295,9 @@ function setAxisSize(){
   var offset = 6;
 
   var exampleText = document.querySelector('text.xtitle');
-  var fontSize = 14;
+  var fontSize = "14px";
   if (exampleText != null){
-    fontSize = exampleText.getAttribute('font-size');
+    fontSize = exampleText.style.fontSize;
   }
 
   // set text locations
@@ -304,14 +314,14 @@ function setAxisSize(){
   circ1.setAttribute('cx', xStart + textLength + offset + 2);
   circ2.setAttribute('cx', xEnd - textLength - offset - 7);
 
-  var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',39 ' + (xEnd-textLength-2*offset-14) + ',31';
+  var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',41 ' + (xEnd-textLength-2*offset-14) + ',29';
   tri.setAttribute('points', triPoints);
 
   var pressureBar = document.getElementById('pressureBar');
   var pressureIndicatorText = document.getElementById('pressureOverlay');
 
-  pressureBar.setAttribute('style', "font-family:'Arial'; margin:auto; font-size: " + fontSize + "px; width: " + boxWidth + "px;");
-  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + (Number(fontSize) +2) + "px;");
+  pressureBar.setAttribute('style', "font-family:'Arial'; margin:auto; font-size: " + fontSize + ";");
+  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + fontSize + ";");
 
 }
 
