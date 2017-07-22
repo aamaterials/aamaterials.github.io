@@ -5,6 +5,7 @@ google.charts.setOnLoadCallback(init);
 var dataTable, chart, options;
 var table, view;
 var tableView, filterView;
+var plotlyPlot;
 var slider, colorSelector, sizeSelector, xSelect, ySelect;
 var pressureOverlay;
 var minSizeText; var maxSizeText; var sizeTitle;
@@ -17,10 +18,13 @@ var sizeAxisGroup = null;
 var pointIndex = -1;
 var twoD = true;
 var cmax = 4; var smax = 24;
+var currentSelection = null;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
   pressureOverlay = document.getElementById('pressureOverlay');
+
+  plotlyPlot = document.getElementById('chart_div');
 
   slider = document.getElementById('slider');
   slider.addEventListener('input', onSliderUpdate);
@@ -132,10 +136,6 @@ function initialiseChart(){
 
   // Draw first chart
   drawBubbleChart();
-
-  // Set up events
-  plotlyPlot = document.getElementById('chart_div');
-  plotlyPlot.on('plotly_click', pointSelected);
 }
 
 function drawBubbleChart(){
@@ -248,10 +248,32 @@ function drawPlotlyChart(){
 
 	var data = [trace];
 
+  // Draw annotation, if necessary
+  if (currentSelection == null){
+    layout.annotations = [];
+  } else {
+    var viewRow = view.getViewRowIndex(currentSelection);
+    var xLoc = view.getValue(viewRow, 1);
+    var yLoc = view.getValue(viewRow, 2);
+    if (twoD){
+      var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
+        view.getColumnLabel(1) + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
+        view.getColumnLabel(2) + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
+        view.getColumnLabel(3) + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
+        view.getColumnLabel(4) + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
+      layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
+        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
+        xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
+      }
+  }
+
 	if(reDraw){
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
                     eye: {x: 0.02, y: -2.2, z: 0.1}};
 		Plotly.newPlot('chart_div', data, layout);
+
+    // Set up events
+    plotlyPlot.on('plotly_click', debounce(pointSelected, 200));
 		reDraw = false;
 	}else{
     if (!twoD){
@@ -492,15 +514,23 @@ function selectFromGraph(){
 }
 
 function pointSelected(data){
+  var selectedPoint = data.points[0].pointNumber;
+  var pointIndex = view.getTableRowIndex(selectedPoint);
   if (gettingPointsFromGraph){
-    var selectedPoint = data.points[0].pointNumber;
-    console.log(selectedPoint);
-    var pointIndex = view.getTableRowIndex(selectedPoint);
+    currentSelection = null;
     if (filterRows.indexOf(pointIndex)<0){
       filterRows.push(pointIndex);
       graphFilterView.setRows(filterRows);
       graphFilterTable.draw(graphFilterView);
     }
+  } else {
+    // Update current selection
+    if (pointIndex == currentSelection){
+      currentSelection = null;
+    }else{
+      currentSelection = pointIndex;
+    }
+    drawBubbleChart();
   }
 }
 
