@@ -16,6 +16,7 @@ var reDraw = true;
 var sizeAxisGroup = null;
 var pointIndex = -1;
 var twoD = true;
+var cmax = 4; var smax = 24;
 
 function init(){
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
@@ -129,7 +130,12 @@ function initialiseChart(){
   graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
+  // Draw first chart
   drawBubbleChart();
+
+  // Set up events
+  plotlyPlot = document.getElementById('chart_div');
+  plotlyPlot.on('plotly_click', pointSelected);
 }
 
 function drawBubbleChart(){
@@ -157,7 +163,6 @@ function drawBubbleChart(){
   //layout.scene.yaxis.title = axesLabels[zValue].split(" ").join("<br>");
   layout.scene.yaxis.title = shortLabels[zValue]; // Note z is vertical axis in 3D view
 
-
   sizeTitle.innerHTML = axesLabels[sValue];
   maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
   minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
@@ -172,8 +177,8 @@ function drawBubbleChart(){
 	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
   layout.scene.yaxis.range = [0, zmax];
 
-  //options.colorAxis.maxValue = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
-  //options.sizeAxis.maxValue = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
+  cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
+  smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
 
   //chart.draw(view, options);
 	drawPlotlyChart();
@@ -191,7 +196,12 @@ function columnToArray(columnIndex){
 }
 
 function drawPlotlyChart(){
-  var cmax = view.getColumnRange(3).max;
+  if (cmax = 'auto'){
+    cmax = view.getColumnRange(3).max;
+  }
+  if (smax = 'auto'){
+    smax = view.getColumnRange(4).max;
+  }
   var trace = {};
   if (twoD){
     trace = {
@@ -201,7 +211,7 @@ function drawPlotlyChart(){
       hoverinfo: "text",
   		marker: {
   			size: columnToArray(4),
-        sizeref: view.getColumnRange(4).max/20,
+        sizeref: smax/20,
   			line: {width: 0.0},
         color: columnToArray(3),
         cmin: 0,
@@ -211,7 +221,7 @@ function drawPlotlyChart(){
         showscale: true,
         opacity: 0.9
       },
-  		type: 'scatter'
+  	type: 'scatter'
   	};
   } else {
     trace = {
@@ -221,7 +231,7 @@ function drawPlotlyChart(){
       hoverinfo: "text",
       marker: {
         size: columnToArray(4),
-        sizeref: view.getColumnRange(4).max/20,
+        sizeref: smax/20,
         line: {width: 0.0},
         color: columnToArray(3),
         cmin: 0,
@@ -230,9 +240,9 @@ function drawPlotlyChart(){
         autocolorscale: false,
         showscale: true,
         opacity: 0.9
-      },
+        },
       type: 'scatter3d'
-    };
+      };
       layout.aspectratio = {x: 3, y: 1, z: 1};
     }
 
@@ -324,7 +334,6 @@ function setAxisSize(){
   pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + indicatorFontSize + ";");
 
 }
-
 
 function getColumns(xValue, yValue, cValue, sValue, zValue){
 
@@ -472,6 +481,7 @@ function removeFromSelection(){
   filterTable.draw(filterView);
 }
 
+// Graph selection
 function selectFromGraph(){
   gettingPointsFromGraph = true;
   graphFilterView.setColumns([0]);
@@ -481,20 +491,18 @@ function selectFromGraph(){
   document.getElementById('filter-modal').style.display='none';
 }
 
-/*
-function pointSelected(){
+function pointSelected(data){
   if (gettingPointsFromGraph){
-    var selectedPoint = chart.getSelection();
-    if (selectedPoint.length != 0){
-      var pointIndex = view.getTableRowIndex(selectedPoint[0].row);
-      if (filterRows.indexOf(pointIndex)<0){
-        filterRows.push(pointIndex);
-        graphFilterView.setRows(filterRows);
-        graphFilterTable.draw(graphFilterView);
-      }
+    var selectedPoint = data.points[0].pointNumber;
+    console.log(selectedPoint);
+    var pointIndex = view.getTableRowIndex(selectedPoint);
+    if (filterRows.indexOf(pointIndex)<0){
+      filterRows.push(pointIndex);
+      graphFilterView.setRows(filterRows);
+      graphFilterTable.draw(graphFilterView);
     }
   }
-}*/
+}
 
 function removeFromGraphSelection(){
   var filterSelection = graphFilterTable.getSelection();
