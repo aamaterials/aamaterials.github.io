@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOF Data Explorer | Adsorption &amp; Advanced Materials Group, University of Cambridge</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="mofcharts.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -18,7 +18,7 @@
 
     <!-- Chart -->
     <div id="chartHolder" style="width: 100%; position:relative; z-index:1">
-      <div id="chart_div"></div>
+      <div id="chart_div" style="height:68vh; font-size:1pt">&nbsp;</div>
     </div>
 
     <!-- Bubble Size Axis -->
@@ -26,12 +26,12 @@
         <svg width="100%" height="70px">
           <g id="sizeAxisGroup">
               <!-- The following default values are over-written every time the chart is drawn -->
-              <text id="sizeAxisTitle" text-anchor="start" x="14" y="12" font-family="Arial" font-size="14" font-style="italic" stroke-width="0" fill="#000000">Size Axis</text>
-              <text id="sizeAxisMinText" text-anchor="end" x="40" y="40" font-family="Arial" font-size="14" stroke="none" stroke-width="0" fill="#000000">10</text>
+              <text id="sizeAxisTitle" text-anchor="start" x="14" y="12" font-family="Open Sans" font-size="14" stroke-width="0" fill="#000000">Size Axis</text>
+              <text id="sizeAxisMinText" text-anchor="end" x="40" y="40" font-family="Open Sans" font-size="14" stroke="none" stroke-width="0" fill="#000000">10</text>
               <circle id="sizeAxisMinCirc" cx="50" cy="35" r="2" stroke="#cccccc" stroke-width="1" fill-opacity="0.8" fill="#ffb100" />
               <polygon id="sizeAxisTriangle" points="65,35 177,41 177,29" stroke="#cccccc" stroke-width="1" fill-opacity="0.8" fill="#ffb100" />
               <circle id="sizeAxisMaxCirc" cx="190" cy="35" r="10" stroke="#cccccc" stroke-width="1" fill-opacity="0.8" fill="#ffb100" />
-              <text id="sizeAxisMaxText" text-anchor="start" x="200" y="40" font-family="Arial" font-size="14" stroke="none" stroke-width="0" fill="#000000">100</text>
+              <text id="sizeAxisMaxText" text-anchor="start" x="200" y="40" font-family="Open Sans" font-size="14" stroke="none" stroke-width="0" fill="#000000">100</text>
           </g>
         </svg>
     </div>
@@ -40,12 +40,12 @@
     <div class="w3-cell-row" style="width: 100%;">
       <div class="w3-container w3-cell w3-hide-small" style="text-align:center; margin:auto">
           <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Data</button><br />
-          <button class="w3-button w3-border" style="width: 7em" onclick="selectFromGraph();">Filter Graph</button>
+          <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph();">Filter Graph</button>
       </div>
 
 
       <div id="controls" class="w3-container w3-cell w3-mobile">
-        <div id="pressureBar" style="font-family:'Arial'; margin:auto;">
+        <div id="pressureBar" style="font-family:'Open Sans'; margin:auto;">
         <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span>&nbsp;&nbsp;
           <i class="material-icons"><input id="playButton" type="button" value="play_arrow" onclick="playButtonClick()"></i>&nbsp;&nbsp;
           <span id="warningText"></span></p>
@@ -111,8 +111,8 @@
             <option value="9">Deliverable (vol.)</option>
             <option value="10">QST</option>
           </select></div>
-          <div class="w3-col m6 l3"><span class="control_axis_title">z-axis:</span>
-          <select id="zSelect" disabled>
+          <div class="w3-col m6 l3" id="zDiv" hidden><span class="control_axis_title">z-axis:</span>
+          <select id="zSelect">
             <option value="0">Density</option>
             <option value="1">PLD</option>
             <option value="2">LCD</option>
@@ -131,7 +131,7 @@
 
     <div class="w3-container w3-cell w3-mobile w3-hide-medium w3-hide-large" style="text-align:center; margin:auto">
         <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Table</button>
-        <button class="w3-button w3-border" style="width: 7em" onclick="selectFromGraph()">Filter graph</button>
+        <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph()">Filter graph</button>
     </div>
 
     <div class="w3-container w3-cell w3-hide-small" style="text-align:center">
@@ -153,8 +153,19 @@
         <span onclick="document.getElementById('help-modal').style.display='none'"
           class="w3-button w3-display-topright">&times;</span>
         <h3> Help </h3>
-        <p> Some help text goes in here. </p>
-        <p> <a href="#" onclick="reloadMOFdata()"> Reload MOF data... </a> </p>
+        <h4> Basic Usage </h4>
+        <p> Select the variables you want to compare with the axes drop-down boxes. <br>
+        Then view the data at different pressure points by using the pressure slider. <br>
+        You can use the play button to move smoothly through the pressure points. </p>
+        <h4> Exact Values </h4>
+        <p> Click on any point to view an annotation giving values to 4 s.f. </p>
+        <h4> Where can I see the code? </h4>
+        <p> Source code is available on <a href="https://github.com/aamaterials/aamaterials.github.io">our Github page</a>. </p>
+        <h4> I've found a problem! </h4>
+        <p> Please submit a bug report at <a href="https://github.com/aamaterials/aamaterials.github.io"> our Github page</a>. </p>
+        <h4> The data isn't loading! </h4>
+        <p> The MOF data table is stored locally on your computer after the first visit.
+          You can <a href="#" onclick="reloadMOFdata()"> reload MOF data </a> to see if that helps. </p>
       </div>
     </div>
   </div>

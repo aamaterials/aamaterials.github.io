@@ -1,7 +1,11 @@
 *{padding:0; border:0; margin:0}
 
 html,body {
-  font-family: 'PT Sans', sans-serif;
+  font-family: 'Open Sans';
+}
+
+button.w3button {
+  padding: 5px;
 }
 
 #title{
@@ -62,6 +66,5 @@ select{
 }
 
 #pressureTitle{
-   font-style: italic;
    text-align: left;
 }

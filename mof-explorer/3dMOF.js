@@ -1,26 +1,31 @@
 google.charts.load("current", {'packages':["corechart", "table", "controls"]});
 google.charts.setOnLoadCallback(init);
 
-// 1. Create data table
+// GLOBAL VARIABLES
 var dataTable, chart, options;
 var table, view;
 var tableView, filterView;
 var plotlyPlot;
 var slider, colorSelector, sizeSelector, xSelect, ySelect;
 var pressureOverlay;
-var minSizeText; var maxSizeText; var sizeTitle;
+var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
 var coarseSliderValue; var oldSliderValue = 5;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var gettingPointsFromGraph = false;
-var reDraw = true;
+var reDraw = true; var relaying = false;
 var sizeAxisGroup = null;
 var pointIndex = -1;
 var twoD = true;
 var cmax = 4; var smax = 24;
+var hmax = 28; var vmax = 320; var zmax = 28;
 var currentSelection = null;
 
+// INITIAL FUNCTION
 function init(){
+  // This function runs when Google charts js is ready
+
+  // Fill in global variables
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
   pressureOverlay = document.getElementById('pressureOverlay');
 
@@ -44,14 +49,16 @@ function init(){
   zSelector = document.getElementById('zSelect');
   zSelector.addEventListener('change', selectChange);
 
+  zDiv = document.getElementById('zDiv');
+
   minSizeText = document.getElementById('sizeAxisMinText');
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['Density, g/cm\u00B3', 'Pore Limiting Diameter, \u212B', 'Largest Cavity Diameter, \u212B',
                   'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g', 'Void Fraction',
-                'Uptake, mol/kg', 'Uptake, cm\u00B3(STP)/cm\u00B3', 'Gravimetric Deliverable Capacity, mol/kg',
-              'Volumetric Deliverable Capacity, cm\u00B3(STP)/cm\u00B3', 'Heat of Adsorption, kJ/mol'];
+                'Uptake, mol/kg', 'Uptake, cm\u00B3(STP)/cm\u00B3', 'Deliverable Capacity, mol/kg',
+              'Deliverable Capacity, cm\u00B3(STP)/cm\u00B3', 'Heat of Adsorption, kJ/mol'];
 
   shortLabels = ['Den., g/cm\u00B3', 'PLD, \u212B', 'LCD, \u212B',
                   'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'VF',
@@ -59,11 +66,12 @@ function init(){
               'Del., cm\u00B3(STP)/cm\u00B3', 'QST, kJ/mol'];
 
 	layout = {
+          font: {family: 'Open Sans'},
           margin: {l: 50, r: 0, t:20, b:50},
 					scene: {
-						xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
-						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
+						xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
+						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
+            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
             aspectratio: {x: 3, y: 1, z: 1},
             camera: {}
 					},
@@ -73,10 +81,11 @@ function init(){
           hovermode: 'closest'
 				};
 
-  // Check data isn't in browser already
+  // Get data table from browser cache if possible
   var dataString = localStorage.getItem('mofdata');
 
   if (dataString == null){
+    // Download data table if necessary
     var rangeString = encodeURIComponent('range=A:AQ');
 
     var query = new google.visualization.Query(
@@ -103,6 +112,7 @@ function reloadMOFdata(){
   document.getElementById('help-modal').style.display='none';
 }
 
+// FIRST DRAW OF CHART
 function initialiseChart(){
   for (i=0; i<dataTable.getNumberOfRows(); i++){
     allRows.push(i);
@@ -154,45 +164,28 @@ function drawBubbleChart(){
     view.setRows(allRows);
   }
 
-
-  //options.title = axesLabels[cValue]; // Acts as the colour axis title
+  colorbarTitle = axesLabels[cValue];
   layout.xaxis.title = axesLabels[xValue];
   layout.yaxis.title = axesLabels[yValue];
   layout.scene.xaxis.title = axesLabels[xValue];
-  layout.scene.zaxis.title = shortLabels[yValue]; // Note z is vertical axis in 3D view
-  //layout.scene.yaxis.title = axesLabels[zValue].split(" ").join("<br>");
-  layout.scene.yaxis.title = shortLabels[zValue]; // Note z is vertical axis in 3D view
+  layout.scene.zaxis.title = axesLabels[yValue]; // Note z is vertical axis in 3D view
+  layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
 
   sizeTitle.innerHTML = axesLabels[sValue];
   maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
   minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
 
-  var hmax = (xValue == 6) ? 28 : (xValue == 7) ? 320 : (xValue == 8) ? 28 : (xValue == 9) ? 320 : 'auto';
-	var vmax = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : 'auto';
-  var zmax = (zValue == 6) ? 28 : (zValue == 7) ? 320 : (zValue == 8) ? 28 : (zValue == 9) ? 320 : 'auto';
-
-  layout.xaxis.range = [0, hmax];
-  layout.yaxis.range = [0, vmax];
-  layout.scene.xaxis.range = [0, hmax];
-	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
-  layout.scene.yaxis.range = [0, zmax];
+  hmax = (xValue == 6) ? 28 : (xValue == 7) ? 320 : (xValue == 8) ? 28 : (xValue == 9) ? 320 : view.getColumnRange(1).max;
+	vmax = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : view.getColumnRange(2).max;
+  zmax = (zValue == 6) ? 28 : (zValue == 7) ? 320 : (zValue == 8) ? 28 : (zValue == 9) ? 320 : view.getColumnRange(5).max;
 
   cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
   smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
 
-  //chart.draw(view, options);
 	drawPlotlyChart();
 
   var pressure = pressureList[coarseSliderValue];
   pressureOverlay.innerHTML = pressure + ' bar';
-}
-
-function columnToArray(columnIndex){
-  var outputArray = new Array(view.getNumberOfRows());
-  for (i=0; i<view.getNumberOfRows(); i++){
-    outputArray[i] = (view.getValue(i, columnIndex));
-  }
-  return outputArray;
 }
 
 function drawPlotlyChart(){
@@ -202,49 +195,36 @@ function drawPlotlyChart(){
   if (smax = 'auto'){
     smax = view.getColumnRange(4).max;
   }
-  var trace = {};
-  if (twoD){
-    trace = {
-    	x:columnToArray(1), y: columnToArray(2),
-  		mode: 'markers',
-      text: columnToArray(0),
-      hoverinfo: "text",
-  		marker: {
-  			size: columnToArray(4),
-        sizeref: smax/20,
-  			line: {width: 0.0},
-        color: columnToArray(3),
-        cmin: 0,
-        cmax: cmax,
-  			colorscale: 'Jet',
-        autocolorscale: false,
-        showscale: true,
-        opacity: 0.9
-      },
-  	type: 'scatter'
-  	};
-  } else {
-    trace = {
-      x:columnToArray(1), y: columnToArray(5), z: columnToArray(2),
-      mode: 'markers',
-      text: columnToArray(0),
-      hoverinfo: "text",
-      marker: {
-        size: columnToArray(4),
-        sizeref: smax/20,
-        line: {width: 0.0},
-        color: columnToArray(3),
-        cmin: 0,
-        cmax: cmax,
-        colorscale: 'Jet',
-        autocolorscale: false,
-        showscale: true,
-        opacity: 0.9
-        },
-      type: 'scatter3d'
-      };
-      layout.aspectratio = {x: 3, y: 1, z: 1};
+  var trace = {
+    x:columnToArray(1),
+    mode: 'markers',
+    text: columnToArray(0),
+    hoverinfo: "text",
+    marker: {
+      size: columnToArray(4),
+      sizeref: smax/20,
+      line: {width: 0.0},
+      color: columnToArray(3),
+      colorbar: {title: colorbarTitle, titleside: 'right'},
+      cmin: 0,
+      cmax: cmax,
+      colorscale: 'Jet',
+      autocolorscale: false,
+      showscale: true,
+      opacity: 0.9
     }
+  };
+
+  // Trace settings for 2D/3D
+  if (twoD){
+    trace.y = columnToArray(2);
+    trace.type = 'scatter';
+  } else {
+    trace.y = columnToArray(5);
+    trace.z = columnToArray(2);
+    trace.type = 'scatter3d';
+    layout.aspectratio = {x: 3, y: 1, z: 1};
+  }
 
 	var data = [trace];
 
@@ -256,11 +236,12 @@ function drawPlotlyChart(){
     var xLoc = view.getValue(viewRow, 1);
     var yLoc = view.getValue(viewRow, 2);
     if (twoD){
+      // Annotations don't work in 3D :(
       var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
-        view.getColumnLabel(1) + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
-        view.getColumnLabel(2) + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
-        view.getColumnLabel(3) + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
-        view.getColumnLabel(4) + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
+        layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
+        layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
+        colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
+        sizeAxis.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
       layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
         arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
@@ -268,12 +249,19 @@ function drawPlotlyChart(){
   }
 
 	if(reDraw){
+    layout.xaxis.range = [0, hmax];
+    layout.yaxis.range = [0, vmax];
+    layout.scene.xaxis.range = [0, hmax];
+  	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
+    layout.scene.yaxis.range = [0, zmax];
+
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
-                    eye: {x: 0.02, y: -2.2, z: 0.1}};
+                    eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
 		Plotly.newPlot('chart_div', data, layout);
 
     // Set up events
     plotlyPlot.on('plotly_click', debounce(pointSelected, 200));
+    plotlyPlot.on('plotly_relayout', function(){relaying=true;});
 		reDraw = false;
 	}else{
     if (!twoD){
@@ -289,14 +277,23 @@ function drawPlotlyChart(){
 	}
 }
 
+// Convert Google chart column to Plotly array
+function columnToArray(columnIndex){
+  var outputArray = new Array(view.getNumberOfRows());
+  for (i=0; i<view.getNumberOfRows(); i++){
+    outputArray[i] = (view.getValue(i, columnIndex));
+  }
+  return outputArray;
+}
+
 function switch2D(){
   reDraw = true;
   twoD = !twoD;
-  zSelector.disabled = twoD;
+  zDiv.hidden = twoD;
   drawBubbleChart();
 }
 
-///////////////
+// GET DATA TABLE
 function handleQueryResponse(response) {
   if (response.isError()) {
     alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
@@ -351,9 +348,9 @@ function setAxisSize(){
   var pressureBar = document.getElementById('pressureBar');
   var pressureIndicatorText = document.getElementById('pressureOverlay');
 
-  pressureBar.setAttribute('style', "font-family:'Arial'; margin:auto; font-size: " + fontSize + ";");
+  pressureBar.setAttribute('style', "margin:auto; font-size: " + fontSize + ";");
   var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
-  pressureIndicatorText.setAttribute('style', "font-family:'Arial'; font-size: " + indicatorFontSize + ";");
+  pressureIndicatorText.setAttribute('style', "font-size: " + indicatorFontSize + "; width: 3.7em; display: inline-block;");
 
 }
 
@@ -418,10 +415,10 @@ function onSliderUpdate(){
     oldSliderValue = coarseSliderValue;
     drawBubbleChart();
   }
-
 }
 
 // FILTER AND SEARCH
+// Table filter
 var oldColumns = [];
 function openFilterWindow(){
   // Set columns of data table to match graph
@@ -513,27 +510,6 @@ function selectFromGraph(){
   document.getElementById('filter-modal').style.display='none';
 }
 
-function pointSelected(data){
-  var selectedPoint = data.points[0].pointNumber;
-  var pointIndex = view.getTableRowIndex(selectedPoint);
-  if (gettingPointsFromGraph){
-    currentSelection = null;
-    if (filterRows.indexOf(pointIndex)<0){
-      filterRows.push(pointIndex);
-      graphFilterView.setRows(filterRows);
-      graphFilterTable.draw(graphFilterView);
-    }
-  } else {
-    // Update current selection
-    if (pointIndex == currentSelection){
-      currentSelection = null;
-    }else{
-      currentSelection = pointIndex;
-    }
-    drawBubbleChart();
-  }
-}
-
 function removeFromGraphSelection(){
   var filterSelection = graphFilterTable.getSelection();
   for (i=0; i<filterSelection.length; i++){
@@ -549,6 +525,36 @@ function applyGraphSelection(){
   drawBubbleChart();
 }
 
+// Clicking on a point
+function pointSelected(data){
+  if (!relaying){
+    globalData = data; // debug purposes.
+    var selectedPoint = data.points[0].pointNumber;
+    var pointIndex = view.getTableRowIndex(selectedPoint);
+
+    if (gettingPointsFromGraph){
+      currentSelection = null;
+      // For filtering: add point to filtered rows array
+      if (filterRows.indexOf(pointIndex)<0){
+        filterRows.push(pointIndex);
+        graphFilterView.setRows(filterRows);
+        graphFilterTable.draw(graphFilterView);
+      }
+    } else {
+      // For annotation: select point for annotation
+      if (pointIndex == currentSelection){
+        currentSelection = null;
+      }else{
+        currentSelection = pointIndex;
+      }
+      drawBubbleChart();
+    }
+  } else {
+    relaying = false;
+  }
+}
+
+// PLAYBACK
 var playing = false;
 function playButtonClick(){
   buttonHandle = document.getElementById('playButton');
@@ -565,24 +571,31 @@ function playButtonClick(){
 function playSequence(){
   warningBox = document.getElementById('warningText');
   if (playing){
-    if (filterRows.length == 0 || filterRows.length > 500){
+    // Animation can be slow with over 500 points: display warning
+    if (twoD && filterRows.length == 0 || filterRows.length > 500){
       warningBox.innerHTML = "Animating more than 500 data points may be slow. Try filtering the data!";
     } else {
       warningBox.innerHTML = "";
     }
 
     if(slider.value<1){
+      // Move slider automatically
       slider.value = (parseFloat(slider.value) + 0.006).toString();
       setTimeout(playSequence, 30);
     }else{
+      // Reset if we've reached the end of the slider
       slider.value = "0";
       setTimeout(playSequence, 500);
     }
     onSliderUpdate();
   } else {
+    // Remove warning message if we're not playing
     warningBox.innerHTML = "";
   }
 }
+
+// RESIZE
+window.addEventListener('resize', debounce(windowResizeFunction, 200));
 
 function windowResizeFunction(){
   switch(document.getElementById('filter-modal').style.display){
@@ -596,7 +609,7 @@ function windowResizeFunction(){
   }
 }
 
-
+// GENERIC DEBOUNCE FUNCTION
 function debounce(func, wait, immediate) {
   // Debounce function from https://john-dugan.com/javascript-debounce/
     var timeout;
@@ -617,5 +630,3 @@ function debounce(func, wait, immediate) {
         }
     };
 };
-
-window.addEventListener('resize', debounce(windowResizeFunction, 200));
