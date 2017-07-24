@@ -13,6 +13,8 @@ button.w3button {
   font-size: 30px;
   font-weight: bold;
   z-index: 2;
+  overflow: hidden;
+  height: 45px;
 }
 
 #pressureOverlay{

@@ -51,6 +51,8 @@ function init(){
 
   zDiv = document.getElementById('zDiv');
 
+  filterGraphButton = document.getElementById('filterGraphButton');
+
   minSizeText = document.getElementById('sizeAxisMinText');
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
@@ -179,8 +181,8 @@ function drawBubbleChart(){
 	vmax = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : view.getColumnRange(2).max;
   zmax = (zValue == 6) ? 28 : (zValue == 7) ? 320 : (zValue == 8) ? 28 : (zValue == 9) ? 320 : view.getColumnRange(5).max;
 
-  cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : 'auto';
-  smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : 'auto';
+  cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : view.getColumnRange(3).max;
+  smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : view.getColumnRange(4).max;
 
 	drawPlotlyChart();
 
@@ -189,12 +191,6 @@ function drawBubbleChart(){
 }
 
 function drawPlotlyChart(){
-  if (cmax = 'auto'){
-    cmax = view.getColumnRange(3).max;
-  }
-  if (smax = 'auto'){
-    smax = view.getColumnRange(4).max;
-  }
   var trace = {
     x:columnToArray(1),
     mode: 'markers',
@@ -272,7 +268,7 @@ function drawPlotlyChart(){
                                       y: chart_div._fullLayout.scene._scene.camera.eye[1],
                                       z: chart_div._fullLayout.scene._scene.camera.eye[2]}
                           };
-                      }
+    }
 		Plotly.animate('chart_div', {data: data}, {transition: {duration: 1000, easing: 'cubic-in-out' }});
 	}
 }
@@ -290,6 +286,7 @@ function switch2D(){
   reDraw = true;
   twoD = !twoD;
   zDiv.hidden = twoD;
+  filterGraphButton.disabled = !twoD;
   drawBubbleChart();
 }
 
@@ -389,6 +386,7 @@ function getColumnFromSelectorValue(selectorValue){
 }
 
 function selectChange(){
+  reDraw = true;
   oldSliderValue = 100;
   onSliderUpdate();
 }

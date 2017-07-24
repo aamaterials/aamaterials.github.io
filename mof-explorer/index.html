@@ -14,7 +14,13 @@
 
   <body>
     <!-- Title -->
-    <div id="title">MOF Data Explorer</div>
+    <div class="w3-cell-row" style="width: 100%; height:45px">
+      <div class="w3-col m4 l4 w3-hide-small" style="text-align:center; margin:auto;">
+        <img src="../camLogo.jpg" height="45px">
+      </div>
+      <div class="w3-col m4 l4" id="title">MOF Data Explorer</div>
+      <div class="w3-col m4 l4 w3-hide-small" style="text-align:center; margin:auto;">AAM Group</div>
+    </div>
 
     <!-- Chart -->
     <div id="chartHolder" style="width: 100%; position:relative; z-index:1">
@@ -40,7 +46,7 @@
     <div class="w3-cell-row" style="width: 100%;">
       <div class="w3-container w3-cell w3-hide-small" style="text-align:center; margin:auto">
           <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Data</button><br />
-          <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph();">Filter Graph</button>
+          <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph();" id="filterGraphButton">Filter Graph</button>
       </div>
 
 
@@ -131,7 +137,7 @@
 
     <div class="w3-container w3-cell w3-mobile w3-hide-medium w3-hide-large" style="text-align:center; margin:auto">
         <button class="w3-button w3-border" style="width: 7em" onclick="openFilterWindow();">Filter Table</button>
-        <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph()">Filter graph</button>
+        <button class="w3-button w3-border" style="width: 7em; padding-left:5px; padding-right:5px" onclick="selectFromGraph()" id="filterGraphButton">Filter graph</button>
     </div>
 
     <div class="w3-container w3-cell w3-hide-small" style="text-align:center">
