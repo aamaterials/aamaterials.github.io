@@ -237,7 +237,7 @@ function drawPlotlyChart(){
         layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
         layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
         colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
-        sizeAxis.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
+        sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
       layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
         arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
