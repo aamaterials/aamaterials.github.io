@@ -1,5 +1,5 @@
-google.charts.load("current", {'packages':["corechart", "table", "controls"]});
-google.charts.setOnLoadCallback(init);
+//google.charts.load("current", {'packages':["corechart", "table", "controls"]});
+//google.charts.setOnLoadCallback(init);
 
 // GLOBAL VARIABLES
 var dataTable, chart, options;
@@ -21,10 +21,45 @@ var cmax = 4; var smax = 24;
 var hmax = 28; var vmax = 320; var zmax = 28;
 var currentSelection = null;
 
+//window.addEventListener('DOMContentLoaded', init());
+init();
+
 // INITIAL FUNCTION
 function init(){
-  // This function runs when Google charts js is ready
+  // Set global vairables
+  setInitGlobalVariables();
 
+  // Try to get data table from browser local storage
+  var dataString = localStorage.getItem('mofdata');
+
+  if (dataString === null){
+    // Download the data from the server
+    console.log("Downloading data from server.");
+    Plotly.d3.csv("data.csv", function(err, rows){
+      dataTable = rows;
+
+      // Save data for later visits
+      console.log("Saving data to local storage.");
+      var dataStringified = JSON.stringify(dataTable);
+      localStorage.setItem('mofdata', dataStringified);
+
+      // Set rowNames and initialise chart
+      rowNames = Object.keys(dataTable[0]);
+      initialiseChart();
+    });
+
+  } else {
+    // Get data from local storage
+    console.log("Loading data from local storage.");
+    dataTable = JSON.parse(dataString);
+
+    // Set rowNames and initialise chart
+    rowNames = Object.keys(dataTable[0]);
+    initialiseChart();
+  }
+}
+
+function setInitGlobalVariables(){
   // Fill in global variables
   pressureList = [1, 5, 10, 20, 30, 50, 80, 100, 140, 200];
   pressureOverlay = document.getElementById('pressureOverlay');
@@ -67,61 +102,42 @@ function init(){
                 'Up., mol/kg', 'Up., cm\u00B3(STP)/cm\u00B3', 'Del., mol/kg',
               'Del., cm\u00B3(STP)/cm\u00B3', 'QST, kJ/mol'];
 
-	layout = {
+  layout = {
           font: {family: 'Open Sans'},
           margin: {l: 50, r: 0, t:20, b:50},
-					scene: {
-						xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
-						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
+          scene: {
+            xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
+            yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
             zaxis: {range: [0, 28], title: 'Deliverable, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
             aspectratio: {x: 3, y: 1, z: 1},
             camera: {}
-					},
+          },
           xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
           yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
           zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
           hovermode: 'closest'
-				};
-
-  // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('mofdata');
-
-  if (dataString == null){
-    // Download data table if necessary
-    var rangeString = encodeURIComponent('range=A:AQ');
-
-    var query = new google.visualization.Query(
-      'https://docs.google.com/spreadsheets/d/1BXpfTXTDeg_gcDEWyjUmx_SUkWzwkZDSLilBQaabPO0/gviz/tq?gid=0&headers=1&' + rangeString);
-    query.send(handleQueryResponse);
-
-  }else{
-    console.log('Loading table from local storage.');
-    var parsedData = JSON.parse(dataString);
-    dataTable = new google.visualization.DataTable(parsedData);
-    // Draw initial chart
-    initialiseChart();
-  }
-
+        };
 }
 
 function reloadMOFdata(){
-  // Set up query
-  var rangeString = encodeURIComponent('range=A:AQ');
-  var query = new google.visualization.Query(
-    'https://docs.google.com/spreadsheets/d/1BXpfTXTDeg_gcDEWyjUmx_SUkWzwkZDSLilBQaabPO0/gviz/tq?gid=0&headers=1&' + rangeString);
-  query.send(handleQueryResponse);
+  localStorage.removeItem('mofdata');
+  init();
+
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
 }
 
 // FIRST DRAW OF CHART
 function initialiseChart(){
-  for (i=0; i<dataTable.getNumberOfRows(); i++){
+  for (i=0; i<dataTable.length; i++){
     allRows.push(i);
     selectAllArray.push({'row': i, 'column': null});
   }
 
   onSliderUpdate();
+
+  /*
+
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
   graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'))
@@ -146,6 +162,8 @@ function initialiseChart(){
   graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
+  */
+
   // Draw first chart
   drawBubbleChart();
 }
@@ -158,7 +176,32 @@ function drawBubbleChart(){
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
-  view.setColumns(columns);
+  colorbarTitle = axesLabels[cValue];
+  layout.xaxis.title = axesLabels[xValue];
+  layout.yaxis.title = axesLabels[yValue];
+  layout.scene.xaxis.title = axesLabels[xValue];
+  layout.scene.zaxis.title = axesLabels[yValue]; // Note z is vertical axis in 3D view
+  layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
+
+  sizeTitle.innerHTML = axesLabels[sValue];
+
+  drawPlotlyChart();
+
+  var pressure = pressureList[coarseSliderValue];
+  pressureOverlay.innerHTML = pressure + ' bar';
+}
+
+
+
+function drawBubbleChartOLD(){
+  setAxisSize();
+  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
+  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
+  var zValue = parseInt(zSelector.value);
+
+  columns = getColumns(xValue, yValue, cValue, sValue, zValue);
+
+  //view.setColumns(columns);
   if (filterRows.length > 0){
     view.setRows(filterRows);
   } else {
@@ -190,7 +233,9 @@ function drawBubbleChart(){
   pressureOverlay.innerHTML = pressure + ' bar';
 }
 
+
 function drawPlotlyChart(){
+
   var trace = {
     x:columnToArray(1),
     mode: 'markers',
@@ -275,11 +320,15 @@ function drawPlotlyChart(){
 
 // Convert Google chart column to Plotly array
 function columnToArray(columnIndex){
-  var outputArray = new Array(view.getNumberOfRows());
-  for (i=0; i<view.getNumberOfRows(); i++){
-    outputArray[i] = (view.getValue(i, columnIndex));
+  function unpack(rows, key){
+    return rows.map(function(row){
+      return row[key];
+    });
   }
-  return outputArray;
+  var columnNumber = columns[columnIndex];
+  var columnName = rowNames[columnNumber];
+  var output = unpack(dataTable, columnName);
+  return output;
 }
 
 function switch2D(){
@@ -288,21 +337,6 @@ function switch2D(){
   zDiv.hidden = twoD;
   filterGraphButton.disabled = !twoD;
   drawBubbleChart();
-}
-
-// GET DATA TABLE
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
-
-  // Get data, and store it in localStorage
-  dataTable = response.getDataTable();
-  var dataString = JSON.stringify(dataTable);
-  localStorage['mofdata'] = dataString;
-  console.log('Saved remote MOF data to local storage.');
-  initialiseChart();
 }
 
 function setAxisSize(){
