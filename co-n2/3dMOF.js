@@ -48,18 +48,19 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Identifier', 'Void Fraction', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
-                  'PLD \u212B', 'Largest Cavity Diameter, \u212B', 'Volumetric Surface Area, m\u00B2/cm\u00B3',
-                   'Gravimetric Surface Area, m\u00b2/g', 'Pore Volume, cm\u00B3/g',
-                    'Qst CO, kJ/mol',	'Qst N2, kJ/mol',	'Qst difference, kJ/mol',
-                    'CO uptake at desorption, mmol/g',	'N2 uptake at desorption, mmol/g',
-                    'CO uptake at 40 bar, mmol/g',	'N2 uptake at 40 bar, mmol/g',	'CO uptake at 200 K, mmol/g',
-                    'N2 uptake at 200 K, mmol/g',	'CO uptake at 40 bar, 200 K, mmol/g',	'N2 uptake at 40 bar, 200 K, mmol/g',
-                    'Selectivity at desorption',	'PSA selectivity',	'TSA selectivity',	'PTSA selectivity',
-                    'PSA capacity, mmol/g',	'TSA working capacity, mmol/g',	'PTSA working capacity, mmol/g',
-                    'PSA regenerability, %',	'TSA regenerability, %',	'PTSA regenerability, %'
+  axesLabels = ['<b>Identifier</b>', '<b>Void Fraction</b>', '<b>Metal Density, g/cm\u00B3</b>', '<b>Density, g/cm\u00B3</b>',
+                  '<b>PLD \u212B</b>', '<b>Largest Cavity Diameter, \u212B</b>', '<b>Volumetric Surface Area, m\u00B2/cm\u00B3</b>',
+                   '<b>Gravimetric Surface Area, m\u00b2/g</b>', '<b>Pore Volume, cm\u00B3/g</b>',
+                    '<b>Qst CO, kJ/mol</b>',	'<b>Qst N2, kJ/mol</b>',	'<b>Qst difference, kJ/mol</b>',
+                    '<b>CO uptake at desorption, mmol/g</b>',	'<b>N2 uptake at desorption, mmol/g</b>',
+                    '<b>CO uptake at 40 bar, mmol/g</b>',	'<b>N2 uptake at 40 bar, mmol/g</b>',	'<b>CO uptake at 200 K, mmol/g</b>',
+                    '<b>N2 uptake at 200 K, mmol/g</b>',	'<b>CO uptake at 40 bar, 200 K, mmol/g</b>',	'<b>N2 uptake at 40 bar, 200 K, mmol/g</b>',
+                    '<b>Selectivity at desorption</b>',	'<b>PSA selectivity</b>',	'TSA selectivity</b>',	'<b>PTSA selectivity</b>',
+                    '<b>PSA working capacity, mmol/g</b>',	'<b>TSA working capacity, mmol/g</b>',	'<b>PTSA working capacity, mmol/g</b>',
+                    '<b>PSA regenerability, %</b>',	'<b>TSA regenerability, %</b>',	'<b>PTSA regenerability, %</b>'
                     ];
 
+/* // Short Labels aren't actually used now
 shortLabels = ['ID', 'VF', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
                 'PLD \u212B', 'LCD, \u212B', 'VSA, m\u00B2/cm\u00B3',
                  'GSA, m\u00b2/g', 'Pore Volume, cm\u00B3/g',
@@ -70,22 +71,18 @@ shortLabels = ['ID', 'VF', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
                   'Selectivity (desorption)',	'PSA selectivity',	'TSA selectivity',	'PTSA selectivity',
                   'PSA WC, mmol/g',	'TSA WC, mmol/g',	'PTSA WC, mmol/g',
                   'PSA regenerability, %',	'TSA regenerability, %',	'PTSA regenerability, %'
-                  ];
+                ];*/
 
 	layout = {
-          font: {family: 'Open Sans'},
-          margin: {l: 50, r: 0, t:20, b:50},
-					scene: {
-						xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
-						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
-            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
+          font: {family: 'Open Sans', size: 16},
+          margin: {l: 80, r: 0, t:20, b:50},
+          hovermode: 'closest',
+
+          xaxis: {title: ''}, yaxis: {title: ''},
+          scene: {xaxis: {title: ''}, yaxis: {title: ''}, zaxis: {title: ''},
             aspectratio: {x: 3, y: 1, z: 1},
             camera: {}
-					},
-          xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
-          yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-          zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
-          hovermode: 'closest'
+          },
 				};
 
   // Get data table from browser cache if possible
@@ -152,6 +149,7 @@ function initialiseChart(){
 
   // Draw first chart
   drawBubbleChart();
+  setAxisSize();
 }
 
 function drawBubbleChart(){
@@ -173,11 +171,11 @@ function drawBubbleChart(){
   colorbarTitle = axesLabels[cValue];
   layout.xaxis.title = axesLabels[xValue];
   layout.yaxis.title = axesLabels[yValue];
-  layout.scene.xaxis.title = axesLabels[xValue];
-  layout.scene.zaxis.title = axesLabels[yValue]; // Note z is vertical axis in 3D view
-  layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
+  layout.scene.xaxis.title = axesLabels[xValue].substring(3, (axesLabels[sValue].length-4));
+  layout.scene.zaxis.title = axesLabels[yValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
+  layout.scene.yaxis.title = axesLabels[zValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
 
-  sizeTitle.innerHTML = axesLabels[sValue];
+  sizeTitle.innerHTML = axesLabels[sValue].substring(3, (axesLabels[sValue].length-4));
   maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
   minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
 
@@ -200,17 +198,17 @@ function drawPlotlyChart(){
     hoverinfo: "text",
     marker: {
       size: columnToArray(4),
-      sizeref: smax/20,
-      sizemin: 2,
-      line: {width: 0.0},
+      sizeref: smax/40,
+      sizemin: 4,
+      line: {width: 1},
       color: columnToArray(3),
       colorbar: {title: colorbarTitle, titleside: 'right'},
-      cmin: 0,
-      cmax: cmax,
+      //cmin: 0,
+      //cmax: cmax,
       colorscale: 'Jet',
       autocolorscale: false,
       showscale: true,
-      opacity: 0.9
+      opacity: 0.7
     }
   };
 
@@ -248,11 +246,11 @@ function drawPlotlyChart(){
   }
 
 	if(reDraw){
-    layout.xaxis.range = [0, hmax];
-    layout.yaxis.range = [0, vmax];
-    layout.scene.xaxis.range = [0, hmax];
-  	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
-    layout.scene.yaxis.range = [0, zmax];
+    //layout.xaxis.range = [0, hmax];
+    //layout.yaxis.range = [0, vmax];
+    //layout.scene.xaxis.range = [0, hmax];
+  	//layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
+    //layout.scene.yaxis.range = [0, zmax];
 
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
                     eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
@@ -321,28 +319,36 @@ function setAxisSize(){
 
   var textLength = 30;
   var offset = 6;
+  var yMid = 40;
 
   var exampleText = document.querySelector('text.xtitle');
-  var fontSize = "14px";
+  var fontSize = "19px";
   if (exampleText != null){
     fontSize = exampleText.style.fontSize;
   }
 
   // set text locations
   sizeTitle.setAttribute('x', xStart);
+  sizeTitle.setAttribute('y', yMid-20);
   minSizeText.setAttribute('x', xStart+textLength);
   maxSizeText.setAttribute('x', xEnd-textLength);
+  minSizeText.setAttribute('y', yMid+7);
+  maxSizeText.setAttribute('y', yMid+7);
 
   // Set text sizes
   sizeTitle.setAttribute('font-size', fontSize);
+  sizeTitle.setAttribute('font-weight', 'bold');
   minSizeText.setAttribute('font-size', fontSize);
   maxSizeText.setAttribute('font-size', fontSize);
 
   // Set shape locations
   circ1.setAttribute('cx', xStart + textLength + offset + 2);
   circ2.setAttribute('cx', xEnd - textLength - offset - 7);
+  circ1.setAttribute('cy', yMid);
+  circ2.setAttribute('cy', yMid);
 
-  var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',41 ' + (xEnd-textLength-2*offset-14) + ',29';
+
+  var triPoints = (xStart + textLength + 2*offset + 4) + ',' + (yMid) + ' ' + (xEnd-textLength-2*offset-14) +',' + (yMid+6) + ' ' + (xEnd-textLength-2*offset-14) + ',' + (yMid-6);
   tri.setAttribute('points', triPoints);
 
 }
