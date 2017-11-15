@@ -124,7 +124,7 @@ function initialiseChart(){
   onSliderUpdate();
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
-  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'))
+  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'));
 
   var stringFilter = new google.visualization.ControlWrapper({
     'controlType': 'StringFilter',
@@ -199,6 +199,7 @@ function drawPlotlyChart(){
     marker: {
       size: columnToArray(4),
       sizeref: smax/20,
+      sizemin: 2,
       line: {width: 0.0},
       color: columnToArray(3),
       colorbar: {title: colorbarTitle, titleside: 'right'},
@@ -627,4 +628,4 @@ function debounce(func, wait, immediate) {
             func.apply(context, args);
         }
     };
-};
+}
