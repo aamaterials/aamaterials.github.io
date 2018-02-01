@@ -161,7 +161,7 @@ function drawBubbleChart(){
 
   sizeTitle.innerHTML = axesLabels[sValue]; //.substring(3, (axesLabels[sValue].length-4));
 
-  if (sValue != 0){
+  if (sValue != 0 && sValue != 1 && sValue != 5){
     maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
     minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
   } else {
@@ -204,7 +204,7 @@ function drawPlotlyChart(){
     layout.aspectratio = {x: 3, y: 1, z: 1};
   }
 
-  if (cValue != 0){
+  if (cValue != 0 && cValue != 1 && cValue !=5){
     // If we've not got colour axis set to planar type
     trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
     trace.marker.colorscale = 'Jet';
@@ -213,7 +213,7 @@ function drawPlotlyChart(){
   } else {
     trace.marker.showscale = false;
   }
-  if (sValue != 0){
+  if (sValue != 0 && sValue != 1 && sValue != 5){
     // If we've not got size axis set to planar type
     trace.marker.size = columnToArray(4),
     trace.marker.sizeref = smax/40;
