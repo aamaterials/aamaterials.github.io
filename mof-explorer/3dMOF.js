@@ -234,7 +234,8 @@ function drawPlotlyChart(){
     var yLoc = view.getValue(viewRow, 2);
     if (twoD){
       // Annotations don't work in 3D :(
-      var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
+      var annoText = '<b>' + view.getValue(viewRow, 0) + '</b>' +
+      ' (<a href="https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid=' + view.getValue(viewRow, 0) + '" style="color:white; text-decoration: underline;">CSD Link</a>)<br>' +
         layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
         layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
         colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
