@@ -48,11 +48,11 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Topology', 'Linker', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m2/cm3)',
-                'Gravimetric Surface Area (m2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm3)', 'Gravimetric Pore Volume (g/cm3)'];
+  axesLabels = ['Topology', 'Linker', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
+                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (g/cm\u00B3)'];
 
-  shortLabels = ['Topo.', 'Link.', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m2/cm3)', 'GSA (m2/g)', 
-                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm3)', 'GPV (cm3/g)'];
+  shortLabels = ['Topo.', 'Link.', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)', 
+                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)'];
 
   // Get data table from browser cache if possible
   var dataString = localStorage.getItem('aureliamofs3');
