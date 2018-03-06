@@ -398,7 +398,7 @@ function drawPlotlyChart(){
         sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
       
 	    layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
-        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
+        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 200, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
       }
   }
