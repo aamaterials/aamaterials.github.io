@@ -48,10 +48,10 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Topology', 'Linker', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
+  axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
                 'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (g/cm\u00B3)'];
 
-  shortLabels = ['Topo.', 'Link.', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)', 
+  shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)', 
                   'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)'];
 
   // Get data table from browser cache if possible
@@ -216,7 +216,7 @@ function drawPlotlyChart(){
     trace.showlegend = false;
 	layout.showlegend = true; 
   }
-  
+  //if color is set to Planarity
   if (cValue == 5){
     var markerNamesPlanarity = columnToArray(3);
     var markerColors = new Array(markerNamesPlanarity.length);
@@ -240,7 +240,8 @@ function drawPlotlyChart(){
    trace.name = "Planarity";
   }
   
- if (cValue == 1){
+  //if color is set to Linker ID
+  if (cValue == 1){
     var markerNamesLinker = columnToArray(3);
     var markerColors = new Array(markerNamesLinker.length);
     for (i=0; i<markerNamesLinker.length; i++){
@@ -275,12 +276,12 @@ function drawPlotlyChart(){
               markerColors[i]= "rgb(255, 105, 180)"; break;		  
        }
    }
-   //trace.showlegend = true;
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
    trace.name = "Linker ID";
   } 
   
+  //if color is set to Topology
  if (cValue == 0){
     var markerNamesTopo = columnToArray(3);
     var markerColors = new Array(markerNamesTopo.length);
@@ -370,7 +371,6 @@ function drawPlotlyChart(){
               markerColors[i]= "rgb(255, 182, 193)"; break;		  
        }
    }
-   //trace.showlegend = true;
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
    trace.name = "Topology";
