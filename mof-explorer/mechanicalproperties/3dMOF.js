@@ -185,8 +185,8 @@ function drawPlotlyChart(){
     mode: 'markers',
     text: columnToArray(0),
     x: columnToArray(1),
-    hoverinfo: "text",
-	//name: "Color value",
+    hoverinfo: "text+name",
+	name: "Structure name",
     marker: {
       color: columnToArray(3),
       opacity: 0.7,
@@ -237,6 +237,7 @@ function drawPlotlyChart(){
    //trace.showlegend = true;
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
+   trace.name = "Planarity";
   }
   
  if (cValue == 1){
@@ -278,7 +279,6 @@ function drawPlotlyChart(){
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
    trace.name = "Linker ID";
-   //trace.hoverinfo = "text + name";
   } 
   
  if (cValue == 0){
@@ -373,6 +373,7 @@ function drawPlotlyChart(){
    //trace.showlegend = true;
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
+   trace.name = "Topology";
   }  
 
   if (sValue != 0 && sValue != 1 && sValue != 5){
