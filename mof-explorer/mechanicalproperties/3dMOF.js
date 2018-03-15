@@ -49,7 +49,7 @@ function init(){
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
-                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (g/cm\u00B3)'];
+                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)'];
 
   shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)', 
                   'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)'];
