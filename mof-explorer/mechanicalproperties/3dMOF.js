@@ -49,10 +49,10 @@ function init(){
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
-                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)','Pore Volume per Unit Cell (10\u00B3\u212B\u00B3)'];
+                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)','Pore Volume in Unit Cell (10\u00B3\u212B\u00B3)'];
 
   shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)',
-                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV/UC (10\u00B3\u212B\u00B3)'];
+                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV in UC (10\u00B3\u212B\u00B3)'];
 
   // Get data table from browser cache if possible
   var dataString = localStorage.getItem('aureliamofs4');
