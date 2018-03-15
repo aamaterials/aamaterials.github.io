@@ -49,20 +49,20 @@ function init(){
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
-                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)'];
+                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)','Pore Volume per Unit Cell (10\u00B3\u212B\u00B3)'];
 
   shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)',
-                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)'];
+                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV/UC (10\u00B3\u212B\u00B3)'];
 
   // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('aureliamofs3');
+  var dataString = localStorage.getItem('aureliamofs4');
 
   if (dataString == null){
     // Download data table if necessary
     var rangeString = encodeURIComponent('range=A:AQ');
 
     var query = new google.visualization.Query(
-      'https://docs.google.com/spreadsheets/d/12mcbJvr1ygncGSc6TEOHaBqcJRPRMi8S7pwtqynlnSw/gviz/tq?gid=0&headers=1&' + rangeString);
+      'https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
 
   }else{
@@ -79,7 +79,7 @@ function reloadMOFdata(){
   // Set up query
   var rangeString = encodeURIComponent('range=A:AQ');
   var query = new google.visualization.Query(
-    'https://docs.google.com/spreadsheets/d/12mcbJvr1ygncGSc6TEOHaBqcJRPRMi8S7pwtqynlnSw/gviz/tq?gid=0&headers=1&' + rangeString);
+    'https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
@@ -477,7 +477,7 @@ function handleQueryResponse(response) {
   // Get data, and store it in localStorage
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
-  localStorage['aureliamofs3'] = dataString;
+  localStorage['aureliamofs4'] = dataString;
   console.log('Saved remote MOF data to local storage.');
   initialiseChart();
 }
