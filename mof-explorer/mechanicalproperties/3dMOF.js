@@ -51,7 +51,7 @@ function init(){
   axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
                 'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)'];
 
-  shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)', 
+  shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)',
                   'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)'];
 
   // Get data table from browser cache if possible
@@ -214,7 +214,7 @@ function drawPlotlyChart(){
   } else {
 	trace.marker.showscale = false;
     trace.showlegend = false;
-	layout.showlegend = true; 
+	layout.showlegend = true;
   }
   //if color is set to Planarity
   if (cValue == 5){
@@ -239,7 +239,7 @@ function drawPlotlyChart(){
    trace.text = columnToArray(3);
    trace.name = "Planarity";
   }
-  
+
   //if color is set to Linker ID
   if (cValue == 1){
     var markerNamesLinker = columnToArray(3);
@@ -273,14 +273,14 @@ function drawPlotlyChart(){
 		  case 13:
               markerColors[i]= "rgb(199, 21, 147)"; break;
 		  case 14:
-              markerColors[i]= "rgb(255, 105, 180)"; break;		  
+              markerColors[i]= "rgb(255, 105, 180)"; break;
        }
    }
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
    trace.name = "Linker ID";
-  } 
-  
+  }
+
   //if color is set to Topology
  if (cValue == 0){
     var markerNamesTopo = columnToArray(3);
@@ -314,7 +314,7 @@ function drawPlotlyChart(){
 		  case "gar":
               markerColors[i]= "rgb(50, 205, 50)"; break;
 		  case "iac":
-              markerColors[i]= "rgb(46, 139, 87)"; break;	
+              markerColors[i]= "rgb(46, 139, 87)"; break;
           case "ith":
               markerColors[i]= "rgb(102, 205, 170)"; break;
           case "lcs":
@@ -368,20 +368,20 @@ function drawPlotlyChart(){
           case "the":
               markerColors[i] = "rgb(255, 20, 147)";break;
 		  case "tpt":
-              markerColors[i]= "rgb(255, 182, 193)"; break;		  
+              markerColors[i]= "rgb(255, 182, 193)"; break;
        }
    }
    trace.marker.color = markerColors;
    trace.text = columnToArray(3);
    trace.name = "Topology";
-  }  
+  }
 
   if (sValue != 0 && sValue != 1 && sValue != 5){
     // If we've not got size axis set to planar type
     trace.marker.size = columnToArray(4),
     trace.marker.sizeref = smax/40;
     trace.marker.sizemin = 4;
-  }  
+  }
 	var data = [trace];
 
 	if (currentSelection == null){
@@ -392,12 +392,22 @@ function drawPlotlyChart(){
     var yLoc = view.getValue(viewRow, 2);
     if (twoD){
       // Annotations don't work in 3D :(
+      var xAnno = view.getValue(viewRow, 1);
+      var yAnno = view.getValue(viewRow, 2);
+      var cAnno = view.getValue(viewRow, 3);
+      var sAnno = view.getValue(viewRow, 4);
+
+      if (typeof xAnno === 'number') xAnno = xAnno.toPrecision(4);
+      if (typeof yAnno === 'number') yAnno = yAnno.toPrecision(4);
+      if (typeof cAnno === 'number') cAnno = cAnno.toPrecision(4);
+      if (typeof sAnno === 'number') sAnno = sAnno.toPrecision(4);
+
       var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
-        layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
-        layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
-        colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
-        sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
-      
+        layout.xaxis.title + ': ' + xAnno + '<br>' +
+        layout.yaxis.title + ': ' + yAnno + '<br>' +
+        colorbarTitle + ': ' + cAnno + '<br>' +
+        sizeTitle.innerHTML + ': ' + sAnno + '<br>';
+
 	    layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
         arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 200, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
