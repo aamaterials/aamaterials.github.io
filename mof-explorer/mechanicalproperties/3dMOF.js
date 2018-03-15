@@ -241,7 +241,7 @@ function drawPlotlyChart(){
               markerColors[i]= "rgb(255, 0, 0)"; break;
           case "Planar 3,4-coordinated":
               markerColors[i] = "rgb(255, 154, 0)";break;
-		  case "Planar 4-coordinated":
+		      case "Planar 4-coordinated":
               markerColors[i]= "rgb(255, 230, 0)"; break;
 		      case "Planar 4,6-coordinated":
               markerColors[i]= "rgb(154, 255, 0)"; break;
