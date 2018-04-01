@@ -55,24 +55,64 @@ function init(){
                   'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV in UC (10\u00B3\u212B\u00B3)'];
 
   // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('aureliamofs4');
+  //var dataString = localStorage.getItem('aureliamofs4');
+  var db;
+  var requestDB = window.indexedDB.open("mofDatabase");
 
-  if (dataString == null){
-    // Download data table if necessary
+  requestDB.onupgradeneeded = function(event){
+    db = requestDB.result;
+    db.createObjectStore("aureliamofs4", {keyPath: "id"});
+
     var rangeString = encodeURIComponent('range=A:AQ');
-
     var query = new google.visualization.Query(
       'https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
+  };
 
-  }else{
-    console.log('Loading table from local storage.');
-    var parsedData = JSON.parse(dataString);
-    dataTable = new google.visualization.DataTable(parsedData);
-    // Draw initial chart
-    initialiseChart();
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    // Get data from the database
+    var request = db.transaction(["aureliamofs4"]).objectStore("aureliamofs4").get("01");
+
+    request.error = function(event){
+      console.log('Some error in database request.')
+    }
+
+    request.onsuccess = function(event){
+      if (request.result != null){
+        console.log('Loading table from local indexedDB.');
+        var dataString = request.result.data;
+        var parsedData = JSON.parse(dataString);
+        dataTable = new google.visualization.DataTable(parsedData);
+        // Draw initial chart
+        initialiseChart();
+      }
+    }
+
+  };
+
+}
+
+// GET DATA TABLE
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
   }
 
+  // Get data, and store it in local indexedDB
+  dataTable = response.getDataTable();
+  var dataString = JSON.stringify(dataTable);
+  //localStorage['aureliamofs4'] = dataString;
+  var requestDB = window.indexedDB.open("mofDatabase");
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    var request = db.transaction(["aureliamofs4"], "readwrite").objectStore("aureliamofs4").add({id: "01", data: dataString});
+
+    request.onsuccess = function(event){console.log('Saved remote MOF data to local indexedDB.');};
+    request.onerror = function(event){console.log('Failed to save data to local indexedDB. Will try loading chart anyway.');};
+  };
+  initialiseChart();
 }
 
 function reloadMOFdata(){
@@ -480,21 +520,6 @@ function switch2D(){
   zDiv.hidden = twoD;
   filterGraphButton.disabled = !twoD;
   drawBubbleChart();
-}
-
-// GET DATA TABLE
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
-
-  // Get data, and store it in localStorage
-  dataTable = response.getDataTable();
-  var dataString = JSON.stringify(dataTable);
-  localStorage['aureliamofs4'] = dataString;
-  console.log('Saved remote MOF data to local storage.');
-  initialiseChart();
 }
 
 function setAxisSize(){
