@@ -261,7 +261,18 @@ function drawPlotlyChart(){
 
     // If we've not got colour axis set to planar type
     trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
-    trace.marker.colorscale = 'Jet';
+    trace.marker.colorscale = [
+    ['0.0', 'rgb(145, 0, 0)'],
+    ['0.111111111111', 'rgb(245, 0, 0)'],
+    ['0.222222222222', 'rgb(252, 115, 0)'],
+    ['0.333333333333', 'rgb(250, 255, 5)'],
+    ['0.444444444444', 'rgb(171, 255, 85)'],
+    ['0.555555555556', 'rgb(120, 255, 138)'],
+    ['0.666666666667', 'rgb(3, 172, 219)'],
+    ['0.777777777778', 'rgb(1,108,190)'],
+    ['0.888888888889', 'rgb(1, 16, 171)'],
+    ['1.0', 'rgb(200, 1, 216)']
+  ];
     trace.marker.autocolorscale = false;
     trace.marker.showscale = true;
 
