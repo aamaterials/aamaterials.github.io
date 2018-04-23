@@ -48,14 +48,14 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Density (g/cm\u00B3)', 'Largest Cavity Diameter, \u212B', 'Gravimetric Surface Area (m\u00B2/g)', 'Void Fraction',
+  axesLabels = ['Density (g/cm\u00B3)', 'Largest Cavity Diameter  (\u212B)', 'Gravimetric Surface Area (m\u00B2/g)', 'Void Fraction',
                 'Sarin Q<sub>st</sub> (kJ/mol)', 'Sarin K<sub>H</sub> (mol/kg/Pa)', 'Soman Q<sub>st</sub> (kJ/mol)','Soman K<sub>H</sub> (mol/kg/Pa)',
                 'DMMP Q<sub>st</sub> (kJ/mol)', 'DMMP K<sub>H</sub> (mol/kg/Pa)','DIFP Q<sub>st</sub> (kJ/mol)', 'DIFP K<sub>H</sub> (mol/kg/Pa)',
                 'DES Q<sub>st</sub> (kJ/mol)', 'DES K<sub>H</sub> (mol/kg/Pa)', 'Mustard Q<sub>st</sub> (kJ/mol)', 'Mustard K<sub>H</sub> (mol/kg/Pa)',
                 'Water Q<sub>st</sub> (kJ/mol)', 'Water K<sub>H</sub> (mol/kg/Pa)', 'Sarin Q<sub>st</sub>/Water Q<sub>st</sub>', 'Sarin K<sub>H</sub>/water K<sub>H</sub>',
                 'Soman Q<sub>st</sub>/Water Q<sub>st</sub>', 'Soman K<sub>H</sub>/water K<sub>H</sub>', 'DMMP Q<sub>st</sub>/water Q<sub>st</sub>', 'DMMP K<sub>H</sub>/water K<sub>H</sub>', 'DIFP Q<sub>st</sub>/water Q<sub>st</sub>', 'DIFP K<sub>H</sub>/water K<sub>H</sub>',
                 'DES Q<sub>st</sub>/Water Q<sub>st</sub>', 'DES K<sub>H</sub>/water K<sub>H</sub>', 'Mustard Q<sub>st</sub>/Water Q<sub>st</sub>', 'Mustard K<sub>H</sub>/water K<sub>H</sub>',
-                'Mustard loading', 'Sarin loading (mol/kg)', 'Soman loading (mol/kg)', 'Water loading (mol/kg)'];
+                'Mustard loading (mol/kg)', 'Sarin loading (mol/kg)', 'Soman loading (mol/kg)', 'Water loading (mol/kg)'];
 
   //shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)',
   //                'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV in UC (10\u00B3\u212B\u00B3)'];
