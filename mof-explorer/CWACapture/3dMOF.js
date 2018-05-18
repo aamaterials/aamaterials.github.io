@@ -110,10 +110,10 @@ function handleQueryResponse(response) {
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
   //localStorage['aureliamofs4'] = dataString;
-  var requestDB = window.indexedDB.open("mofDatabase");
+  var requestDB = window.indexedDB.open("CWAmof");
   requestDB.onsuccess = function(event){
     db = requestDB.result;
-    var request = db.transaction(["aureliamofs4"], "readwrite").objectStore("aureliamofs4").add({id: "01", data: dataString});
+    var request = db.transaction(["cwa"], "readwrite").objectStore("cwa").add({id: "01", data: dataString});
 
     request.onsuccess = function(event){console.log('Saved remote MOF data to local indexedDB.');};
     request.onerror = function(event){console.log('Failed to save data to local indexedDB. Will try loading chart anyway.');};
