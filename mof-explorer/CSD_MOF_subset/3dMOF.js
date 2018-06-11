@@ -303,12 +303,14 @@ function drawPlotlyChart(){
   trace.marker.size = columnToArray(4),
   trace.marker.sizeref = smax/40;
   trace.marker.sizemin = 4;
+  var markerNames = null;
+  var markerColors = null;
 
   if (cValue == 1){
-      var markerNamesFamily = columnToArray(3);
-      var markerColors = new Array(markerNamesFamily.length);
-      for (i=0; i<markerNamesFamily.length; i++){
-        switch(markerNamesFamily[i]){
+      markerNames = columnToArray(3);
+      markerColors = new Array(markerNames.length);
+      for (i=0; i<markerNames.length; i++){
+        switch(markerNames[i]){
             case "ZnO":
                 markerColors[i]= "rgb(255, 0, 0)"; break;
             case "ZrO":
@@ -334,10 +336,10 @@ function drawPlotlyChart(){
   }
 
   if (cValue == 7){
-      var markerNamesM1 = columnToArray(3);
-      var markerColors = new Array(markerNamesM1.length);
-      for (i=0; i<markerNamesM1.length; i++){
-        switch(markerNamesM1[i]){
+      markerNames = columnToArray(3);
+      markerColors = new Array(markerNames.length);
+      for (i=0; i<markerNames.length; i++){
+        switch(markerNames[i]){
             case "Ag":
               markerColors[i]= "rgb(139, 0, 0)"; break;
             case "Al":
@@ -465,10 +467,10 @@ function drawPlotlyChart(){
   }
 
   if (cValue == 8){
-      var markerNamesM2 = columnToArray(3);
-      var markerColors = new Array(markerNamesM2.length);
-      for (i=0; i<markerNamesM2.length; i++){
-        switch(markerNamesM2[i]){
+      markerNames = columnToArray(3);
+      markerColors = new Array(markerNames.length);
+      for (i=0; i<markerNames.length; i++){
+        switch(markerNames[i]){
           case "Ag":
             markerColors[i]= "rgb(139, 0, 0)"; break;
         case "Al":
@@ -598,10 +600,10 @@ function drawPlotlyChart(){
 }
 
   if (cValue == 9){
-    var markerNamesFG = columnToArray(3);
-    var markerColors = new Array(markerNamesFG.length);
-    for (i=0; i<markerNamesFG.length; i++){
-      switch(markerNamesFG[i]){
+    markerNames = columnToArray(3);
+    markerColors = new Array(markerNames.length);
+    for (i=0; i<markerNames.length; i++){
+      switch(markerNames[i]){
         case "F":
           markerColors[i]= "rgb(139, 0, 0)"; break;
       case "Cl":
@@ -645,10 +647,10 @@ trace.name = "Functional Group";
 }
 
   if (cValue == 10){
-      var markerNamesChan = columnToArray(3);
-      var markerColors = new Array(markerNamesChan.length);
-      for (i=0; i<markerNamesChan.length; i++){
-          switch(markerNamesChan[i]){
+      markerNames = columnToArray(3);
+      markerColors = new Array(markerNames.length);
+      for (i=0; i<markerNames.length; i++){
+          switch(markerNames[i]){
             case "0D":
            markerColors[i]= "rgb(139, 0, 0)"; break;
         case "1D":
@@ -668,10 +670,10 @@ trace.name = "Functional Group";
   }
 
   if (cValue == 11){
-      var markerNamesSQ = columnToArray(3);
-      var markerColors = new Array(markerNamesSQ.length);
-      for (i=0; i<markerNamesSQ.length; i++){
-          switch(markerNamesSQ[i]){
+      markerNames = columnToArray(3);
+      markerColors = new Array(markerNames.length);
+      for (i=0; i<markerNames.length; i++){
+          switch(markerNames[i]){
               case "SQUEEZE":
           markerColors[i]= "rgb(139, 0, 0)"; break;
               case "NO SQUEEZE":
@@ -685,10 +687,10 @@ trace.name = "Functional Group";
    }
 
  if (cValue == 12){
-    var markerNamesChiralSG = columnToArray(3);
-    var markerColors = new Array(markerNamesChiralSG.length);
-    for (i=0; i<markerNamesChiralSG.length; i++){
-      switch(markerNamesChiralSG[i]){
+    markerNames = columnToArray(3);
+    markerColors = new Array(markerNames.length);
+    for (i=0; i<markerNames.length; i++){
+      switch(markerNames[i]){
         case "CHIRAL SPACE GROUP":
             markerColors[i]= "rgb(139, 0, 0)"; break;
         case "NON CHIRAL SPACE GROUP":
@@ -704,10 +706,10 @@ trace.name = "Functional Group";
     }
 
  if (cValue == 13){
-    var markerNamesChiralatoms = columnToArray(3);
-    var markerColors = new Array(markerNamesChiralatoms.length);
-    for (i=0; i<markerNamesChiralatoms.length; i++){
-        switch(markerNamesChiralatoms[i]){
+    markerNames = columnToArray(3);
+    markerColors = new Array(markerNames.length);
+    for (i=0; i<markerNames.length; i++){
+        switch(markerNames[i]){
           case "CHIRAL ATOMS":
             markerColors[i]= "rgb(139, 0, 0)"; break;
           case "NA":
@@ -721,10 +723,10 @@ trace.name = "Functional Group";
   }
 
   if (cValue == 15){
-     var markerNamesCS = columnToArray(3);
-     var markerColors = new Array(markerNamesCS.length);
-     for (i=0; i<markerNamesCS.length; i++){
-         switch(markerNamesCS[i]){
+     markerNames = columnToArray(3);
+     markerColors = new Array(markerNames.length);
+     for (i=0; i<markerNames.length; i++){
+         switch(markerNames[i]){
            case "tetragonal":
                markerColors[i]= "rgb(139, 0, 0)"; break;
            case "orthorhombic":
@@ -752,10 +754,10 @@ trace.name = "Functional Group";
    }
 
   if (cValue == 16){
-    var markerNamesSG = columnToArray(3);
-    var markerColors = new Array(markerNamesSG.length);
-    for (i=0; i<markerNamesSG.length; i++){
-        switch(markerNamesSG[i]){
+    markerNames = columnToArray(3);
+    markerColors = new Array(markerNames.length);
+    for (i=0; i<markerNames.length; i++){
+        switch(markerNames[i]){
           case "Aba2":
               markerColors[i]= "rgb(139, 0, 0)"; break;
           case "Acaa":
@@ -1246,6 +1248,9 @@ trace.name = "Functional Group";
       trace.name = "Space Group";
     }
 
+    // Create a custom legend (or hide the legend if markerNames is null!)
+    customLegend(markerNames, markerColors);
+
 	var data = [trace];
 
 	if (currentSelection == null){
@@ -1302,6 +1307,43 @@ trace.name = "Functional Group";
 	}
 }
 
+// This function plots a custom legend for grouped data on the color axis
+function customLegend(mNames, mColors){
+  var legendID = document.getElementById("customLegend-modal");
+
+  if (mNames != null){
+    //console.log("Turning custom legend on.");
+    // Get a list of the marker names and colors associated with them:
+    markerNameList = uniq(mNames);
+    markerColorList = [];
+    for (i = 0; i < markerNameList.length; i++){
+      nameLoc = mNames.indexOf(String(markerNameList[i]));
+      markerColorList.push(mColors[nameLoc]);
+    }
+
+    // Make HTML for legend
+    var htmlBlock = "<b>Color</b></br>";
+    for (i = 0; i < markerNameList.length; i++){
+      // Create each HTML entry
+      var entry = "<span style='color:" + markerColorList[i] + "'>&#x25cf;</span> - " + markerNameList[i] + "</br>";
+      htmlBlock += entry;
+    }
+    legendID.innerHTML = htmlBlock;
+    legendID.style.display='block';
+  } else {
+    //console.log("Turning custom legend off.");
+    legendID.innerHTMl = "";
+    legendID.style.display='none';
+  }
+}
+
+// Helper function to create unique arrays
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
 
 // Convert Google chart column to Plotly array
 function columnToArray(columnIndex){
