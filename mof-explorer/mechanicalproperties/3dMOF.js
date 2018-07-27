@@ -1,1 +1,782 @@
-var _0x3912=['Planarity','Void\x20Fraction','Volumetric\x20Surface\x20Area\x20(m²/cm³)','Gravimetric\x20Surface\x20Area\x20(m²/g)','Pore\x20Limiting\x20Diameter,\x20Å','Largest\x20Cavity\x20Diameter,\x20Å','Average\x20Coordination\x20Number','Density\x20(g/cm³)','Gravimetric\x20Pore\x20Volume\x20(cm³/g)','Pore\x20Volume\x20in\x20Unit\x20Cell\x20(10³Å³)','Link.\x20ID','MCN','VSA\x20(m²/cm³)','GSA\x20(m²/g)','LCD/PLD','ACN','d\x20(g/cm³)','GPV\x20(cm³/g)','PV\x20in\x20UC\x20(10³Å³)','open','mofDatabase','onupgradeneeded','result','createObjectStore','aureliamofs4','range=A:AQ','Query','onsuccess','transaction','objectStore','get','error','log','Loading\x20table\x20from\x20local\x20indexedDB.','data','DataTable','isError','Error\x20in\x20query:\x20','getMessage','getDetailedMessage','getDataTable','stringify','indexedDB','readwrite','add','Saved\x20remote\x20MOF\x20data\x20to\x20local\x20indexedDB.','Failed\x20to\x20save\x20data\x20to\x20local\x20indexedDB.\x20Will\x20try\x20loading\x20chart\x20anyway.','visualization','https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&','send','help-modal','style','none','getNumberOfRows','push','Dashboard','dashboard','filterTable_div','Table','graph-filterTable_div','StringFilter','control1','ChartWrapper','table_div','100%','DataView','value','Open\x20Sans','closest','setColumns','length','setRows','xaxis','title','scene','zaxis','yaxis','innerHTML','getColumnRange','max','toPrecision','replace','n/a','markers','text+name','Structure\x20name','#eee','type','scatter3d','marker','colorbar','right','colorscale','autocolorscale','showscale','showlegend','Planar\x203-coordinated','rgb(255,\x200,\x200)','Planar\x203,4-coordinated','rgb(255,\x20154,\x200)','Planar\x204-coordinated','Planar\x204,6-coordinated','Non\x20Planar','rgb(0,\x207,\x20255)','color','text','name','rgb(139,\x200,\x200)','rgb(255,\x20215,\x200)','rgb(255,\x20255,\x200)','rgb(32,\x20178,\x20170)','rgb(47,\x2079,\x2079)','rgb(0,\x20206,\x20209)','rgb(0,\x200,\x20128)','rgb(148,\x200,\x20211)','rgb(199,\x2021,\x20147)','acs','bcs','rgb(220,\x2020,\x2060)','bct','rgb(205,\x2092,\x2092)','bcu','bor','rgb(255,\x20140,\x200)','crs','csq','ctn','dia','rgb(154,\x20205,\x2050)','fcu','rgb(107,\x20142,\x2035)','rgb(0,\x20100,\x200)','ftw','gar','iac','rgb(46,\x20139,\x2087)','ith','rgb(102,\x20205,\x20170)','lcs','rgb(60,\x20179,\x20113)','lvt','nbo','nia','rgb(0,\x20128,\x20128)','rgb(0,\x20255,\x20255)','pcu','rgb(64,\x20224,\x20208)','pto','rgb(127,\x20255,\x20212)','rgb(176,\x20224,\x20230)','pyr','qtz','rhr','rgb(30,\x20144,\x20255)','rht','rgb(25,\x2025,\x20112)','scu','rgb(138,\x2043,\x20226)','sod','rgb(75,\x200,\x20130)','spn','rgb(139,\x200,\x20139)','srs','ssa','ssb','rgb(221,\x20160,\x20221)','rgb(255,\x200,\x20255)','tbo','rgb(219,\x20112,\x20147)','the','rgb(255,\x2020,\x20147)','tpt','rgb(255,\x20182,\x20193)','Topology','size','sizeref','sizemin','annotations','getViewRowIndex','getValue','number','<b>','<br>','#666666','white','camera','plotly_click','_fullLayout','center','_scene','eye','animate','cubic-in-out','hidden','disabled','sizeAxisGroup','cloneNode','sizeAxisMinCirc','sizeAxisMaxCirc','sizeAxisTriangle','documentElement','clientWidth','querySelector','text.xtitle','19px','fontSize','setAttribute','font-size','font-weight','bold','points','toString','draw','filter-modal','block','display','getChart','indexOf','row','getTableRowIndex','getSelection','splice','graph-filter-modal','pointNumber','playButton','pause','apply','charts','load','current','corechart','table','controls','getElementById','chart_div','colorSelect','addEventListener','change','ySelect','zSelect','zDiv','filterGraphButton','sizeAxisMinText','sizeAxisMaxText','sizeAxisTitle','Linker\x20ID','Maximum\x20Coordination\x20Number','Shear\x20Modulus,\x20GPa','Bulk\x20Modulus,\x20GPa'];(function(_0x343696,_0x174261){var _0x4711b7=function(_0x5553ee){while(--_0x5553ee){_0x343696['push'](_0x343696['shift']());}};_0x4711b7(++_0x174261);}(_0x3912,0x1dc));var _0x2266=function(_0x520044,_0x223f77){_0x520044=_0x520044-0x0;var _0x2c0c0b=_0x3912[_0x520044];return _0x2c0c0b;};google[_0x2266('0x0')][_0x2266('0x1')](_0x2266('0x2'),{'packages':[_0x2266('0x3'),_0x2266('0x4'),_0x2266('0x5')]});google[_0x2266('0x0')]['setOnLoadCallback'](init);var dataTable,chart,options;var table,view;var tableView,filterView;var plotlyPlot;var colorSelector,sizeSelector,xSelect,ySelect;var minSizeText;var maxSizeText;var sizeTitle;var colorbartitle;var filterRows=[];var allRows=[];selectAllArray=[];var gettingPointsFromGraph=![];var reDraw=!![];var relaying=![];var sizeAxisGroup=null;var pointIndex=-0x1;var twoD=!![];var cmax=0x4;var smax=0x18;var hmax=0x1c;var vmax=0x140;var zmax=0x1c;var currentSelection=null;function init(){plotlyPlot=document[_0x2266('0x6')](_0x2266('0x7'));colorSelector=document[_0x2266('0x6')](_0x2266('0x8'));colorSelector[_0x2266('0x9')](_0x2266('0xa'),selectChange);sizeSelector=document[_0x2266('0x6')]('sizeSelect');sizeSelector[_0x2266('0x9')](_0x2266('0xa'),selectChange);xSelector=document[_0x2266('0x6')]('xSelect');xSelector[_0x2266('0x9')](_0x2266('0xa'),selectChange);ySelector=document[_0x2266('0x6')](_0x2266('0xb'));ySelector[_0x2266('0x9')](_0x2266('0xa'),selectChange);zSelector=document['getElementById'](_0x2266('0xc'));zSelector[_0x2266('0x9')](_0x2266('0xa'),selectChange);zDiv=document[_0x2266('0x6')](_0x2266('0xd'));filterGraphButton=document[_0x2266('0x6')](_0x2266('0xe'));minSizeText=document[_0x2266('0x6')](_0x2266('0xf'));maxSizeText=document['getElementById'](_0x2266('0x10'));sizeTitle=document[_0x2266('0x6')](_0x2266('0x11'));axesLabels=['Topology',_0x2266('0x12'),_0x2266('0x13'),_0x2266('0x14'),_0x2266('0x15'),_0x2266('0x16'),_0x2266('0x17'),_0x2266('0x18'),_0x2266('0x19'),_0x2266('0x1a'),_0x2266('0x1b'),'LCD/PLD',_0x2266('0x1c'),_0x2266('0x1d'),_0x2266('0x1e'),_0x2266('0x1f')];shortLabels=['Topo.',_0x2266('0x20'),_0x2266('0x21'),'SMod.,\x20GPa','BMod.,\x20GPa','Plan.','VF',_0x2266('0x22'),_0x2266('0x23'),'PLD,\x20Å','LCD,\x20Å',_0x2266('0x24'),_0x2266('0x25'),_0x2266('0x26'),_0x2266('0x27'),_0x2266('0x28')];var _0x5d80a1;var _0x2ce263=window['indexedDB'][_0x2266('0x29')](_0x2266('0x2a'));_0x2ce263[_0x2266('0x2b')]=function(_0x3db969){_0x5d80a1=_0x2ce263[_0x2266('0x2c')];_0x5d80a1[_0x2266('0x2d')](_0x2266('0x2e'),{'keyPath':'id'});var _0x316f68=encodeURIComponent(_0x2266('0x2f'));var _0x4da0cd=new google['visualization'][(_0x2266('0x30'))]('https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&'+_0x316f68);_0x4da0cd['send'](handleQueryResponse);};_0x2ce263[_0x2266('0x31')]=function(_0x2c38a3){_0x5d80a1=_0x2ce263['result'];var _0x2aad53=_0x5d80a1[_0x2266('0x32')]([_0x2266('0x2e')])[_0x2266('0x33')](_0x2266('0x2e'))[_0x2266('0x34')]('01');_0x2aad53[_0x2266('0x35')]=function(_0x3d01d8){console[_0x2266('0x36')]('Some\x20error\x20in\x20database\x20request.');};_0x2aad53[_0x2266('0x31')]=function(_0x99cfbe){if(_0x2aad53[_0x2266('0x2c')]!=null){console[_0x2266('0x36')](_0x2266('0x37'));var _0x2b43c3=_0x2aad53[_0x2266('0x2c')][_0x2266('0x38')];var _0x140a83=JSON['parse'](_0x2b43c3);dataTable=new google['visualization'][(_0x2266('0x39'))](_0x140a83);initialiseChart();}};};}function handleQueryResponse(_0x506920){if(_0x506920[_0x2266('0x3a')]()){alert(_0x2266('0x3b')+_0x506920[_0x2266('0x3c')]()+'\x20'+_0x506920[_0x2266('0x3d')]());return;}dataTable=_0x506920[_0x2266('0x3e')]();var _0x477073=JSON[_0x2266('0x3f')](dataTable);var _0x1c27ea=window[_0x2266('0x40')]['open'](_0x2266('0x2a'));_0x1c27ea[_0x2266('0x31')]=function(_0x1834e6){db=_0x1c27ea[_0x2266('0x2c')];var _0x2d09bb=db[_0x2266('0x32')](['aureliamofs4'],_0x2266('0x41'))[_0x2266('0x33')]('aureliamofs4')[_0x2266('0x42')]({'id':'01','data':_0x477073});_0x2d09bb['onsuccess']=function(_0x52487e){console[_0x2266('0x36')](_0x2266('0x43'));};_0x2d09bb['onerror']=function(_0x44e7da){console[_0x2266('0x36')](_0x2266('0x44'));};};initialiseChart();}function reloadMOFdata(){var _0x5d0ac4=encodeURIComponent(_0x2266('0x2f'));var _0xa4a55a=new google[(_0x2266('0x45'))][(_0x2266('0x30'))](_0x2266('0x46')+_0x5d0ac4);_0xa4a55a[_0x2266('0x47')](handleQueryResponse);document[_0x2266('0x6')](_0x2266('0x48'))[_0x2266('0x49')]['display']=_0x2266('0x4a');}function initialiseChart(){for(i=0x0;i<dataTable[_0x2266('0x4b')]();i++){allRows[_0x2266('0x4c')](i);selectAllArray[_0x2266('0x4c')]({'row':i,'column':null});}dash=new google[(_0x2266('0x45'))][(_0x2266('0x4d'))](document[_0x2266('0x6')](_0x2266('0x4e')));filterTable=new google[(_0x2266('0x45'))]['Table'](document[_0x2266('0x6')](_0x2266('0x4f')));graphFilterTable=new google['visualization'][(_0x2266('0x50'))](document[_0x2266('0x6')](_0x2266('0x51')));var _0x2159b0=new google[(_0x2266('0x45'))]['ControlWrapper']({'controlType':_0x2266('0x52'),'containerId':_0x2266('0x53'),'options':{'filterColumnIndex':0x0}});table=new google[(_0x2266('0x45'))][(_0x2266('0x54'))]({'chartType':_0x2266('0x50'),'containerId':_0x2266('0x55'),'options':{'height':'100%','width':_0x2266('0x56')}});dash['bind'](_0x2159b0,table);tableView=new google[(_0x2266('0x45'))][(_0x2266('0x57'))](dataTable);filterView=new google[(_0x2266('0x45'))][(_0x2266('0x57'))](dataTable);graphFilterView=new google[(_0x2266('0x45'))][(_0x2266('0x57'))](dataTable);view=new google[(_0x2266('0x45'))][(_0x2266('0x57'))](dataTable);drawBubbleChart();setAxisSize();}function drawBubbleChart(){setAxisSize();xValue=parseInt(xSelector[_0x2266('0x58')]);yValue=parseInt(ySelector[_0x2266('0x58')]);cValue=parseInt(colorSelector[_0x2266('0x58')]);sValue=parseInt(sizeSelector['value']);zValue=parseInt(zSelector[_0x2266('0x58')]);columns=getColumns(xValue,yValue,cValue,sValue,zValue);if(yValue!=0x5){layout={'font':{'family':_0x2266('0x59'),'size':0x10},'margin':{'l':0x50,'r':0x0,'t':0x14,'b':0x50},'hovermode':_0x2266('0x5a'),'xaxis':{'title':''},'yaxis':{'title':''},'scene':{'xaxis':{'title':''},'yaxis':{'title':''},'zaxis':{'title':''},'aspectratio':{'x':0x3,'y':0x1,'z':0x1},'camera':{}}};}else{layout={'font':{'family':_0x2266('0x59'),'size':0x10},'margin':{'l':0xc8,'r':0x0,'t':0x14,'b':0x50},'hovermode':_0x2266('0x5a'),'xaxis':{'title':''},'yaxis':{'title':''},'scene':{'xaxis':{'title':''},'yaxis':{'title':''},'zaxis':{'title':''},'aspectratio':{'x':0x3,'y':0x1,'z':0x1},'camera':{}}};}view[_0x2266('0x5b')](columns);if(filterRows[_0x2266('0x5c')]>0x0){view[_0x2266('0x5d')](filterRows);}else{view[_0x2266('0x5d')](allRows);}colorbarTitle=axesLabels[cValue];layout[_0x2266('0x5e')][_0x2266('0x5f')]=axesLabels[xValue];layout['yaxis'][_0x2266('0x5f')]=axesLabels[yValue];layout[_0x2266('0x60')][_0x2266('0x5e')][_0x2266('0x5f')]=axesLabels[xValue];layout[_0x2266('0x60')][_0x2266('0x61')][_0x2266('0x5f')]=axesLabels[yValue];layout['scene'][_0x2266('0x62')]['title']=axesLabels[zValue];sizeTitle[_0x2266('0x63')]=axesLabels[sValue];if(sValue!=0x0&&sValue!=0x1&&sValue!=0x5){maxSizeText[_0x2266('0x63')]=view[_0x2266('0x64')](0x4)[_0x2266('0x65')][_0x2266('0x66')](0x4)[_0x2266('0x67')](/0+$/,'')[_0x2266('0x67')](/\.$/,'');minSizeText[_0x2266('0x63')]=view['getColumnRange'](0x4)['min']['toPrecision'](0x3)[_0x2266('0x67')](/0+$/,'')[_0x2266('0x67')](/\.$/,'');}else{maxSizeText[_0x2266('0x63')]=_0x2266('0x68');minSizeText[_0x2266('0x63')]=_0x2266('0x68');}hmax=view[_0x2266('0x64')](0x1)[_0x2266('0x65')];vmax=view['getColumnRange'](0x2)[_0x2266('0x65')];zmax=view[_0x2266('0x64')](0x5)[_0x2266('0x65')];cmax=view[_0x2266('0x64')](0x3)['max'];smax=view['getColumnRange'](0x4)[_0x2266('0x65')];drawPlotlyChart();}function drawPlotlyChart(){var _0x57a06f={'mode':_0x2266('0x69'),'text':columnToArray(0x0),'x':columnToArray(0x1),'hoverinfo':_0x2266('0x6a'),'name':_0x2266('0x6b'),'marker':{'color':columnToArray(0x3),'opacity':0.7,'line':{'width':0x1,'color':_0x2266('0x6c')}}};if(twoD){_0x57a06f['y']=columnToArray(0x2);_0x57a06f['type']='scatter';}else{_0x57a06f['y']=columnToArray(0x5);_0x57a06f['z']=columnToArray(0x2);_0x57a06f[_0x2266('0x6d')]=_0x2266('0x6e');layout['aspectratio']={'x':0x3,'y':0x1,'z':0x1};}if(cValue!=0x0&&cValue!=0x1&&cValue!=0x5){_0x57a06f[_0x2266('0x6f')][_0x2266('0x70')]={'title':colorbarTitle,'titleside':_0x2266('0x71')};_0x57a06f[_0x2266('0x6f')][_0x2266('0x72')]='Jet';_0x57a06f[_0x2266('0x6f')][_0x2266('0x73')]=![];_0x57a06f[_0x2266('0x6f')][_0x2266('0x74')]=!![];}else{_0x57a06f[_0x2266('0x6f')][_0x2266('0x74')]=![];_0x57a06f[_0x2266('0x75')]=![];layout['showlegend']=!![];}if(cValue==0x5){var _0x1abe7f=columnToArray(0x3);var _0x29f36d=new Array(_0x1abe7f[_0x2266('0x5c')]);for(i=0x0;i<_0x1abe7f[_0x2266('0x5c')];i++){switch(_0x1abe7f[i]){case _0x2266('0x76'):_0x29f36d[i]=_0x2266('0x77');break;case _0x2266('0x78'):_0x29f36d[i]=_0x2266('0x79');break;case _0x2266('0x7a'):_0x29f36d[i]='rgb(255,\x20230,\x200)';break;case _0x2266('0x7b'):_0x29f36d[i]='rgb(154,\x20255,\x200)';break;case _0x2266('0x7c'):_0x29f36d[i]=_0x2266('0x7d');break;}}_0x57a06f[_0x2266('0x6f')][_0x2266('0x7e')]=_0x29f36d;_0x57a06f[_0x2266('0x7f')]=columnToArray(0x3);_0x57a06f[_0x2266('0x80')]='Planarity';}if(cValue==0x1){var _0x2adb8d=columnToArray(0x3);var _0x29f36d=new Array(_0x2adb8d[_0x2266('0x5c')]);for(i=0x0;i<_0x2adb8d[_0x2266('0x5c')];i++){switch(_0x2adb8d[i]){case 0x1:_0x29f36d[i]=_0x2266('0x81');break;case 0x2:_0x29f36d[i]='rgb(255,\x20140,\x200)';break;case 0x3:_0x29f36d[i]=_0x2266('0x82');break;case 0x4:_0x29f36d[i]=_0x2266('0x83');break;case 0x5:_0x29f36d[i]='rgb(154,\x20205,\x2050)';break;case 0x6:_0x29f36d[i]='rgb(0,\x20100,\x200)';break;case 0x7:_0x29f36d[i]=_0x2266('0x84');break;case 0x8:_0x29f36d[i]=_0x2266('0x85');break;case 0x9:_0x29f36d[i]=_0x2266('0x86');break;case 0xa:_0x29f36d[i]='rgb(0,\x20191,\x20255)';break;case 0xb:_0x29f36d[i]=_0x2266('0x87');break;case 0xc:_0x29f36d[i]=_0x2266('0x88');break;case 0xd:_0x29f36d[i]=_0x2266('0x89');break;case 0xe:_0x29f36d[i]='rgb(255,\x20105,\x20180)';break;}}_0x57a06f[_0x2266('0x6f')][_0x2266('0x7e')]=_0x29f36d;_0x57a06f[_0x2266('0x7f')]=columnToArray(0x3);_0x57a06f[_0x2266('0x80')]=_0x2266('0x12');}if(cValue==0x0){var _0x443a3b=columnToArray(0x3);var _0x29f36d=new Array(_0x443a3b[_0x2266('0x5c')]);for(i=0x0;i<_0x443a3b[_0x2266('0x5c')];i++){switch(_0x443a3b[i]){case _0x2266('0x8a'):_0x29f36d[i]=_0x2266('0x81');break;case _0x2266('0x8b'):_0x29f36d[i]=_0x2266('0x8c');break;case _0x2266('0x8d'):_0x29f36d[i]=_0x2266('0x8e');break;case _0x2266('0x8f'):_0x29f36d[i]='rgb(240,\x20128,\x20128)';break;case _0x2266('0x90'):_0x29f36d[i]=_0x2266('0x91');break;case _0x2266('0x92'):_0x29f36d[i]=_0x2266('0x82');break;case _0x2266('0x93'):_0x29f36d[i]='rgb(218,\x20165,\x2032)';break;case _0x2266('0x94'):_0x29f36d[i]='rgb(255,\x20255,\x200)';break;case _0x2266('0x95'):_0x29f36d[i]=_0x2266('0x96');break;case _0x2266('0x97'):_0x29f36d[i]=_0x2266('0x98');break;case'flu':_0x29f36d[i]=_0x2266('0x99');break;case _0x2266('0x9a'):_0x29f36d[i]='rgb(34,\x20139,\x2034)';break;case _0x2266('0x9b'):_0x29f36d[i]='rgb(50,\x20205,\x2050)';break;case _0x2266('0x9c'):_0x29f36d[i]=_0x2266('0x9d');break;case _0x2266('0x9e'):_0x29f36d[i]=_0x2266('0x9f');break;case _0x2266('0xa0'):_0x29f36d[i]=_0x2266('0xa1');break;case _0x2266('0xa2'):_0x29f36d[i]=_0x2266('0x84');break;case _0x2266('0xa3'):_0x29f36d[i]=_0x2266('0x85');break;case _0x2266('0xa4'):_0x29f36d[i]=_0x2266('0xa5');break;case'ocu':_0x29f36d[i]=_0x2266('0xa6');break;case _0x2266('0xa7'):_0x29f36d[i]=_0x2266('0x86');break;case'pth':_0x29f36d[i]=_0x2266('0xa8');break;case _0x2266('0xa9'):_0x29f36d[i]=_0x2266('0xaa');break;case'pts':_0x29f36d[i]=_0x2266('0xab');break;case _0x2266('0xac'):_0x29f36d[i]='rgb(95,\x20158,\x20160)';break;case _0x2266('0xad'):_0x29f36d[i]='rgb(70,\x20130,\x20180)';break;case'reo':_0x29f36d[i]='rgb(0,\x20191,\x20255)';break;case _0x2266('0xae'):_0x29f36d[i]=_0x2266('0xaf');break;case _0x2266('0xb0'):_0x29f36d[i]=_0x2266('0xb1');break;case _0x2266('0xb2'):_0x29f36d[i]='rgb(0,\x2010,\x20139)';break;case'she':_0x29f36d[i]='rgb(0,\x200,\x20255)';break;case'soc':_0x29f36d[i]=_0x2266('0xb3');break;case _0x2266('0xb4'):_0x29f36d[i]=_0x2266('0xb5');break;case _0x2266('0xb6'):_0x29f36d[i]=_0x2266('0xb7');break;case _0x2266('0xb8'):_0x29f36d[i]=_0x2266('0x88');break;case _0x2266('0xb9'):_0x29f36d[i]='rgb(186,\x2085,\x20211)';break;case _0x2266('0xba'):_0x29f36d[i]=_0x2266('0xbb');break;case'stp':_0x29f36d[i]=_0x2266('0xbc');break;case _0x2266('0xbd'):_0x29f36d[i]=_0x2266('0xbe');break;case _0x2266('0xbf'):_0x29f36d[i]=_0x2266('0xc0');break;case _0x2266('0xc1'):_0x29f36d[i]=_0x2266('0xc2');break;}}_0x57a06f[_0x2266('0x6f')][_0x2266('0x7e')]=_0x29f36d;_0x57a06f[_0x2266('0x7f')]=columnToArray(0x3);_0x57a06f[_0x2266('0x80')]=_0x2266('0xc3');}if(sValue!=0x0&&sValue!=0x1&&sValue!=0x5){_0x57a06f['marker'][_0x2266('0xc4')]=columnToArray(0x4),_0x57a06f[_0x2266('0x6f')][_0x2266('0xc5')]=smax/0x28;_0x57a06f[_0x2266('0x6f')][_0x2266('0xc6')]=0x4;}var _0x1995af=[_0x57a06f];if(currentSelection==null){layout[_0x2266('0xc7')]=[];}else{var _0x4b0fb5=view[_0x2266('0xc8')](currentSelection);var _0x5e5687=view[_0x2266('0xc9')](_0x4b0fb5,0x1);var _0x511ebf=view[_0x2266('0xc9')](_0x4b0fb5,0x2);if(twoD){var _0x212611=view[_0x2266('0xc9')](_0x4b0fb5,0x1);var _0x1d6d36=view[_0x2266('0xc9')](_0x4b0fb5,0x2);var _0x46e5b3=view[_0x2266('0xc9')](_0x4b0fb5,0x3);var _0x1f837b=view['getValue'](_0x4b0fb5,0x4);if(typeof _0x212611===_0x2266('0xca'))_0x212611=_0x212611[_0x2266('0x66')](0x4);if(typeof _0x1d6d36===_0x2266('0xca'))_0x1d6d36=_0x1d6d36[_0x2266('0x66')](0x4);if(typeof _0x46e5b3===_0x2266('0xca'))_0x46e5b3=_0x46e5b3[_0x2266('0x66')](0x4);if(typeof _0x1f837b===_0x2266('0xca'))_0x1f837b=_0x1f837b[_0x2266('0x66')](0x4);var _0x274514=_0x2266('0xcb')+view[_0x2266('0xc9')](_0x4b0fb5,0x0)+'</b><br>'+layout[_0x2266('0x5e')]['title']+':\x20'+_0x212611+_0x2266('0xcc')+layout['yaxis'][_0x2266('0x5f')]+':\x20'+_0x1d6d36+'<br>'+colorbarTitle+':\x20'+_0x46e5b3+_0x2266('0xcc')+sizeTitle[_0x2266('0x63')]+':\x20'+_0x1f837b+_0x2266('0xcc');layout[_0x2266('0xc7')]=[{'x':_0x5e5687,'y':_0x511ebf,'text':_0x274514,'showarrow':!![],'arrowhead':0x7,'arrowsize':0x1,'arrowwidth':0x2,'ax':0xc8,'ay':0xa,'align':'right','xref':'x','yref':'y','bgcolor':_0x2266('0xcd'),'opacity':0.8,'font':{'color':_0x2266('0xce')}}];}}if(reDraw){layout[_0x2266('0x60')][_0x2266('0xcf')]={'center':{'x':0x0,'y':0x0,'z':-0.1},'eye':{'x':0.02,'y':-2.2,'z':0.1}};Plotly['newPlot']('chart_div',_0x1995af,layout);plotlyPlot['on'](_0x2266('0xd0'),debounce(pointSelected,0xc8));plotlyPlot['on']('plotly_relayout',function(){relaying=!![];});reDraw=!![];}else{if(!twoD){layout[_0x2266('0x60')][_0x2266('0xcf')]={'center':{'x':chart_div[_0x2266('0xd1')]['scene']['_scene'][_0x2266('0xcf')][_0x2266('0xd2')][0x0],'y':chart_div[_0x2266('0xd1')][_0x2266('0x60')][_0x2266('0xd3')][_0x2266('0xcf')][_0x2266('0xd2')][0x1],'z':chart_div[_0x2266('0xd1')][_0x2266('0x60')][_0x2266('0xd3')][_0x2266('0xcf')][_0x2266('0xd2')][0x2]},'eye':{'x':chart_div[_0x2266('0xd1')]['scene'][_0x2266('0xd3')][_0x2266('0xcf')][_0x2266('0xd4')][0x0],'y':chart_div[_0x2266('0xd1')]['scene']['_scene'][_0x2266('0xcf')][_0x2266('0xd4')][0x1],'z':chart_div['_fullLayout'][_0x2266('0x60')][_0x2266('0xd3')][_0x2266('0xcf')][_0x2266('0xd4')][0x2]}};}Plotly[_0x2266('0xd5')](_0x2266('0x7'),{'data':_0x1995af},{'transition':{'duration':0x3e8,'easing':_0x2266('0xd6')}});}}function columnToArray(_0x18fec8){var _0x891ba9=new Array(view[_0x2266('0x4b')]());for(i=0x0;i<view[_0x2266('0x4b')]();i++){_0x891ba9[i]=view[_0x2266('0xc9')](i,_0x18fec8);}return _0x891ba9;}function getShapes(){var _0x158f9b=new Array(view[_0x2266('0x4b')]());for(i=0x0;i<view['getNumberOfRows']();i++){_0x158f9b[i]=view[_0x2266('0xc9')](i,columnIndex);}return _0x158f9b;}function switch2D(){reDraw=!![];twoD=!twoD;zDiv[_0x2266('0xd7')]=twoD;filterGraphButton[_0x2266('0xd8')]=!twoD;drawBubbleChart();}function setAxisSize(){var _0x1a2274=document['getElementById'](_0x2266('0xd9'))[_0x2266('0xda')](!![]);var _0x345fed=document['getElementById'](_0x2266('0xdb'));var _0x14a96e=document[_0x2266('0x6')](_0x2266('0xdc'));var _0x4669de=document[_0x2266('0x6')](_0x2266('0xdd'));var _0x3b42c5=document[_0x2266('0xde')][_0x2266('0xdf')]-0x1e;var _0x8e52ec=0xa;var _0x37338c=_0x8e52ec+_0x3b42c5;var _0x3db1c2=0x1e;var _0x59599e=0x6;var _0x1733c0=0x28;var _0x4d1d33=document[_0x2266('0xe0')](_0x2266('0xe1'));var _0x1f9e35=_0x2266('0xe2');if(_0x4d1d33!=null){_0x1f9e35=_0x4d1d33[_0x2266('0x49')][_0x2266('0xe3')];}sizeTitle[_0x2266('0xe4')]('x',_0x8e52ec);sizeTitle['setAttribute']('y',_0x1733c0-0x14);minSizeText[_0x2266('0xe4')]('x',_0x8e52ec+_0x3db1c2);maxSizeText[_0x2266('0xe4')]('x',_0x37338c-_0x3db1c2);minSizeText[_0x2266('0xe4')]('y',_0x1733c0+0x7);maxSizeText[_0x2266('0xe4')]('y',_0x1733c0+0x7);sizeTitle[_0x2266('0xe4')](_0x2266('0xe5'),_0x1f9e35);sizeTitle['setAttribute'](_0x2266('0xe6'),_0x2266('0xe7'));minSizeText['setAttribute'](_0x2266('0xe5'),_0x1f9e35);maxSizeText[_0x2266('0xe4')](_0x2266('0xe5'),_0x1f9e35);_0x345fed[_0x2266('0xe4')]('cx',_0x8e52ec+_0x3db1c2+_0x59599e+0x2);_0x14a96e[_0x2266('0xe4')]('cx',_0x37338c-_0x3db1c2-_0x59599e-0x7);_0x345fed[_0x2266('0xe4')]('cy',_0x1733c0);_0x14a96e[_0x2266('0xe4')]('cy',_0x1733c0);var _0x32b86b=_0x8e52ec+_0x3db1c2+0x2*_0x59599e+0x4+','+_0x1733c0+'\x20'+(_0x37338c-_0x3db1c2-0x2*_0x59599e-0xe)+','+(_0x1733c0+0x6)+'\x20'+(_0x37338c-_0x3db1c2-0x2*_0x59599e-0xe)+','+(_0x1733c0-0x6);_0x4669de[_0x2266('0xe4')](_0x2266('0xe8'),_0x32b86b);}function getColumns(_0x5c590b,_0x2c24ab,_0x36c91b,_0x1df75a,_0x54a266){var _0x3a744b=0x0;var _0x48a684=getColumnFromSelectorValue(_0x5c590b);var _0x144d34=getColumnFromSelectorValue(_0x2c24ab);var _0x3d57be=getColumnFromSelectorValue(_0x36c91b);var _0x3884f7=getColumnFromSelectorValue(_0x1df75a);var _0x41c61e=getColumnFromSelectorValue(_0x54a266);return cols=[_0x3a744b,_0x48a684,_0x144d34,_0x3d57be,_0x3884f7,_0x41c61e];}function getColumnFromSelectorValue(_0x45575d){var _0x57a5e5=null;_0x57a5e5=_0x45575d+0x1;return _0x57a5e5;}function selectChange(){reDraw=!![];drawBubbleChart();}var oldColumns=[];function openFilterWindow(){var _0x3ca69c=parseInt(xSelector[_0x2266('0x58')]);var _0x40e582=parseInt(ySelector[_0x2266('0x58')]);var _0x2c75c3=parseInt(colorSelector[_0x2266('0x58')]);var _0x506042=parseInt(sizeSelector['value']);var _0x1ce328=parseInt(zSelector[_0x2266('0x58')]);currentColumns=getColumns(_0x3ca69c,_0x40e582,_0x2c75c3,_0x506042,_0x1ce328);if(oldColumns['toString']()!=currentColumns[_0x2266('0xe9')]()){tableView[_0x2266('0x5b')](currentColumns);dash[_0x2266('0xea')](tableView);}oldcolumns=currentColumns;if(filterRows[_0x2266('0x5c')]==allRows[_0x2266('0x5c')]){filterView[_0x2266('0x5d')]([]);}else{filterView[_0x2266('0x5d')](filterRows);}filterView[_0x2266('0x5b')]([0x0]);filterTable[_0x2266('0xea')](filterView);document[_0x2266('0x6')](_0x2266('0xeb'))[_0x2266('0x49')]['display']=_0x2266('0xec');}function applyFilter(){document[_0x2266('0x6')](_0x2266('0xeb'))[_0x2266('0x49')][_0x2266('0xed')]=_0x2266('0x4a');drawBubbleChart();}function tableSelectAll(){filterRows=allRows;table[_0x2266('0xee')]()['setSelection'](selectAllArray);}function tableSelectNone(){filterRows=[];filterView[_0x2266('0x5d')]([]);filterTable[_0x2266('0xea')](filterView);}function addToSelection(){var _0x4a2487=table[_0x2266('0xee')]()['getSelection']();for(i=0x0;i<_0x4a2487[_0x2266('0x5c')];i++){if(filterRows[_0x2266('0xef')](_0x4a2487[i][_0x2266('0xf0')])<0x0){filterRows['push'](table[_0x2266('0x3e')]()[_0x2266('0xf1')](_0x4a2487[i][_0x2266('0xf0')]));}}filterView[_0x2266('0x5d')](filterRows);filterTable[_0x2266('0xea')](filterView);table['getChart']()['setSelection']([]);}function removeFromSelection(){var _0x210dcf=filterTable[_0x2266('0xf2')]();for(i=0x0;i<_0x210dcf[_0x2266('0x5c')];i++){filterRows[_0x2266('0xf3')](_0x210dcf[i][_0x2266('0xf0')],0x1);}filterView[_0x2266('0x5d')](filterRows);filterTable[_0x2266('0xea')](filterView);}function selectFromGraph(){gettingPointsFromGraph=!![];graphFilterView[_0x2266('0x5b')]([0x0]);graphFilterView[_0x2266('0x5d')](filterRows);graphFilterTable['draw'](graphFilterView);document[_0x2266('0x6')](_0x2266('0xf4'))[_0x2266('0x49')][_0x2266('0xed')]=_0x2266('0xec');document[_0x2266('0x6')](_0x2266('0xeb'))[_0x2266('0x49')][_0x2266('0xed')]='none';}function removeFromGraphSelection(){var _0x570222=graphFilterTable['getSelection']();for(i=0x0;i<_0x570222['length'];i++){filterRows[_0x2266('0xf3')](_0x570222[i][_0x2266('0xf0')],0x1);}graphFilterView[_0x2266('0x5d')](filterRows);graphFilterTable['draw'](graphFilterView);}function applyGraphSelection(){document['getElementById'](_0x2266('0xf4'))[_0x2266('0x49')]['display']=_0x2266('0x4a');gettingPointsFromGraph=![];drawBubbleChart();}function pointSelected(_0x53245f){if(!relaying){globalData=_0x53245f;var _0x2b07c6=_0x53245f['points'][0x0][_0x2266('0xf5')];var _0x247b80=view[_0x2266('0xf1')](_0x2b07c6);if(gettingPointsFromGraph){currentSelection=null;if(filterRows[_0x2266('0xef')](_0x247b80)<0x0){filterRows[_0x2266('0x4c')](_0x247b80);graphFilterView[_0x2266('0x5d')](filterRows);graphFilterTable[_0x2266('0xea')](graphFilterView);}}else{if(_0x247b80==currentSelection){currentSelection=null;}else{currentSelection=_0x247b80;}drawBubbleChart();}}else{relaying=![];}}var playing=![];function playButtonClick(){buttonHandle=document[_0x2266('0x6')](_0x2266('0xf6'));if(!playing){playing=!![];buttonHandle[_0x2266('0x58')]=_0x2266('0xf7');playSequence();}else{playing=![];buttonHandle[_0x2266('0x58')]='play_arrow';}}window[_0x2266('0x9')]('resize',debounce(windowResizeFunction,0xc8));function windowResizeFunction(){switch(document['getElementById'](_0x2266('0xeb'))[_0x2266('0x49')]['display']){case'':case _0x2266('0x4a'):reDraw=!![];drawBubbleChart();break;case _0x2266('0xec'):document[_0x2266('0x6')](_0x2266('0xf4'))[_0x2266('0x49')][_0x2266('0xed')]=_0x2266('0x4a');}}function debounce(_0x1716b1,_0x2f584f,_0x5852c6){var _0x42df7d;return function(){var _0x14cdd9=this,_0x4dd4e2=arguments;var _0x5e7410=function(){_0x42df7d=null;if(!_0x5852c6){_0x1716b1[_0x2266('0xf8')](_0x14cdd9,_0x4dd4e2);}};var _0x4b5353=_0x5852c6&&!_0x42df7d;clearTimeout(_0x42df7d);_0x42df7d=setTimeout(_0x5e7410,_0x2f584f||0xc8);if(_0x4b5353){_0x1716b1[_0x2266('0xf8')](_0x14cdd9,_0x4dd4e2);}};};
+google.charts.load("current", {'packages':["corechart", "table", "controls"]});
+google.charts.setOnLoadCallback(init);
+
+// GLOBAL VARIABLES
+var dataTable, chart, options;
+var table, view;
+var tableView, filterView;
+var plotlyPlot;
+var colorSelector, sizeSelector, xSelect, ySelect;
+var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
+var filterRows = [];
+var allRows = []; selectAllArray = [];
+var gettingPointsFromGraph = false;
+var reDraw = true; var relaying = false;
+var sizeAxisGroup = null;
+var pointIndex = -1;
+var twoD = true;
+var cmax = 4; var smax = 24;
+var hmax = 28; var vmax = 320; var zmax = 28;
+var currentSelection = null;
+
+// INITIAL FUNCTION
+function init(){
+  // This function runs when Google charts js is ready
+
+  plotlyPlot = document.getElementById('chart_div');
+
+  colorSelector = document.getElementById('colorSelect');
+  colorSelector.addEventListener('change', selectChange);
+
+  sizeSelector = document.getElementById('sizeSelect');
+  sizeSelector.addEventListener('change', selectChange);
+
+  xSelector = document.getElementById('xSelect');
+  xSelector.addEventListener('change', selectChange);
+
+  ySelector = document.getElementById('ySelect');
+  ySelector.addEventListener('change', selectChange);
+
+  zSelector = document.getElementById('zSelect');
+  zSelector.addEventListener('change', selectChange);
+
+  zDiv = document.getElementById('zDiv');
+
+  filterGraphButton = document.getElementById('filterGraphButton');
+
+  minSizeText = document.getElementById('sizeAxisMinText');
+  maxSizeText = document.getElementById('sizeAxisMaxText');
+  sizeTitle = document.getElementById('sizeAxisTitle');
+
+  axesLabels = ['Topology', 'Linker ID', 'Maximum Coordination Number', 'Shear Modulus, GPa', 'Bulk Modulus, GPa', 'Planarity', 'Void Fraction', 'Volumetric Surface Area (m\u00B2/cm\u00B3)',
+                'Gravimetric Surface Area (m\u00B2/g)', 'Pore Limiting Diameter, \u212B','Largest Cavity Diameter, \u212B', 'LCD/PLD', 'Average Coordination Number', 'Density (g/cm\u00B3)', 'Gravimetric Pore Volume (cm\u00B3/g)','Pore Volume in Unit Cell (10\u00B3\u212B\u00B3)'];
+
+  shortLabels = ['Topo.', 'Link. ID', 'MCN', 'SMod., GPa', 'BMod., GPa', 'Plan.', 'VF', 'VSA (m\u00B2/cm\u00B3)', 'GSA (m\u00B2/g)',
+                  'PLD, \u212B', 'LCD, \u212B', 'LCD/PLD', 'ACN', 'd (g/cm\u00B3)', 'GPV (cm\u00B3/g)', 'PV in UC (10\u00B3\u212B\u00B3)'];
+
+  // Get data table from browser cache if possible
+  //var dataString = localStorage.getItem('aureliamofs4');
+  var db;
+  var requestDB = window.indexedDB.open("mofDatabase");
+
+  requestDB.onupgradeneeded = function(event){
+    db = requestDB.result;
+    db.createObjectStore("aureliamofs4", {keyPath: "id"});
+
+    var rangeString = encodeURIComponent('range=A:AQ');
+    var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&' + rangeString);
+    query.send(handleQueryResponse);
+  };
+
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    // Get data from the database
+    var request = db.transaction(["aureliamofs4"]).objectStore("aureliamofs4").get("01");
+
+    request.error = function(event){
+      console.log('Some error in database request.')
+    }
+
+    request.onsuccess = function(event){
+      if (request.result != null){
+        console.log('Loading table from local indexedDB.');
+        var dataString = request.result.data;
+        var parsedData = JSON.parse(dataString);
+        dataTable = new google.visualization.DataTable(parsedData);
+        // Draw initial chart
+        initialiseChart();
+      }
+    }
+
+  };
+
+}
+
+// GET DATA TABLE
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
+  }
+
+  // Get data, and store it in local indexedDB
+  dataTable = response.getDataTable();
+  var dataString = JSON.stringify(dataTable);
+  //localStorage['aureliamofs4'] = dataString;
+  var requestDB = window.indexedDB.open("mofDatabase");
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    var request = db.transaction(["aureliamofs4"], "readwrite").objectStore("aureliamofs4").add({id: "01", data: dataString});
+
+    request.onsuccess = function(event){console.log('Saved remote MOF data to local indexedDB.');};
+    request.onerror = function(event){console.log('Failed to save data to local indexedDB. Will try loading chart anyway.');};
+  };
+  initialiseChart();
+}
+
+function reloadMOFdata(){
+  // Set up query
+  var rangeString = encodeURIComponent('range=A:AQ');
+  var query = new google.visualization.Query(
+    'https://docs.google.com/spreadsheets/d/1lA7I4uYPsHAPUyLxbxJaZRP7b9VD-E0lVJfnDY8GxO8/gviz/tq?gid=0&headers=1&' + rangeString);
+  query.send(handleQueryResponse);
+  // Close help dialog
+  document.getElementById('help-modal').style.display='none';
+}
+
+// FIRST DRAW OF CHART
+function initialiseChart(){
+  for (i=0; i<dataTable.getNumberOfRows(); i++){
+    allRows.push(i);
+    selectAllArray.push({'row': i, 'column': null});
+  }
+
+  //onSliderUpdate();
+  dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
+  filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
+  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'))
+
+  var stringFilter = new google.visualization.ControlWrapper({
+    'controlType': 'StringFilter',
+    'containerId': 'control1',
+    'options': {
+      'filterColumnIndex': 0
+    }
+  });
+  table = new google.visualization.ChartWrapper({
+    'chartType': 'Table',
+    'containerId': 'table_div',
+    'options': {'height': '100%', 'width': '100%'}
+  });
+  dash.bind(stringFilter, table);
+
+  // Set up views
+  tableView = new google.visualization.DataView(dataTable);
+  filterView = new google.visualization.DataView(dataTable);
+  graphFilterView = new google.visualization.DataView(dataTable);
+  view = new google.visualization.DataView(dataTable);
+
+  // Draw first chart
+  drawBubbleChart();
+  setAxisSize();
+}
+
+function drawBubbleChart(){
+  setAxisSize();
+  xValue = parseInt(xSelector.value);
+  yValue = parseInt(ySelector.value);
+  cValue = parseInt(colorSelector.value);
+  sValue = parseInt(sizeSelector.value);
+  zValue = parseInt(zSelector.value);
+
+  columns = getColumns(xValue, yValue, cValue, sValue, zValue);
+
+if (yValue != 5){
+	layout = {
+          font: {family: 'Open Sans', size: 16},
+          margin: {l: 80, r: 0, t:20, b:80},
+          hovermode: 'closest',
+
+          xaxis: {title: ''}, yaxis: {title: ''},
+          scene: {xaxis: {title: ''}, yaxis: {title: ''}, zaxis: {title: ''},
+            aspectratio: {x: 3, y: 1, z: 1},
+            camera: {}
+          },
+				};
+}else{
+	layout = {
+          font: {family: 'Open Sans', size: 16},
+          margin: {l: 200, r: 0, t:20, b:80},
+          hovermode: 'closest',
+
+          xaxis: {title: ''}, yaxis: {title: ''},
+          scene: {xaxis: {title: ''}, yaxis: {title: ''}, zaxis: {title: ''},
+            aspectratio: {x: 3, y: 1, z: 1},
+            camera: {}
+          },
+				};
+}
+
+
+  view.setColumns(columns);
+  if (filterRows.length > 0){
+    view.setRows(filterRows);
+  } else {
+    // Empty filter means plot all rows
+    view.setRows(allRows);
+  }
+
+  colorbarTitle = axesLabels[cValue];
+  layout.xaxis.title = axesLabels[xValue];
+  layout.yaxis.title = axesLabels[yValue];
+  layout.scene.xaxis.title = axesLabels[xValue]; //.substring(3, (axesLabels[sValue].length-4));
+  layout.scene.zaxis.title = axesLabels[yValue]; //.substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
+  layout.scene.yaxis.title = axesLabels[zValue]; //.substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
+
+  sizeTitle.innerHTML = axesLabels[sValue]; //.substring(3, (axesLabels[sValue].length-4));
+
+  if (sValue != 0 && sValue != 1 && sValue != 5){
+    maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
+    minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  } else {
+    maxSizeText.innerHTML = 'n/a';
+    minSizeText.innerHTML = 'n/a';
+  }
+
+  hmax = view.getColumnRange(1).max;
+  vmax = view.getColumnRange(2).max;
+  zmax = view.getColumnRange(5).max;
+
+  cmax = view.getColumnRange(3).max;
+  smax = view.getColumnRange(4).max;
+
+	drawPlotlyChart();
+
+}
+
+function drawPlotlyChart(){
+  var trace = {
+    mode: 'markers',
+    text: columnToArray(0),
+    x: columnToArray(1),
+    hoverinfo: "text+name",
+	  name: "Structure name",
+    marker: {
+      color: columnToArray(3),
+      opacity: 0.7,
+      line: {width: 1, color: '#eee'}
+    }
+  };
+
+  // Trace settings for 2D/3D
+  if (twoD){
+    trace.y = columnToArray(2);
+    trace.type = 'scatter';
+  } else {
+    trace.y = columnToArray(5);
+    trace.z = columnToArray(2);
+    trace.type = 'scatter3d';
+    layout.aspectratio = {x: 3, y: 1, z: 1};
+  }
+
+  if (cValue != 0 && cValue != 1 && cValue != 5){
+    // If we've not got colour axis set to planar type
+    trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
+    trace.marker.colorscale = 'Jet';
+    trace.marker.autocolorscale = false;
+    trace.marker.showscale = true;
+  } else {
+	trace.marker.showscale = false;
+    trace.showlegend = false;
+	layout.showlegend = true;
+  }
+  //if color is set to Planarity
+  if (cValue == 5){
+    var markerNamesPlanarity = columnToArray(3);
+    var markerColors = new Array(markerNamesPlanarity.length);
+    for (i=0; i<markerNamesPlanarity.length; i++){
+      switch(markerNamesPlanarity[i]){
+          case "Planar 3-coordinated":
+              markerColors[i]= "rgb(255, 0, 0)"; break;
+          case "Planar 3,4-coordinated":
+              markerColors[i] = "rgb(255, 154, 0)";break;
+		      case "Planar 4-coordinated":
+              markerColors[i]= "rgb(255, 230, 0)"; break;
+		      case "Planar 4,6-coordinated":
+              markerColors[i]= "rgb(154, 255, 0)"; break;
+          case "Non Planar":
+              markerColors[i] ="rgb(0, 7, 255)"; break;
+       }
+   }
+   //trace.showlegend = true;
+   trace.marker.color = markerColors;
+   trace.text = columnToArray(3);
+   trace.name = "Planarity";
+  }
+
+  //if color is set to Linker ID
+  if (cValue == 1){
+    var markerNamesLinker = columnToArray(3);
+    var markerColors = new Array(markerNamesLinker.length);
+    for (i=0; i<markerNamesLinker.length; i++){
+      switch(markerNamesLinker[i]){
+          case 1:
+              markerColors[i]= "rgb(139, 0, 0)"; break;
+          case 2:
+              markerColors[i] = "rgb(255, 140, 0)";break;
+		      case 3:
+              markerColors[i]= "rgb(255, 215, 0)"; break;
+		      case 4:
+              markerColors[i]= "rgb(255, 255, 0)"; break;
+          case 5:
+              markerColors[i] ="rgb(154, 205, 50)"; break;
+          case 6:
+              markerColors[i]= "rgb(0, 100, 0)"; break;
+          case 7:
+              markerColors[i] = "rgb(32, 178, 170)";break;
+		      case 8:
+              markerColors[i]= "rgb(47, 79, 79)"; break;
+		      case 9:
+              markerColors[i]= "rgb(0, 206, 209)"; break;
+          case 10:
+              markerColors[i] ="rgb(0, 191, 255)"; break;
+          case 11:
+              markerColors[i]= "rgb(0, 0, 128)"; break;
+          case 12:
+              markerColors[i] = "rgb(148, 0, 211)";break;
+		      case 13:
+              markerColors[i]= "rgb(199, 21, 147)"; break;
+		      case 14:
+              markerColors[i]= "rgb(255, 105, 180)"; break;
+       }
+   }
+   trace.marker.color = markerColors;
+   trace.text = columnToArray(3);
+   trace.name = "Linker ID";
+  }
+
+  //if color is set to Topology
+ if (cValue == 0){
+    var markerNamesTopo = columnToArray(3);
+    var markerColors = new Array(markerNamesTopo.length);
+    for (i=0; i<markerNamesTopo.length; i++){
+      switch(markerNamesTopo[i]){
+          case "acs":
+              markerColors[i]= "rgb(139, 0, 0)"; break;
+          case "bcs":
+              markerColors[i] = "rgb(220, 20, 60)";break;
+		      case "bct":
+              markerColors[i]= "rgb(205, 92, 92)"; break;
+		      case "bcu":
+              markerColors[i]= "rgb(240, 128, 128)"; break;
+          case "bor":
+              markerColors[i] ="rgb(255, 140, 0)"; break;
+          case "crs":
+              markerColors[i]= "rgb(255, 215, 0)"; break;
+          case "csq":
+              markerColors[i] = "rgb(218, 165, 32)";break;
+		      case "ctn":
+              markerColors[i]= "rgb(255, 255, 0)"; break;
+		      case "dia":
+              markerColors[i]= "rgb(154, 205, 50)"; break;
+          case "fcu":
+              markerColors[i] ="rgb(107, 142, 35)"; break;
+          case "flu":
+              markerColors[i]= "rgb(0, 100, 0)"; break;
+          case "ftw":
+              markerColors[i] = "rgb(34, 139, 34)";break;
+		      case "gar":
+              markerColors[i]= "rgb(50, 205, 50)"; break;
+		      case "iac":
+              markerColors[i]= "rgb(46, 139, 87)"; break;
+          case "ith":
+              markerColors[i]= "rgb(102, 205, 170)"; break;
+          case "lcs":
+              markerColors[i] = "rgb(60, 179, 113)";break;
+		      case "lvt":
+              markerColors[i]= "rgb(32, 178, 170)"; break;
+		      case "nbo":
+              markerColors[i]= "rgb(47, 79, 79)"; break;
+          case "nia":
+              markerColors[i] ="rgb(0, 128, 128)"; break;
+          case "ocu":
+              markerColors[i]= "rgb(0, 255, 255)"; break;
+          case "pcu":
+              markerColors[i] = "rgb(0, 206, 209)";break;
+		      case "pth":
+              markerColors[i]= "rgb(64, 224, 208)"; break;
+		      case "pto":
+              markerColors[i]= "rgb(127, 255, 212)"; break;
+          case "pts":
+              markerColors[i] ="rgb(176, 224, 230)"; break;
+          case "pyr":
+              markerColors[i]= "rgb(95, 158, 160)"; break;
+          case "qtz":
+              markerColors[i] = "rgb(70, 130, 180)";break;
+		      case "reo":
+              markerColors[i]= "rgb(0, 191, 255)"; break;
+		      case "rhr":
+              markerColors[i]= "rgb(30, 144, 255)"; break;
+          case "rht":
+              markerColors[i]= "rgb(25, 25, 112)"; break;
+          case "scu":
+              markerColors[i] = "rgb(0, 10, 139)";break;
+		      case "she":
+              markerColors[i]= "rgb(0, 0, 255)"; break;
+		      case "soc":
+              markerColors[i]= "rgb(138, 43, 226)"; break;
+          case "sod":
+              markerColors[i] ="rgb(75, 0, 130)"; break;
+          case "spn":
+              markerColors[i]= "rgb(139, 0, 139)"; break;
+          case "srs":
+              markerColors[i] = "rgb(148, 0, 211)";break;
+		      case "ssa":
+              markerColors[i]= "rgb(186, 85, 211)"; break;
+		      case "ssb":
+              markerColors[i]= "rgb(221, 160, 221)"; break;
+          case "stp":
+              markerColors[i] ="rgb(255, 0, 255)"; break;
+          case "tbo":
+              markerColors[i]= "rgb(219, 112, 147)"; break;
+          case "the":
+              markerColors[i] = "rgb(255, 20, 147)";break;
+		      case "tpt":
+              markerColors[i]= "rgb(255, 182, 193)"; break;
+       }
+   }
+   trace.marker.color = markerColors;
+   trace.text = columnToArray(3);
+   trace.name = "Topology";
+  }
+
+  if (sValue != 0 && sValue != 1 && sValue != 5){
+    // If we've not got size axis set to planar type
+    trace.marker.size = columnToArray(4),
+    trace.marker.sizeref = smax/40;
+    trace.marker.sizemin = 4;
+  }
+	var data = [trace];
+
+	if (currentSelection == null){
+    layout.annotations = [];
+  } else {
+    var viewRow = view.getViewRowIndex(currentSelection);
+    var xLoc = view.getValue(viewRow, 1);
+    var yLoc = view.getValue(viewRow, 2);
+    if (twoD){
+      // Annotations don't work in 3D :(
+      var xAnno = view.getValue(viewRow, 1);
+      var yAnno = view.getValue(viewRow, 2);
+      var cAnno = view.getValue(viewRow, 3);
+      var sAnno = view.getValue(viewRow, 4);
+
+      if (typeof xAnno === 'number') xAnno = xAnno.toPrecision(4);
+      if (typeof yAnno === 'number') yAnno = yAnno.toPrecision(4);
+      if (typeof cAnno === 'number') cAnno = cAnno.toPrecision(4);
+      if (typeof sAnno === 'number') sAnno = sAnno.toPrecision(4);
+
+      var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
+        layout.xaxis.title + ': ' + xAnno + '<br>' +
+        layout.yaxis.title + ': ' + yAnno + '<br>' +
+        colorbarTitle + ': ' + cAnno + '<br>' +
+        sizeTitle.innerHTML + ': ' + sAnno + '<br>';
+
+	    layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
+        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 200, ay: 10, align: 'right',
+        xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
+      }
+  }
+
+	if(reDraw){
+
+    layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
+                    eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
+		Plotly.newPlot('chart_div', data, layout);
+
+    // Set up events
+    plotlyPlot.on('plotly_click', debounce(pointSelected, 200));
+    plotlyPlot.on('plotly_relayout', function(){relaying=true;});
+		reDraw = true;
+	}else{
+    if (!twoD){
+      layout.scene.camera = {center: {x: chart_div._fullLayout.scene._scene.camera.center[0],
+                                      y: chart_div._fullLayout.scene._scene.camera.center[1],
+                                      z: chart_div._fullLayout.scene._scene.camera.center[2]},
+                             eye:    {x: chart_div._fullLayout.scene._scene.camera.eye[0],
+                                      y: chart_div._fullLayout.scene._scene.camera.eye[1],
+                                      z: chart_div._fullLayout.scene._scene.camera.eye[2]}
+                          };
+    }
+		Plotly.animate('chart_div', {data: data}, {transition: {duration: 1000, easing: 'cubic-in-out' }});
+	}
+}
+
+
+// Convert Google chart column to Plotly array
+function columnToArray(columnIndex){
+  var outputArray = new Array(view.getNumberOfRows());
+  for (i=0; i<view.getNumberOfRows(); i++){
+    outputArray[i] = (view.getValue(i, columnIndex));
+  }
+  return outputArray;
+}
+
+function getShapes(){
+  // This one, specific to Aurelia's data, sets the symbol based on the planarity
+    var outputArray = new Array(view.getNumberOfRows());
+
+    for (i=0; i<view.getNumberOfRows(); i++){
+      outputArray[i] = (view.getValue(i, columnIndex));
+    }
+    return outputArray;
+
+}
+
+function switch2D(){
+  reDraw = true;
+  twoD = !twoD;
+  zDiv.hidden = twoD;
+  filterGraphButton.disabled = !twoD;
+  drawBubbleChart();
+}
+
+function setAxisSize(){
+  var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
+
+  var circ1 = document.getElementById('sizeAxisMinCirc');
+  var circ2 = document.getElementById('sizeAxisMaxCirc');
+  var tri   = document.getElementById('sizeAxisTriangle');
+
+  var boxWidth = document.documentElement.clientWidth - 30;
+  var xStart = 10;
+  var xEnd = xStart + boxWidth;
+
+  var textLength = 30;
+  var offset = 6;
+  var yMid = 40;
+
+  var exampleText = document.querySelector('text.xtitle');
+  var fontSize = "19px";
+  if (exampleText != null){
+    fontSize = exampleText.style.fontSize;
+  }
+
+  // set text locations
+  sizeTitle.setAttribute('x', xStart);
+  sizeTitle.setAttribute('y', yMid-20);
+  minSizeText.setAttribute('x', xStart+textLength);
+  maxSizeText.setAttribute('x', xEnd-textLength);
+  minSizeText.setAttribute('y', yMid+7);
+  maxSizeText.setAttribute('y', yMid+7);
+
+  // Set text sizes
+  sizeTitle.setAttribute('font-size', fontSize);
+  sizeTitle.setAttribute('font-weight', 'bold');
+  minSizeText.setAttribute('font-size', fontSize);
+  maxSizeText.setAttribute('font-size', fontSize);
+
+  // Set shape locations
+  circ1.setAttribute('cx', xStart + textLength + offset + 2);
+  circ2.setAttribute('cx', xEnd - textLength - offset - 7);
+  circ1.setAttribute('cy', yMid);
+  circ2.setAttribute('cy', yMid);
+
+
+  var triPoints = (xStart + textLength + 2*offset + 4) + ',' + (yMid) + ' ' + (xEnd-textLength-2*offset-14) +',' + (yMid+6) + ' ' + (xEnd-textLength-2*offset-14) + ',' + (yMid-6);
+  tri.setAttribute('points', triPoints);
+
+}
+
+function getColumns(xValue, yValue, cValue, sValue, zValue){
+
+    var labels = 0;
+    var x = getColumnFromSelectorValue(xValue);
+    var y = getColumnFromSelectorValue(yValue);
+    var c = getColumnFromSelectorValue(cValue);
+    var s = getColumnFromSelectorValue(sValue);
+    var z = getColumnFromSelectorValue(zValue);
+
+    return cols = [labels, x, y, c, s, z];
+}
+
+function getColumnFromSelectorValue(selectorValue){
+  var column = null;
+  column = selectorValue + 1;
+  return column;
+
+}
+
+function selectChange(){
+  reDraw = true;
+  drawBubbleChart();
+}
+
+// FILTER AND SEARCH
+// Table filter
+var oldColumns = [];
+function openFilterWindow(){
+  // Set columns of data table to match graph
+  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
+  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
+  var zValue = parseInt(zSelector.value);
+
+  currentColumns = getColumns(xValue, yValue, cValue, sValue, zValue);
+  if (oldColumns.toString() != currentColumns.toString()){
+    tableView.setColumns(currentColumns);
+    dash.draw(tableView);
+  }
+  oldcolumns = currentColumns;
+
+  // Set rows of filter
+  if (filterRows.length == allRows.length){
+    filterView.setRows([]);
+  }else{
+    filterView.setRows(filterRows);
+  }
+
+  // Draw the filtered table with just the name column
+  filterView.setColumns([0]);
+  filterTable.draw(filterView);
+
+  // Finally, show the modal box
+  document.getElementById('filter-modal').style.display='block';
+}
+
+function applyFilter(){
+  document.getElementById('filter-modal').style.display='none';
+  drawBubbleChart();
+}
+
+function tableSelectAll(){
+  filterRows = allRows;
+  table.getChart().setSelection(selectAllArray);
+}
+
+function tableSelectNone(){
+  // Empty filter means plot all points on graph
+  filterRows = [];
+
+  // But show no points in filter column
+  filterView.setRows([]);
+  filterTable.draw(filterView);
+}
+
+function addToSelection(){
+  // Get selection from chart
+  var selection = table.getChart().getSelection();
+
+  // Add selection to filtered rows
+  for (i=0; i<selection.length; i++){
+    if (filterRows.indexOf(selection[i].row)<0){
+      filterRows.push( table.getDataTable().getTableRowIndex(selection[i].row) );
+    }
+  }
+
+  // Update filter table
+  filterView.setRows(filterRows);
+  filterTable.draw(filterView);
+
+  // Unselect rows in main data table
+  table.getChart().setSelection([]);
+}
+
+function removeFromSelection(){
+  // Grab selection in filter table.
+  var filterSelection = filterTable.getSelection();
+
+  // And remove it from filtered rows
+  for (i=0; i<filterSelection.length; i++){
+    filterRows.splice(filterSelection[i].row, 1);
+  }
+
+  // Update filter table
+  filterView.setRows(filterRows);
+  filterTable.draw(filterView);
+}
+
+// Graph selection
+function selectFromGraph(){
+  gettingPointsFromGraph = true;
+  graphFilterView.setColumns([0]);
+  graphFilterView.setRows(filterRows);
+  graphFilterTable.draw(graphFilterView);
+  document.getElementById("graph-filter-modal").style.display = "block";
+  document.getElementById('filter-modal').style.display='none';
+}
+
+function removeFromGraphSelection(){
+  var filterSelection = graphFilterTable.getSelection();
+  for (i=0; i<filterSelection.length; i++){
+    filterRows.splice(filterSelection[i].row, 1);
+  }
+    graphFilterView.setRows(filterRows);
+    graphFilterTable.draw(graphFilterView);
+}
+
+function applyGraphSelection(){
+  document.getElementById('graph-filter-modal').style.display='none';
+  gettingPointsFromGraph = false;
+  drawBubbleChart();
+}
+
+// Clicking on a point
+function pointSelected(data){
+  if (!relaying){
+    globalData = data; // debug purposes.
+    var selectedPoint = data.points[0].pointNumber;
+    var pointIndex = view.getTableRowIndex(selectedPoint);
+
+    if (gettingPointsFromGraph){
+      currentSelection = null;
+      // For filtering: add point to filtered rows array
+      if (filterRows.indexOf(pointIndex)<0){
+        filterRows.push(pointIndex);
+        graphFilterView.setRows(filterRows);
+        graphFilterTable.draw(graphFilterView);
+      }
+    } else {
+      // For annotation: select point for annotation
+      if (pointIndex == currentSelection){
+        currentSelection = null;
+      }else{
+        currentSelection = pointIndex;
+      }
+      drawBubbleChart();
+    }
+  } else {
+    relaying = false;
+  }
+}
+
+// PLAYBACK
+var playing = false;
+function playButtonClick(){
+  buttonHandle = document.getElementById('playButton');
+  if (!playing){
+    playing=true;
+    buttonHandle.value = 'pause';
+    playSequence();
+  } else {
+    playing=false;
+    buttonHandle.value = 'play_arrow';
+  }
+}
+
+// RESIZE
+window.addEventListener('resize', debounce(windowResizeFunction, 200));
+
+function windowResizeFunction(){
+  switch(document.getElementById('filter-modal').style.display){
+    case '':
+    case 'none':
+      reDraw = true;
+      drawBubbleChart();
+      break;
+    case 'block':
+      document.getElementById('graph-filter-modal').style.display='none';
+  }
+}
+
+// GENERIC DEBOUNCE FUNCTION
+function debounce(func, wait, immediate) {
+  // Debounce function from https://john-dugan.com/javascript-debounce/
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        var later = function() {
+            timeout = null;
+            if ( !immediate ) {
+                func.apply(context, args);
+            }
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait || 200);
+        if ( callNow ) {
+            func.apply(context, args);
+        }
+    };
+};
