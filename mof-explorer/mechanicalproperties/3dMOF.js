@@ -172,8 +172,8 @@ function drawBubbleChart(){
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
-if (yValue != 5){
-	layout = {
+  if (yValue != 5){
+	   layout = {
           font: {family: 'Open Sans', size: 16},
           margin: {l: 80, r: 0, t:20, b:80},
           hovermode: 'closest',
@@ -184,8 +184,8 @@ if (yValue != 5){
             camera: {}
           },
 				};
-}else{
-	layout = {
+  }else{
+	   layout = {
           font: {family: 'Open Sans', size: 16},
           margin: {l: 200, r: 0, t:20, b:80},
           hovermode: 'closest',
@@ -196,10 +196,10 @@ if (yValue != 5){
             camera: {}
           },
 				};
-}
+    }
 
 
-  view.setColumns(columns);
+view.setColumns(columns);
   if (filterRows.length > 0){
     view.setRows(filterRows);
   } else {
@@ -260,8 +260,10 @@ function drawPlotlyChart(){
     layout.aspectratio = {x: 3, y: 1, z: 1};
   }
 
+var markerNameList = null;
+var markerColorList = null;
+
   if (cValue != 0 && cValue != 1 && cValue != 5){
-    // If we've not got colour axis set to planar type
     trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
     trace.marker.colorscale = 'Jet';
     trace.marker.autocolorscale = false;
@@ -270,173 +272,25 @@ function drawPlotlyChart(){
 	trace.marker.showscale = false;
     trace.showlegend = false;
 	layout.showlegend = true;
-  }
-  //if color is set to Planarity
-  if (cValue == 5){
-    var markerNamesPlanarity = columnToArray(3);
-    var markerColors = new Array(markerNamesPlanarity.length);
-    for (i=0; i<markerNamesPlanarity.length; i++){
-      switch(markerNamesPlanarity[i]){
-          case "Planar 3-coordinated":
-              markerColors[i]= "rgb(255, 0, 0)"; break;
-          case "Planar 3,4-coordinated":
-              markerColors[i] = "rgb(255, 154, 0)";break;
-		      case "Planar 4-coordinated":
-              markerColors[i]= "rgb(255, 230, 0)"; break;
-		      case "Planar 4,6-coordinated":
-              markerColors[i]= "rgb(154, 255, 0)"; break;
-          case "Non Planar":
-              markerColors[i] ="rgb(0, 7, 255)"; break;
-       }
-   }
-   //trace.showlegend = true;
-   trace.marker.color = markerColors;
-   trace.text = columnToArray(3);
-   trace.name = "Planarity";
-  }
 
-  //if color is set to Linker ID
-  if (cValue == 1){
-    var markerNamesLinker = columnToArray(3);
-    var markerColors = new Array(markerNamesLinker.length);
-    for (i=0; i<markerNamesLinker.length; i++){
-      switch(markerNamesLinker[i]){
-          case 1:
-              markerColors[i]= "rgb(139, 0, 0)"; break;
-          case 2:
-              markerColors[i] = "rgb(255, 140, 0)";break;
-		      case 3:
-              markerColors[i]= "rgb(255, 215, 0)"; break;
-		      case 4:
-              markerColors[i]= "rgb(255, 255, 0)"; break;
-          case 5:
-              markerColors[i] ="rgb(154, 205, 50)"; break;
-          case 6:
-              markerColors[i]= "rgb(0, 100, 0)"; break;
-          case 7:
-              markerColors[i] = "rgb(32, 178, 170)";break;
-		      case 8:
-              markerColors[i]= "rgb(47, 79, 79)"; break;
-		      case 9:
-              markerColors[i]= "rgb(0, 206, 209)"; break;
-          case 10:
-              markerColors[i] ="rgb(0, 191, 255)"; break;
-          case 11:
-              markerColors[i]= "rgb(0, 0, 128)"; break;
-          case 12:
-              markerColors[i] = "rgb(148, 0, 211)";break;
-		      case 13:
-              markerColors[i]= "rgb(199, 21, 147)"; break;
-		      case 14:
-              markerColors[i]= "rgb(255, 105, 180)"; break;
-       }
-   }
-   trace.marker.color = markerColors;
-   trace.text = columnToArray(3);
-   trace.name = "Linker ID";
+  markerNames = columnToArray(3);
+  markerNameList = uniq(markerNames);
+  markerColorList = getColorListFromNameList(markerNameList);
+  markerColors = [];
+  for (i=0; i<markerNames.length; i++){
+    markerColors.push(markerColorList[markerNameList.indexOf(markerNames[i])]);
   }
+  trace.marker.color = markerColors;
+  trace.text = columnToArray(3);
+}
 
-  //if color is set to Topology
- if (cValue == 0){
-    var markerNamesTopo = columnToArray(3);
-    var markerColors = new Array(markerNamesTopo.length);
-    for (i=0; i<markerNamesTopo.length; i++){
-      switch(markerNamesTopo[i]){
-          case "acs":
-              markerColors[i]= "rgb(139, 0, 0)"; break;
-          case "bcs":
-              markerColors[i] = "rgb(220, 20, 60)";break;
-		      case "bct":
-              markerColors[i]= "rgb(205, 92, 92)"; break;
-		      case "bcu":
-              markerColors[i]= "rgb(240, 128, 128)"; break;
-          case "bor":
-              markerColors[i] ="rgb(255, 140, 0)"; break;
-          case "crs":
-              markerColors[i]= "rgb(255, 215, 0)"; break;
-          case "csq":
-              markerColors[i] = "rgb(218, 165, 32)";break;
-		      case "ctn":
-              markerColors[i]= "rgb(255, 255, 0)"; break;
-		      case "dia":
-              markerColors[i]= "rgb(154, 205, 50)"; break;
-          case "fcu":
-              markerColors[i] ="rgb(107, 142, 35)"; break;
-          case "flu":
-              markerColors[i]= "rgb(0, 100, 0)"; break;
-          case "ftw":
-              markerColors[i] = "rgb(34, 139, 34)";break;
-		      case "gar":
-              markerColors[i]= "rgb(50, 205, 50)"; break;
-		      case "iac":
-              markerColors[i]= "rgb(46, 139, 87)"; break;
-          case "ith":
-              markerColors[i]= "rgb(102, 205, 170)"; break;
-          case "lcs":
-              markerColors[i] = "rgb(60, 179, 113)";break;
-		      case "lvt":
-              markerColors[i]= "rgb(32, 178, 170)"; break;
-		      case "nbo":
-              markerColors[i]= "rgb(47, 79, 79)"; break;
-          case "nia":
-              markerColors[i] ="rgb(0, 128, 128)"; break;
-          case "ocu":
-              markerColors[i]= "rgb(0, 255, 255)"; break;
-          case "pcu":
-              markerColors[i] = "rgb(0, 206, 209)";break;
-		      case "pth":
-              markerColors[i]= "rgb(64, 224, 208)"; break;
-		      case "pto":
-              markerColors[i]= "rgb(127, 255, 212)"; break;
-          case "pts":
-              markerColors[i] ="rgb(176, 224, 230)"; break;
-          case "pyr":
-              markerColors[i]= "rgb(95, 158, 160)"; break;
-          case "qtz":
-              markerColors[i] = "rgb(70, 130, 180)";break;
-		      case "reo":
-              markerColors[i]= "rgb(0, 191, 255)"; break;
-		      case "rhr":
-              markerColors[i]= "rgb(30, 144, 255)"; break;
-          case "rht":
-              markerColors[i]= "rgb(25, 25, 112)"; break;
-          case "scu":
-              markerColors[i] = "rgb(0, 10, 139)";break;
-		      case "she":
-              markerColors[i]= "rgb(0, 0, 255)"; break;
-		      case "soc":
-              markerColors[i]= "rgb(138, 43, 226)"; break;
-          case "sod":
-              markerColors[i] ="rgb(75, 0, 130)"; break;
-          case "spn":
-              markerColors[i]= "rgb(139, 0, 139)"; break;
-          case "srs":
-              markerColors[i] = "rgb(148, 0, 211)";break;
-		      case "ssa":
-              markerColors[i]= "rgb(186, 85, 211)"; break;
-		      case "ssb":
-              markerColors[i]= "rgb(221, 160, 221)"; break;
-          case "stp":
-              markerColors[i] ="rgb(255, 0, 255)"; break;
-          case "tbo":
-              markerColors[i]= "rgb(219, 112, 147)"; break;
-          case "the":
-              markerColors[i] = "rgb(255, 20, 147)";break;
-		      case "tpt":
-              markerColors[i]= "rgb(255, 182, 193)"; break;
-       }
-   }
-   trace.marker.color = markerColors;
-   trace.text = columnToArray(3);
-   trace.name = "Topology";
-  }
+trace.marker.size = columnToArray(4),
+trace.marker.sizeref = smax/40;
+trace.marker.sizemin = 4;
 
-  if (sValue != 0 && sValue != 1 && sValue != 5){
-    // If we've not got size axis set to planar type
-    trace.marker.size = columnToArray(4),
-    trace.marker.sizeref = smax/40;
-    trace.marker.sizemin = 4;
-  }
+// Create a custom legend (or hide the legend if markerNameList is null!)
+customLegend(markerNameList, markerColorList);
+
 	var data = [trace];
 
 	if (currentSelection == null){
@@ -493,6 +347,55 @@ function drawPlotlyChart(){
 	}
 }
 
+// This function plots a custom legend for grouped data on the color axis
+function customLegend(mNames, mColors){
+  var legendID = document.getElementById("customLegend-modal");
+
+  if (mNames != null){
+    //console.log("Turning custom legend on.");
+    // Make HTML for legend
+    var htmlBlock = "<b>Color</b></br>";
+    for (i = 0; i < mNames.length; i++){
+      // Create each HTML entry
+      var entry = "<span style='color:" + mColors[i] + "'>&#x25cf;</span> - " + mNames[i] + "</br>";
+      htmlBlock += entry;
+    }
+    legendID.innerHTML = htmlBlock;
+    legendID.style.display='block';
+  } else {
+    //console.log("Turning custom legend off.");
+    legendID.innerHTMl = "";
+    legendID.style.display='none';
+  }
+}
+
+function getColorListFromNameList(mNames){
+  numColors = mNames.length;
+  var colorList = [];
+  for (i = 0; i < numColors; i++){
+    var color = "hsl(0, 0%, 86%)"; // default gray for N/A values
+    switch(mNames[i]){
+      case "na": case "NA": case "n/a": case "N/A":
+        break;
+      default:
+      // Get color from HSL color space, looping with modulo operation (%)
+      var numHues = 10;
+      var minBrightness = 40;
+      var maxBrightness = 80;
+      color = "hsl(" + Math.floor(360 * (i%numHues)/Math.min(numColors,numHues)) + ", 90%, " + Math.floor(minBrightness+(maxBrightness-minBrightness)*(i/numColors)) + "%)";
+    }
+    colorList.push(color);
+  }
+  return colorList;
+}
+
+// Helper function to create unique arrays
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
 
 // Convert Google chart column to Plotly array
 function columnToArray(columnIndex){
