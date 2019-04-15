@@ -77,6 +77,46 @@ a:hover {
 /* ==================================================
   Hero Styling
 ================================================== */
+.hero {
+  display: table;
+  position: relative;
+  background-image: url(../img/diana-mof.png);
+  background-size: cover;
+  padding: 150px 0;
+  color: #fff;
+  width: 100%;
+  height: 100vh;
+}
+
+.hero:after {
+  content: '';
+  z-index: 0;
+  position: absolute;
+  background: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.hero-brand {
+  margin-bottom: 75px;
+  display: inline-block;
+}
+
+.hero-brand:hover {
+  opacity: .75;
+}
+
 .tagline {
   font-family: "Raleway", Helvetica, Arial, sans-serif;
   font-size: 26px;
