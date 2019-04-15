@@ -794,7 +794,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   Footer Styling
   ================================================== */
 .site-footer {
-  background-color: #111;
+  background-color: #fff;
   padding: 0;
 }
 
@@ -822,7 +822,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .site-footer .bottom {
-  background-color: #000;
+  background-color: #fff;
   padding: 20px 0;
 }
 
@@ -846,7 +846,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .site-footer .credits {
-  color: #ddd;
+  color: #fff;
 }
 
 .site-footer .credits a {
