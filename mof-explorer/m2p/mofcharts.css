@@ -1,0 +1,136 @@
+*{padding:0; border:0; margin:0}
+
+ /* Style all input fields */
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+}
+
+/* Style the submit button */
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Style the container for inputs */
+.container {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+/* The message box is shown when the user clicks on the password field */
+#message {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10004;";
+}
+
+/* Add a red text color and an "x" icon when the requirements are wrong */
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10006;";
+} 
+
+html,body {
+  font-family: 'Open Sans';
+}
+
+button.w3button {
+  padding: 5px;
+}
+
+#title{
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  z-index: 2;
+  overflow: hidden;
+  height: 45px;
+}
+
+#pressureOverlay{
+  color: #444;
+  font-size: 20px;
+  z-index: -1;
+  position: relative;
+}
+
+#controls{
+  text-align: center;
+}
+
+#pressureIndicator{
+  font-family: 'Arial';
+}
+
+#warningText{
+  font-size: 9px;
+  color: orange;
+}
+
+select{
+  border: 2px;
+  padding: 2px;
+  border-width: 1px;
+  border-style:solid;
+  border-color: initial;
+  border-radius: 5px;
+}
+
+#graph-filter-modal {
+    position: fixed;
+    bottom: 0;
+    height: 30vh;
+    opacity: 0.95;
+    background-color: #bbb;
+    width: 100%;
+    z-index: 3;
+}
+
+#graph-filter-div {
+  height: 30vh;
+  overflow: auto;
+}
+
+.control_axis_title{
+  width: 3.5em;
+  display: inline-block;
+  text-align: right;
+}
+
+#pressureTitle{
+   text-align: left;
+}
+
+select{
+  width: 150px;
+}
