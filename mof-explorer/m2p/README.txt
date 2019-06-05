@@ -1,1 +1,1 @@
-This folder is for Rocio
+mof-explorer for "Methane to Products"
