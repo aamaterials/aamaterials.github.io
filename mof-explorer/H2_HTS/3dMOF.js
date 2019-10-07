@@ -9,7 +9,7 @@ var plotlyPlot;
 var slider, colorSelector, sizeSelector, xSelect, ySelect;
 var pressureOverlay;
 var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
-var coarseSliderValue; var oldSliderValue = 5;
+var coarseSliderValue; var oldSliderValue = null;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var gettingPointsFromGraph = false;
@@ -88,6 +88,7 @@ function init(){
   var requestDB = window.indexedDB.open("h2data");
 
   requestDB.onupgradeneeded = function(event){
+    console.log("upgrade needed!")
     db = requestDB.result;
     db.createObjectStore("h2mofs", {keyPath: "id"});
 
@@ -99,6 +100,7 @@ function init(){
 
   requestDB.onsuccess = function(event){
     db = requestDB.result;
+
     // Get data from the database
     var request = db.transaction(["h2mofs"]).objectStore("h2mofs").get("01");
 
@@ -131,7 +133,6 @@ function handleQueryResponse(response) {
   // Get data, and store it in local indexedDB
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
-  //localStorage['aureliamofs4'] = dataString;
   var requestDB = window.indexedDB.open("h2data");
   requestDB.onsuccess = function(event){
     db = requestDB.result;
@@ -160,7 +161,6 @@ function initialiseChart(){
     selectAllArray.push({'row': i, 'column': null});
   }
 
-  onSliderUpdate();
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
   graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'));
@@ -185,8 +185,8 @@ function initialiseChart(){
   graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
-  // Draw first chart
-  drawBubbleChart();
+  // Draw first chart - note onSliderUpdate() calls drawBubbleChart()
+  onSliderUpdate();
 }
 
 function drawBubbleChart(){
@@ -225,7 +225,7 @@ function drawBubbleChart(){
 
 	drawPlotlyChart();
 
-  var pressure = pressureList[coarseSliderValue];
+  var pressure = pressureList[Math.floor(coarseSliderValue * 3)];
   pressureOverlay.innerHTML = pressure + ' bar';
 }
 
@@ -330,21 +330,6 @@ function switch2D(){
   drawBubbleChart();
 }
 
-// GET DATA TABLE
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
-
-  // Get data, and store it in localStorage
-  dataTable = response.getDataTable();
-  var dataString = JSON.stringify(dataTable);
-  localStorage['h2data'] = dataString;
-  console.log('Saved remote MOF data to local storage.');
-  initialiseChart();
-}
-
 function setAxisSize(){
   var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
 
@@ -404,18 +389,31 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
 }
 
 function getColumnFromSelectorValue(selectorValue){
-  var axesColumns = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
+  // This function needs to convert from a select value (values defined in index.html)
+  // to a column in the dataset.
+  // Under the current values, for example, selectorValue=4, 'Framework Volume', should
+  // convert to column 16, since the values are in the 16th column in the data.
+  // The pressure slider adds a slight complication: if value 22 is selected, 'Gravimetric
+  // Uptake', we want to convert to either 4, 6, or 8, depending on the value of
+  // the pressure slider.
+  //
+  // I'm happy to code all this up, but I suggest first lining up the columns in the
+  // dataset with the option values on the selects, to make the conversion as simple
+  // as possible. And put all the columns that depend on pressure at the end
+  // of the document.
+  //
+  // I can do that too, if you're happy for me to edit the dataset spreadsheet... 
+
   var column = null;
 
-  if (selectorValue<22){
-    column = axesColumns[selectorValue];
-  } else if (selectorValue == 22){
-    column = Math.round(2*coarseSliderValue+3);
-  } else if (selectorValue == 23){
-    column = Math.round(2*coarseSliderValue+4);
-  } else if (selectorValue == 24){
-    column = coarseSliderValue > 8.5 ? 11 : coarseSliderValue > 5 ? 10 : 9;
+  // This logic will all need to change, as explained above.
+  if (selectorValue === 4){
+    column = 16;
+  } else if (selectorValue === 22){
+    column = 4 + Math.round(2*coarseSliderValue);
+    console.log(column);
+  } else {
+    column = 4; // Fixing this at 4 just for debugging, so that the page doesn't crash!
   }
 
   return column;
@@ -434,6 +432,7 @@ function onSliderUpdate(){
   var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
 
   // Limit coarse slider values based on pressure points available
+  // - note, we don't need to do this anymore because all columns that rely on pressure have all 3 pressure values.
   // if ((xValue > 9 || yValue > 9 || cValue > 9 || sValue > 9) &&
   //   (xValue < 10 && xValue > 7 || yValue < 10 && yValue > 7 || cValue < 10 && cValue > 7 || sValue < 10 && sValue > 7)){
   //     coarseSliderValue = 8; // only 140 bar data available
@@ -446,6 +445,7 @@ function onSliderUpdate(){
   //     coarseSliderValue = Math.round(slider.value * 9);
   // }
 
+  coarseSliderValue = Math.round(slider.value * 2);
   if (coarseSliderValue != oldSliderValue){
     oldSliderValue = coarseSliderValue;
     drawBubbleChart();
