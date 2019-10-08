@@ -389,31 +389,20 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
 }
 
 function getColumnFromSelectorValue(selectorValue){
-  // This function needs to convert from a select value (values defined in index.html)
-  // to a column in the dataset.
-  // Under the current values, for example, selectorValue=4, 'Framework Volume', should
-  // convert to column 16, since the values are in the 16th column in the data.
-  // The pressure slider adds a slight complication: if value 22 is selected, 'Gravimetric
-  // Uptake', we want to convert to either 4, 6, or 8, depending on the value of
-  // the pressure slider.
-  //
-  // I'm happy to code all this up, but I suggest first lining up the columns in the
-  // dataset with the option values on the selects, to make the conversion as simple
-  // as possible. And put all the columns that depend on pressure at the end
-  // of the document.
-  //
-  // I can do that too, if you're happy for me to edit the dataset spreadsheet... 
-
+  // This function needs to convert from a select value to a dataaset column
   var column = null;
 
   // This logic will all need to change, as explained above.
-  if (selectorValue === 4){
-    column = 16;
-  } else if (selectorValue === 22){
-    column = 4 + Math.round(2*coarseSliderValue);
-    console.log(column);
-  } else {
-    column = 4; // Fixing this at 4 just for debugging, so that the page doesn't crash!
+  if (selectorValue < 23){
+    column = selectorValue;
+  } else if (selectorValue < 32){
+    // selector, 200bar, 500bar, 900bar
+    // 23: 23, 24, 25
+    // 24: 26, 27, 28
+    // 25: 29, 30, 31
+    var pressureOffset = coarseSliderValue;
+    var startColumn = (selectorValue - 23) * 3 + 23;
+    column = startColumn + pressureOffset;
   }
 
   return column;
@@ -430,20 +419,6 @@ function onSliderUpdate(){
   // Slider varies between 0 and 1.
   var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
   var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-
-  // Limit coarse slider values based on pressure points available
-  // - note, we don't need to do this anymore because all columns that rely on pressure have all 3 pressure values.
-  // if ((xValue > 9 || yValue > 9 || cValue > 9 || sValue > 9) &&
-  //   (xValue < 10 && xValue > 7 || yValue < 10 && yValue > 7 || cValue < 10 && cValue > 7 || sValue < 10 && sValue > 7)){
-  //     coarseSliderValue = 8; // only 140 bar data available
-  // } else if (xValue > 9 || yValue > 9 || cValue > 9 || sValue > 9) {
-  //     coarseSliderValue = slider.value > 0.5 ? 8 : 1;
-  // } else if (xValue > 7 || yValue > 7 || cValue > 7 || sValue > 7){
-  //     var tmpSliderValue = Math.round(slider.value * 9);
-  //     coarseSliderValue = tmpSliderValue > 8 ? 9 : tmpSliderValue > 7 ? 8 : tmpSliderValue > 5 ? 6 : 4;
-  // } else {
-  //     coarseSliderValue = Math.round(slider.value * 9);
-  // }
 
   coarseSliderValue = Math.round(slider.value * 2);
   if (coarseSliderValue != oldSliderValue){
