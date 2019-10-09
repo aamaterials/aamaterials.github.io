@@ -191,9 +191,11 @@ function initialiseChart(){
 
 function drawBubbleChart(){
   setAxisSize();
-  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
-  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-  var zValue = parseInt(zSelector.value);
+  xValue = parseInt(xSelector.value);
+  yValue = parseInt(ySelector.value);
+  zValue = parseInt(zSelector.value);
+  cValue = parseInt(colorSelector.value);
+  sValue = parseInt(sizeSelector.value);
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
@@ -213,15 +215,19 @@ function drawBubbleChart(){
   layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
 
   sizeTitle.innerHTML = axesLabels[sValue];
-  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
-  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  if (isNumericalParameter(sValue)) {
+    maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
+    minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  } else {
+    maxSizeText.innerHTML = 'n/a';
+    minSizeText.innerHTML = 'n/a';
+  }
 
-  // hmax = (xValue == 6) ? 28 : (xValue == 7) ? 320 : (xValue == 8) ? 28 : (xValue == 9) ? 320 : view.getColumnRange(1).max;
-	// vmax = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : view.getColumnRange(2).max;
-  // zmax = (zValue == 6) ? 28 : (zValue == 7) ? 320 : (zValue == 8) ? 28 : (zValue == 9) ? 320 : view.getColumnRange(5).max;
-  //
-  // cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : view.getColumnRange(3).max;
-  // smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : view.getColumnRange(4).max;
+  hmax = (xValue == 23) ? 15 : (xValue == 24) ? 22 : (xValue == 25) ? 22 : view.getColumnRange(1).max;
+  vmax = (yValue == 23) ? 15 : (yValue == 24) ? 22 : (yValue == 25) ? 22 : view.getColumnRange(2).max;
+  zmax = (zValue == 23) ? 15 : (zValue == 24) ? 22 : (zValue == 25) ? 22 : view.getColumnRange(5).max;
+  cmax = (cValue == 23) ? 15 : (cValue == 24) ? 22 : (cValue == 25) ? 22 : view.getColumnRange(3).max;
+  smax = (sValue == 23) ? 15 : (sValue == 24) ? 22 : (sValue == 25) ? 22 : view.getColumnRange(4).max;
 
 	drawPlotlyChart();
 
@@ -241,12 +247,6 @@ function drawPlotlyChart(){
       sizemin: 2,
       line: {width: 0.0},
       color: columnToArray(3),
-      colorbar: {title: colorbarTitle, titleside: 'right'},
-      cmin: 0,
-      cmax: cmax,
-      colorscale: 'Jet',
-      autocolorscale: false,
-      showscale: true,
       opacity: 0.9
     }
   };
@@ -261,6 +261,33 @@ function drawPlotlyChart(){
     trace.type = 'scatter3d';
     layout.aspectratio = {x: 3, y: 1, z: 1};
   }
+
+  var markerNameList = null;
+  var markerColorList = null;
+
+  if (isNumericalParameter(cValue)) {
+    trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
+    trace.marker.colorscale = 'Jet';
+    trace.marker.autocolorscale = false;
+    trace.marker.showscale = true;
+  } else {
+      trace.marker.showscale = false;
+      trace.showlegend = false;
+      layout.showlegend = true;
+
+      markerNames = columnToArray(3);
+      markerNameList = uniq(markerNames);
+      markerColorList = getColorListFromNameList(markerNameList);
+      markerColors = [];
+      for (i=0; i<markerNames.length; i++){
+        markerColors.push(markerColorList[markerNameList.indexOf(markerNames[i])]);
+      }
+      trace.marker.color = markerColors;
+      trace.text = columnToArray(3);
+  }
+
+  // Create a custom legend (or hide the legend if markerNameList is null!)
+  customLegend(markerNameList, markerColorList);
 
 	var data = [trace];
 
@@ -285,11 +312,17 @@ function drawPlotlyChart(){
   }
 
 	if(reDraw){
-    layout.xaxis.range = [0, hmax];
-    layout.yaxis.range = [0, vmax];
-    layout.scene.xaxis.range = [0, hmax];
-  	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
-    layout.scene.yaxis.range = [0, zmax];
+      layout.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
+      layout.yaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null;
+      layout.scene.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
+      layout.scene.zaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null; // Note z is vertical axis in 3D view
+      layout.scene.yaxis.range = isNumericalParameter(zValue) ? [0, zmax] : null;
+
+      layout.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
+      layout.yaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category';
+      layout.scene.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
+      layout.scene.zaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category'; // Note z is vertical axis in 3D view
+      layout.scene.yaxis.type = isNumericalParameter(zValue) ? 'scatter' : 'category';
 
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
                     eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
@@ -311,6 +344,56 @@ function drawPlotlyChart(){
     }
 		Plotly.animate('chart_div', {data: data}, {transition: {duration: 1000, easing: 'cubic-in-out' }});
 	}
+}
+
+// This function plots a custom legend for grouped data on the color axis
+function customLegend(mNames, mColors){
+  var legendID = document.getElementById("customLegend-modal");
+
+  if (mNames != null){
+    //console.log("Turning custom legend on.");
+    // Make HTML for legend
+    var htmlBlock = "<b>Color</b></br>";
+    for (i = 0; i < mNames.length; i++){
+      // Create each HTML entry
+      var entry = "<span style='color:" + mColors[i] + "'>&#x25cf;</span> - " + mNames[i] + "</br>";
+      htmlBlock += entry;
+    }
+    legendID.innerHTML = htmlBlock;
+    legendID.style.display='block';
+  } else {
+    //console.log("Turning custom legend off.");
+    legendID.innerHTMl = "";
+    legendID.style.display='none';
+  }
+}
+
+function getColorListFromNameList(mNames){
+  numColors = mNames.length;
+  var colorList = [];
+  for (i = 0; i < numColors; i++){
+    var color = "hsl(0, 0%, 86%)"; // default gray for N/A values
+    switch(mNames[i]){
+      case "na": case "NA": case "n/a": case "N/A":
+        break;
+      default:
+      // Get color from HSL color space, looping with modulo operation (%)
+      var numHues = 10;
+      var minBrightness = 40;
+      var maxBrightness = 80;
+      color = "hsl(" + Math.floor(360 * (i%numHues)/Math.min(numColors,numHues)) + ", 90%, " + Math.floor(minBrightness+(maxBrightness-minBrightness)*(i/numColors)) + "%)";
+    }
+    colorList.push(color);
+  }
+  return colorList;
+}
+
+// Helper function to create unique arrays
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
 }
 
 // Convert Google chart column to Plotly array
@@ -406,7 +489,13 @@ function getColumnFromSelectorValue(selectorValue){
   }
 
   return column;
+}
 
+function isNumericalParameter(selectorValue){
+  // numerical parameters in selector values 5-13, 15-16, 23-25
+  return (selectorValue >= 5 && selectorValue <= 13) ||
+    (selectorValue >= 15 && selectorValue <= 16) ||
+    (selectorValue >= 23);
 }
 
 function selectChange(){
@@ -417,9 +506,6 @@ function selectChange(){
 
 function onSliderUpdate(){
   // Slider varies between 0 and 1.
-  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
-  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-
   coarseSliderValue = Math.round(slider.value * 2);
   if (coarseSliderValue != oldSliderValue){
     oldSliderValue = coarseSliderValue;
