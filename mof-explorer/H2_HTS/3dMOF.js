@@ -9,7 +9,7 @@ var plotlyPlot;
 var slider, colorSelector, sizeSelector, xSelect, ySelect;
 var pressureOverlay;
 var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
-var coarseSliderValue; var oldSliderValue = 5;
+var coarseSliderValue; var oldSliderValue = null;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var gettingPointsFromGraph = false;
@@ -57,10 +57,12 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Density, g/cm\u00B3', 'Pore Limiting Diameter, \u212B', 'Largest Cavity Diameter, \u212B',
-                  'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g', 'Void Fraction',
-                'Uptake, mol/kg', 'Uptake, cm\u00B3(STP)/cm\u00B3', 'Deliverable Capacity, mol/kg',
-              'Deliverable Capacity, cm\u00B3(STP)/cm\u00B3', 'Heat of Adsorption, kJ/mol'];
+  axesLabels = ['Name', 'Family', 'Framework Dimensionality', 'Functional Groups',
+  'Functional Group Class', 'Framework volume, \u212B\u00B3', 'Framework Mass, g/mol', 'Framework Density, g/cm\u00B3', 
+  'Void Fraction', 'Accessible surface area, \u212B\u00B2', 'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g',
+  'Pore Limiting Diameter, \u212B', 'Largest Cavity Diameter, \u212B', 'Percolation', 'R-factor', 'Year', 'In a Chiral Space Group?',
+'Contains chiral atoms?', 'SQUEEZEd?', 'Crystal System', 'Space Group', 'Metals',   
+                'Uptake, wt.%', 'Uptake, g/L', 'Heat of Adsorption, kJ/mol'];
 
   shortLabels = ['Den., g/cm\u00B3', 'PLD, \u212B', 'LCD, \u212B',
                   'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'VF',
@@ -88,6 +90,7 @@ function init(){
   var requestDB = window.indexedDB.open("h2data");
 
   requestDB.onupgradeneeded = function(event){
+    console.log("upgrade needed!")
     db = requestDB.result;
     db.createObjectStore("h2mofs", {keyPath: "id"});
 
@@ -99,6 +102,7 @@ function init(){
 
   requestDB.onsuccess = function(event){
     db = requestDB.result;
+
     // Get data from the database
     var request = db.transaction(["h2mofs"]).objectStore("h2mofs").get("01");
 
@@ -131,7 +135,6 @@ function handleQueryResponse(response) {
   // Get data, and store it in local indexedDB
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
-  //localStorage['aureliamofs4'] = dataString;
   var requestDB = window.indexedDB.open("h2data");
   requestDB.onsuccess = function(event){
     db = requestDB.result;
@@ -160,7 +163,6 @@ function initialiseChart(){
     selectAllArray.push({'row': i, 'column': null});
   }
 
-  onSliderUpdate();
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
   graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'));
@@ -185,15 +187,17 @@ function initialiseChart(){
   graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
-  // Draw first chart
-  drawBubbleChart();
+  // Draw first chart - note onSliderUpdate() calls drawBubbleChart()
+  onSliderUpdate();
 }
 
 function drawBubbleChart(){
   setAxisSize();
-  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
-  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-  var zValue = parseInt(zSelector.value);
+  xValue = parseInt(xSelector.value);
+  yValue = parseInt(ySelector.value);
+  zValue = parseInt(zSelector.value);
+  cValue = parseInt(colorSelector.value);
+  sValue = parseInt(sizeSelector.value);
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
@@ -213,19 +217,23 @@ function drawBubbleChart(){
   layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
 
   sizeTitle.innerHTML = axesLabels[sValue];
-  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
-  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  if (isNumericalParameter(sValue)) {
+    maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
+    minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  } else {
+    maxSizeText.innerHTML = 'n/a';
+    minSizeText.innerHTML = 'n/a';
+  }
 
-  // hmax = (xValue == 6) ? 28 : (xValue == 7) ? 320 : (xValue == 8) ? 28 : (xValue == 9) ? 320 : view.getColumnRange(1).max;
-	// vmax = (yValue == 6) ? 28 : (yValue == 7) ? 320 : (yValue == 8) ? 28 : (yValue == 9) ? 320 : view.getColumnRange(2).max;
-  // zmax = (zValue == 6) ? 28 : (zValue == 7) ? 320 : (zValue == 8) ? 28 : (zValue == 9) ? 320 : view.getColumnRange(5).max;
-  //
-  // cmax = (cValue == 6) ? 28 : (cValue == 7) ? 320 : (cValue == 8) ? 28 : (cValue == 9) ? 320 : view.getColumnRange(3).max;
-  // smax = (sValue == 6) ? 28 : (sValue == 7) ? 320 : (sValue == 8) ? 28 : (sValue == 9) ? 320 : view.getColumnRange(4).max;
+  hmax = (xValue == 23) ? 15 : (xValue == 24) ? 22 : (xValue == 25) ? 22 : view.getColumnRange(1).max;
+  vmax = (yValue == 23) ? 15 : (yValue == 24) ? 22 : (yValue == 25) ? 22 : view.getColumnRange(2).max;
+  zmax = (zValue == 23) ? 15 : (zValue == 24) ? 22 : (zValue == 25) ? 22 : view.getColumnRange(5).max;
+  cmax = (cValue == 23) ? 15 : (cValue == 24) ? 22 : (cValue == 25) ? 22 : view.getColumnRange(3).max;
+  smax = (sValue == 23) ? 15 : (sValue == 24) ? 22 : (sValue == 25) ? 22 : view.getColumnRange(4).max;
 
 	drawPlotlyChart();
 
-  var pressure = pressureList[coarseSliderValue];
+  var pressure = pressureList[Math.floor(coarseSliderValue)];
   pressureOverlay.innerHTML = pressure + ' bar';
 }
 
@@ -241,12 +249,6 @@ function drawPlotlyChart(){
       sizemin: 2,
       line: {width: 0.0},
       color: columnToArray(3),
-      colorbar: {title: colorbarTitle, titleside: 'right'},
-      cmin: 0,
-      cmax: cmax,
-      colorscale: 'Jet',
-      autocolorscale: false,
-      showscale: true,
       opacity: 0.9
     }
   };
@@ -261,6 +263,33 @@ function drawPlotlyChart(){
     trace.type = 'scatter3d';
     layout.aspectratio = {x: 3, y: 1, z: 1};
   }
+
+  var markerNameList = null;
+  var markerColorList = null;
+
+  if (isNumericalParameter(cValue)) {
+    trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
+    trace.marker.colorscale = 'Jet';
+    trace.marker.autocolorscale = false;
+    trace.marker.showscale = true;
+  } else {
+      trace.marker.showscale = false;
+      trace.showlegend = false;
+      layout.showlegend = true;
+
+      markerNames = columnToArray(3);
+      markerNameList = uniq(markerNames);
+      markerColorList = getColorListFromNameList(markerNameList);
+      markerColors = [];
+      for (i=0; i<markerNames.length; i++){
+        markerColors.push(markerColorList[markerNameList.indexOf(markerNames[i])]);
+      }
+      trace.marker.color = markerColors;
+      trace.text = columnToArray(3);
+  }
+
+  // Create a custom legend (or hide the legend if markerNameList is null!)
+  customLegend(markerNameList, markerColorList);
 
 	var data = [trace];
 
@@ -285,11 +314,17 @@ function drawPlotlyChart(){
   }
 
 	if(reDraw){
-    layout.xaxis.range = [0, hmax];
-    layout.yaxis.range = [0, vmax];
-    layout.scene.xaxis.range = [0, hmax];
-  	layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
-    layout.scene.yaxis.range = [0, zmax];
+      layout.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
+      layout.yaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null;
+      layout.scene.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
+      layout.scene.zaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null; // Note z is vertical axis in 3D view
+      layout.scene.yaxis.range = isNumericalParameter(zValue) ? [0, zmax] : null;
+
+      layout.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
+      layout.yaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category';
+      layout.scene.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
+      layout.scene.zaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category'; // Note z is vertical axis in 3D view
+      layout.scene.yaxis.type = isNumericalParameter(zValue) ? 'scatter' : 'category';
 
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
                     eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
@@ -313,6 +348,56 @@ function drawPlotlyChart(){
 	}
 }
 
+// This function plots a custom legend for grouped data on the color axis
+function customLegend(mNames, mColors){
+  var legendID = document.getElementById("customLegend-modal");
+
+  if (mNames != null){
+    //console.log("Turning custom legend on.");
+    // Make HTML for legend
+    var htmlBlock = "<b>Color</b></br>";
+    for (i = 0; i < mNames.length; i++){
+      // Create each HTML entry
+      var entry = "<span style='color:" + mColors[i] + "'>&#x25cf;</span> - " + mNames[i] + "</br>";
+      htmlBlock += entry;
+    }
+    legendID.innerHTML = htmlBlock;
+    legendID.style.display='block';
+  } else {
+    //console.log("Turning custom legend off.");
+    legendID.innerHTMl = "";
+    legendID.style.display='none';
+  }
+}
+
+function getColorListFromNameList(mNames){
+  numColors = mNames.length;
+  var colorList = [];
+  for (i = 0; i < numColors; i++){
+    var color = "hsl(0, 0%, 86%)"; // default gray for N/A values
+    switch(mNames[i]){
+      case "na": case "NA": case "n/a": case "N/A":
+        break;
+      default:
+      // Get color from HSL color space, looping with modulo operation (%)
+      var numHues = 10;
+      var minBrightness = 40;
+      var maxBrightness = 80;
+      color = "hsl(" + Math.floor(360 * (i%numHues)/Math.min(numColors,numHues)) + ", 90%, " + Math.floor(minBrightness+(maxBrightness-minBrightness)*(i/numColors)) + "%)";
+    }
+    colorList.push(color);
+  }
+  return colorList;
+}
+
+// Helper function to create unique arrays
+function uniq(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
 // Convert Google chart column to Plotly array
 function columnToArray(columnIndex){
   var outputArray = new Array(view.getNumberOfRows());
@@ -328,21 +413,6 @@ function switch2D(){
   zDiv.hidden = twoD;
   filterGraphButton.disabled = !twoD;
   drawBubbleChart();
-}
-
-// GET DATA TABLE
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
-
-  // Get data, and store it in localStorage
-  dataTable = response.getDataTable();
-  var dataString = JSON.stringify(dataTable);
-  localStorage['h2data'] = dataString;
-  console.log('Saved remote MOF data to local storage.');
-  initialiseChart();
 }
 
 function setAxisSize(){
@@ -404,22 +474,30 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
 }
 
 function getColumnFromSelectorValue(selectorValue){
-  var axesColumns = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33];
+  // This function needs to convert from a select value to a dataaset column
   var column = null;
 
-  if (selectorValue<22){
-    column = axesColumns[selectorValue];
-  } else if (selectorValue == 22){
-    column = Math.round(2*coarseSliderValue+3);
-  } else if (selectorValue == 23){
-    column = Math.round(2*coarseSliderValue+4);
-  } else if (selectorValue == 24){
-    column = coarseSliderValue > 8.5 ? 11 : coarseSliderValue > 5 ? 10 : 9;
+  // This logic will all need to change, as explained above.
+  if (selectorValue < 23){
+    column = selectorValue;
+  } else if (selectorValue < 32){
+    // selector, 200bar, 500bar, 900bar
+    // 23: 23, 24, 25
+    // 24: 26, 27, 28
+    // 25: 29, 30, 31
+    var pressureOffset = coarseSliderValue;
+    var startColumn = (selectorValue - 23) * 3 + 23;
+    column = startColumn + pressureOffset;
   }
 
   return column;
+}
 
+function isNumericalParameter(selectorValue){
+  // numerical parameters in selector values 5-13, 15-16, 23-25
+  return (selectorValue >= 5 && selectorValue <= 13) ||
+    (selectorValue >= 15 && selectorValue <= 16) ||
+    (selectorValue >= 23);
 }
 
 function selectChange(){
@@ -430,22 +508,7 @@ function selectChange(){
 
 function onSliderUpdate(){
   // Slider varies between 0 and 1.
-  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
-  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-
-  // Limit coarse slider values based on pressure points available
-  // if ((xValue > 9 || yValue > 9 || cValue > 9 || sValue > 9) &&
-  //   (xValue < 10 && xValue > 7 || yValue < 10 && yValue > 7 || cValue < 10 && cValue > 7 || sValue < 10 && sValue > 7)){
-  //     coarseSliderValue = 8; // only 140 bar data available
-  // } else if (xValue > 9 || yValue > 9 || cValue > 9 || sValue > 9) {
-  //     coarseSliderValue = slider.value > 0.5 ? 8 : 1;
-  // } else if (xValue > 7 || yValue > 7 || cValue > 7 || sValue > 7){
-  //     var tmpSliderValue = Math.round(slider.value * 9);
-  //     coarseSliderValue = tmpSliderValue > 8 ? 9 : tmpSliderValue > 7 ? 8 : tmpSliderValue > 5 ? 6 : 4;
-  // } else {
-  //     coarseSliderValue = Math.round(slider.value * 9);
-  // }
-
+  coarseSliderValue = Math.round(slider.value * 2);
   if (coarseSliderValue != oldSliderValue){
     oldSliderValue = coarseSliderValue;
     drawBubbleChart();

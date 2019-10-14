@@ -16,7 +16,7 @@
     <!-- Title -->
     <div class="w3-cell-row" style="width: 100%; height:45px">
       <div class="w3-col m4 l4 w3-hide-small" style="text-align:center; margin:auto;">
-        <img src="../camLogo.jpg" height="45px">
+        <img src="../../camLogo.jpg" height="45px">
       </div>
       <div class="w3-col m4 l4" id="title">Hydrogen Storage in MOFs</div>
       <div class="w3-col m4 l4 w3-hide-small" style="text-align:center; margin:auto;">AAM Group</div>
@@ -55,139 +55,138 @@
         <p id="pressureTitle">Pressure, bar: &nbsp;<span id="pressureOverlay"></span>&nbsp;&nbsp;
           <i class="material-icons"><input id="playButton" type="button" value="play_arrow" onclick="playButtonClick()"></i>&nbsp;&nbsp;
           <span id="warningText"></span></p>
-        200 &nbsp; <input id="slider" type="range" min="0" max="1" value="0.53" step="0.002" style="width: calc(100% - 4em);">
-        &nbsp; 900
+        200<input id="slider" type="range" min="0" max="1" value="0.53" step="0.002" style="width: calc(100% - 4em);">900
         </div>
 
         <div class="w3-row">
             <form>
             <div class="w3-col m6 l3"><span class="control_axis_title">x-axis:</span>
             <select id="xSelect">
-              <option value="0">Family</option>
-              <option value="1">Framework dimensionality</option>
-              <option value="2">Functional groups</option>
-              <option value="3">Functional group class</option>
-              <option value="4">Framework volume</option>
-              <option value="5">Framework mass</option>
-              <option value="6">Framework density</option>
-              <option value="7">Geometric void fraction</option>
-              <option value="8">Accessible surface area</option>
-              <option value="9">Volumetric accessible surface area</option>
-              <option value="10">Gravimetric accessible surface area</option>
-              <option value="11">Pore limiting diameter</option>
-              <option value="12">Largest cavity diameter</option>
-              <option value="13">Percolation</option>
-              <option value="14">R-factor</option>
-              <option value="15">Year</option>
-              <option value="16">Chiral space group?</option>
-              <option value="17">Chiral atoms?</option>
-              <option value="18">SQUEEZEd?</option>
-              <option value="19">Crystal system</option>
-              <option value="20">Space group</option>
-              <option value="21">Metals include</option>
-              <option value="22"selected>Gravimetric uptake</option>
-              <option value="23">Volumetric uptake</option>
-              <option value="24">Heat of adsorption</option>
+              <option value="1">Family</option>
+              <option value="2">Framework dimensionality</option>
+              <option value="3">Functional groups</option>
+              <option value="4">Functional group class</option>
+              <option value="5">Framework volume</option>
+              <option value="6">Framework mass</option>
+              <option value="7">Framework density</option>
+              <option value="8">Geometric void fraction</option>
+              <option value="9">Accessible surface area</option>
+              <option value="10">Volumetric accessible surface area</option>
+              <option value="11">Gravimetric accessible surface area</option>
+              <option value="12">Pore limiting diameter</option>
+              <option value="13">Largest cavity diameter</option>
+              <option value="14">Percolation</option>
+              <option value="15">R-factor</option>
+              <option value="16">Year</option>
+              <option value="17">Chiral space group?</option>
+              <option value="18">Chiral atoms?</option>
+              <option value="19">SQUEEZEd?</option>
+              <option value="20">Crystal system</option>
+              <option value="21">Space group</option>
+              <option value="22">Metals include</option>
+              <option value="23"selected>Gravimetric uptake</option>
+              <option value="24">Volumetric uptake</option>
+              <option value="25">Heat of adsorption</option>
             </select></div>
             <div class="w3-col m6 l3"><span class="control_axis_title">y-axis:</span>
             <select id="ySelect">
-              <option value="0">Family</option>
-              <option value="1">Framework dimensionality</option>
-              <option value="2">Functional groups</option>
-              <option value="3">Functional group class</option>
-              <option value="4">Framework volume</option>
-              <option value="5">Framework mass</option>
-              <option value="6">Framework density</option>
-              <option value="7">Geometric void fraction</option>
-              <option value="8">Accessible surface area</option>
-              <option value="9">Volumetric accessible surface area</option>
-              <option value="10">Gravimetric accessible surface area</option>
-              <option value="11">Pore limiting diameter</option>
-              <option value="12">Largest cavity diameter</option>
-              <option value="13">Percolation</option>
-              <option value="14">R-factor</option>
-              <option value="15">Year</option>
-              <option value="16">Chiral space group?</option>
-              <option value="17">Chiral atoms?</option>
-              <option value="18">SQUEEZEd?</option>
-              <option value="19">Crystal system</option>
-              <option value="20">Space group</option>
-              <option value="21">Metals include</option>
-              <option value="22">Gravimetric uptake</option>
-              <option value="23"selected>Volumetric uptake</option>
-              <option value="24">Heat of adsorption</option>
+              <option value="1">Family</option>
+              <option value="2">Framework dimensionality</option>
+              <option value="3">Functional groups</option>
+              <option value="4">Functional group class</option>
+              <option value="5">Framework volume</option>
+              <option value="6">Framework mass</option>
+              <option value="7">Framework density</option>
+              <option value="8">Geometric void fraction</option>
+              <option value="9">Accessible surface area</option>
+              <option value="10">Volumetric accessible surface area</option>
+              <option value="11">Gravimetric accessible surface area</option>
+              <option value="12">Pore limiting diameter</option>
+              <option value="13">Largest cavity diameter</option>
+              <option value="14">Percolation</option>
+              <option value="15">R-factor</option>
+              <option value="16">Year</option>
+              <option value="17">Chiral space group?</option>
+              <option value="18">Chiral atoms?</option>
+              <option value="19">SQUEEZEd?</option>
+              <option value="20">Crystal system</option>
+              <option value="21">Space group</option>
+              <option value="22">Metals include</option>
+              <option value="23">Gravimetric uptake</option>
+              <option value="24"selected>Volumetric uptake</option>
+              <option value="25">Heat of adsorption</option>
             </select></div>
             <div class="w3-col m6 l3"><span class="control_axis_title">c-axis:</span>
             <select id="colorSelect">
-              <option value="0">Family</option>
-              <option value="1">Framework dimensionality</option>
-              <option value="2">Functional groups</option>
-              <option value="3">Functional group class</option>
-              <option value="4">Framework volume</option>
-              <option value="5">Framework mass</option>
-              <option value="6">Framework density</option>
-              <option value="7">Geometric void fraction</option>
-              <option value="8">Accessible surface area</option>
-              <option value="9">Volumetric accessible surface area</option>
-              <option value="10">Gravimetric accessible surface area</option>
-              <option value="11">Pore limiting diameter</option>
-              <option value="12">Largest cavity diameter</option>
-              <option value="13"selected>Percolation</option>
-              <option value="14">R-factor</option>
-              <option value="15">Year</option>
-              <option value="16">Chiral space group?</option>
-              <option value="17">Chiral atoms?</option>
-              <option value="18">SQUEEZEd?</option>
-              <option value="19">Crystal system</option>
-              <option value="20">Space group</option>
-              <option value="21">Metals include</option>
-              <option value="22">Gravimetric uptake</option>
-              <option value="23">Volumetric uptake</option>
-              <option value="24">Heat of adsorption</option>
+              <option value="1">Family</option>
+              <option value="2">Framework dimensionality</option>
+              <option value="3">Functional groups</option>
+              <option value="4">Functional group class</option>
+              <option value="5">Framework volume</option>
+              <option value="6">Framework mass</option>
+              <option value="7">Framework density</option>
+              <option value="8">Geometric void fraction</option>
+              <option value="9">Accessible surface area</option>
+              <option value="10">Volumetric accessible surface area</option>
+              <option value="11">Gravimetric accessible surface area</option>
+              <option value="12">Pore limiting diameter</option>
+              <option value="13">Largest cavity diameter</option>
+              <option value="14"selected>Percolation</option>
+              <option value="15">R-factor</option>
+              <option value="16">Year</option>
+              <option value="17">Chiral space group?</option>
+              <option value="18">Chiral atoms?</option>
+              <option value="19">SQUEEZEd?</option>
+              <option value="20">Crystal system</option>
+              <option value="21">Space group</option>
+              <option value="22">Metals include</option>
+              <option value="23">Gravimetric uptake</option>
+              <option value="24">Volumetric uptake</option>
+              <option value="25">Heat of adsorption</option>
             </select></div>
             <div class="w3-col m6 l3"><span class="control_axis_title">s-axis:</span>
             <select id="sizeSelect">
-              <option value="4">Framework volume</option>
-              <option value="5">Framework mass</option>
-              <option value="6">Framework density</option>
-              <option value="7">Geometric void fraction</option>
-              <option value="8">Accessible surface area</option>
-              <option value="9">Volumetric accessible surface area</option>
-              <option value="10">Gravimetric accessible surface area</option>
-              <option value="11"selected>Pore limiting diameter</option>
-              <option value="12">Largest cavity diameter</option>
-              <option value="14">R-factor</option>
-              <option value="22">Gravimetric uptake</option>
-              <option value="23">Volumetric uptake</option>
-              <option value="24">Heat of adsorption</option>
+              <option value="5">Framework volume</option>
+              <option value="6">Framework mass</option>
+              <option value="7">Framework density</option>
+              <option value="8">Geometric void fraction</option>
+              <option value="9">Accessible surface area</option>
+              <option value="10">Volumetric accessible surface area</option>
+              <option value="11">Gravimetric accessible surface area</option>
+              <option value="12"selected>Pore limiting diameter</option>
+              <option value="13">Largest cavity diameter</option>
+              <option value="15">R-factor</option>
+              <option value="23">Gravimetric uptake</option>
+              <option value="24">Volumetric uptake</option>
+              <option value="25">Heat of adsorption</option>
             </select></div>
             <div class="w3-col m6 l3" id="zDiv" hidden><span class="control_axis_title">z-axis:</span>
             <select id="zSelect">
-              <option value="0">Family</option>
-              <option value="1">Framework dimensionality</option>
-              <option value="2">Functional groups</option>
-              <option value="3">Functional group class</option>
-              <option value="4">Framework volume</option>
-              <option value="5">Framework mass</option>
-              <option value="6">Framework density</option>
-              <option value="7">Geometric void fraction</option>
-              <option value="8">Accessible surface area</option>
-              <option value="9">Volumetric accessible surface area</option>
-              <option value="10">Gravimetric accessible surface area</option>
-              <option value="11">Pore limiting diameter</option>
-              <option value="12">Largest cavity diameter</option>
-              <option value="13">Percolation</option>
-              <option value="14">R-factor</option>
-              <option value="15">Year</option>
-              <option value="16">Chiral space group?</option>
-              <option value="17">Chiral atoms?</option>
-              <option value="18">SQUEEZEd?</option>
-              <option value="19">Crystal system</option>
-              <option value="20">Space group</option>
-              <option value="21">Metals include</option>
-              <option value="22"selected>Gravimetric uptake</option>
-              <option value="23">Volumetric uptake</option>
-              <option value="24">Heat of adsorption</option>
+              <option value="1">Family</option>
+              <option value="2">Framework dimensionality</option>
+              <option value="3">Functional groups</option>
+              <option value="4">Functional group class</option>
+              <option value="5">Framework volume</option>
+              <option value="6">Framework mass</option>
+              <option value="7">Framework density</option>
+              <option value="8">Geometric void fraction</option>
+              <option value="9">Accessible surface area</option>
+              <option value="10">Volumetric accessible surface area</option>
+              <option value="11">Gravimetric accessible surface area</option>
+              <option value="12">Pore limiting diameter</option>
+              <option value="13">Largest cavity diameter</option>
+              <option value="14">Percolation</option>
+              <option value="15">R-factor</option>
+              <option value="16">Year</option>
+              <option value="17">Chiral space group?</option>
+              <option value="18">Chiral atoms?</option>
+              <option value="19">SQUEEZEd?</option>
+              <option value="20">Crystal system</option>
+              <option value="21">Space group</option>
+              <option value="22">Metals include</option>
+              <option value="23"selected>Gravimetric uptake</option>
+              <option value="24">Volumetric uptake</option>
+              <option value="25">Heat of adsorption</option>
             </select></div>
             </form>
           </div>
@@ -263,6 +262,9 @@
       </div>
     </div>
   </div>
+
+  <div id="customLegend-modal" class="w3-row" style="display:none;">
+</div>
 
   <!-- Graph filtering pop-up box -->
   <div id="graph-filter-modal" class="w3-row" style="display:none;">
