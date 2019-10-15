@@ -269,7 +269,7 @@ function drawPlotlyChart(){
 
   if (isNumericalParameter(cValue)) {
     trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
-    trace.marker.colorscale = 'Jet';
+    trace.marker.colorscale = 'Portland';
     trace.marker.autocolorscale = false;
     trace.marker.showscale = true;
   } else {
@@ -302,13 +302,24 @@ function drawPlotlyChart(){
     var yLoc = view.getValue(viewRow, 2);
     if (twoD){
       // Annotations don't work in 3D :(
+      var xAnno = view.getValue(viewRow, 1);
+      var yAnno = view.getValue(viewRow, 2);
+      var cAnno = view.getValue(viewRow, 3);
+      var sAnno = view.getValue(viewRow, 4);
+
+      if (typeof xAnno === 'number') xAnno = xAnno.toPrecision(4);
+      if (typeof yAnno === 'number') yAnno = yAnno.toPrecision(4);
+      if (typeof cAnno === 'number') cAnno = cAnno.toPrecision(4);
+      if (typeof sAnno === 'number') sAnno = sAnno.toPrecision(4);
+
       var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
-        layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
-        layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
-        colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
-        sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
-      layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
-        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
+        layout.xaxis.title + ': ' + xAnno + '<br>' +
+        layout.yaxis.title + ': ' + yAnno + '<br>' +
+        colorbarTitle + ': ' + cAnno + '<br>' +
+        sizeTitle.innerHTML + ': ' + sAnno + '<br>';
+
+	    layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
+        arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 200, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
       }
   }
@@ -380,10 +391,10 @@ function getColorListFromNameList(mNames){
         break;
       default:
       // Get color from HSL color space, looping with modulo operation (%)
-      var numHues = 10;
+      var numHues = 50;
       var minBrightness = 40;
       var maxBrightness = 80;
-      color = "hsl(" + Math.floor(360 * (i%numHues)/Math.min(numColors,numHues)) + ", 90%, " + Math.floor(minBrightness+(maxBrightness-minBrightness)*(i/numColors)) + "%)";
+      color = "hsl(" + Math.floor(500*(i%numHues)/Math.min(numColors,numHues)) + ", 90%, " + Math.floor(minBrightness+(maxBrightness-minBrightness)*(i/numColors)) + "%)";
     }
     colorList.push(color);
   }
