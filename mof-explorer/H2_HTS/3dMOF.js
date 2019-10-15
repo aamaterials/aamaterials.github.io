@@ -312,7 +312,7 @@ function drawPlotlyChart(){
       if (typeof cAnno === 'number') cAnno = cAnno.toPrecision(4);
       if (typeof sAnno === 'number') sAnno = sAnno.toPrecision(4);
 
-      var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
+      var annoText = '<b>' + view.getValue(viewRow, 0) + '<a href="https://www.ccdc.cam.ac.uk/structures/Search?Ccdcid=' + view.getValue(viewRow, 0) + '">(CSD link)</a><br />' + 
         layout.xaxis.title + ': ' + xAnno + '<br>' +
         layout.yaxis.title + ': ' + yAnno + '<br>' +
         colorbarTitle + ': ' + cAnno + '<br>' +
