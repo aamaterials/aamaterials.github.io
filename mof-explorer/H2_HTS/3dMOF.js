@@ -58,8 +58,8 @@ function init(){
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['Name', 'Family', 'Framework Dimensionality', 'Functional Groups',
-  'Functional Group Class', 'Framework volume, \u212B\u00B3', 'Framework Mass, g/mol', 'Framework Density, g/cm\u00B3', 
-  'Void Fraction', 'Accessible surface area, \u212B\u00B2', 'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g',
+  'Functional Group Class', ' ', 'Framework Mass, g/mol', 'Framework Density, g/cm\u00B3', 
+  'Void Fraction', ' ', 'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g',
   'Pore Limiting Diameter, \u212B', 'Largest Cavity Diameter, \u212B', 'Percolation', 'R-factor', 'Year', 'In a Chiral Space Group?',
 'Contains chiral atoms?', 'SQUEEZEd?', 'Crystal System', 'Space Group', 'Metals',   
                 'Uptake, wt.%', 'Uptake, g/L', 'Heat of Adsorption, kJ/mol'];
@@ -269,7 +269,7 @@ function drawPlotlyChart(){
 
   if (isNumericalParameter(cValue)) {
     trace.marker.colorbar = {title: colorbarTitle, titleside: 'right'};
-    trace.marker.colorscale = 'Portland';
+    trace.marker.colorscale = 'Viridis';
     trace.marker.autocolorscale = false;
     trace.marker.showscale = true;
   } else {
