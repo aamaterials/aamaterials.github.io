@@ -64,24 +64,23 @@ function init(){
 'Contains chiral atoms?', 'SQUEEZEd?', 'Crystal System', 'Space Group', 'Metals',   
                 'Uptake, wt.%', 'Uptake, g/L', 'Heat of Adsorption, kJ/mol'];
 
-  shortLabels = ['Den., g/cm\u00B3', 'PLD, \u212B', 'LCD, \u212B',
-                  'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'VF',
-                'Up., mol/kg', 'Up., cm\u00B3(STP)/cm\u00B3', 'Del., mol/kg',
-              'Del., cm\u00B3(STP)/cm\u00B3', 'QST, kJ/mol'];
+  shortLabels = ['Name', 'Fam.', 'Frame. Dim', 'Func. Gr.', 'Func. Gr. Class', ' ', 'Frame. Mass, g/mol', 'Frame. Den., g/cm\u00B3', 
+  'VF', ' ',  'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'PLD, \u212B', 'LCD, \u212B', 'Perc.', 'R', 'Year', 'Chir. SG', 'Chir. atom.', 'SQ', 'CS', 'SG',
+  'M', 'Up., wt.%', 'Up., g/L', 'Qst, kJ/mol'];
 
 	layout = {
           font: {family: 'Open Sans'},
           margin: {l: 50, r: 0, t:20, b:50},
 					scene: {
-						xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
-						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
-            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
+						xaxis: {title: '', titlefont: {family: 'PT Sans Narrow'}},
+						yaxis: {title: '', titlefont: {family: 'PT Sans Narrow'}},
+            zaxis: {title: '', titlefont: {family: 'PT Sans Narrow'}},
             aspectratio: {x: 3, y: 1, z: 1},
             camera: {}
 					},
-          xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
-          yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-          zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
+          xaxis: {title: ''},
+          yaxis: {title: ''},
+          zaxis: {title: ''},
           hovermode: 'closest'
 				};
 
@@ -453,6 +452,7 @@ function setAxisSize(){
 
   // Set text sizes
   sizeTitle.setAttribute('font-size', fontSize);
+  sizeTitle.setAttribute('font-weight', 'bold');
   minSizeText.setAttribute('font-size', fontSize);
   maxSizeText.setAttribute('font-size', fontSize);
 
