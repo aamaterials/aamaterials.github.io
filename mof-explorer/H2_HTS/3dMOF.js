@@ -224,11 +224,11 @@ function drawBubbleChart(){
     minSizeText.innerHTML = 'n/a';
   }
 
-  hmax = (xValue == 23) ? 15 : (xValue == 24) ? 22 : (xValue == 25) ? 22 : view.getColumnRange(1).max;
-  vmax = (yValue == 23) ? 15 : (yValue == 24) ? 22 : (yValue == 25) ? 22 : view.getColumnRange(2).max;
-  zmax = (zValue == 23) ? 15 : (zValue == 24) ? 22 : (zValue == 25) ? 22 : view.getColumnRange(5).max;
-  cmax = (cValue == 23) ? 15 : (cValue == 24) ? 22 : (cValue == 25) ? 22 : view.getColumnRange(3).max;
-  smax = (sValue == 23) ? 15 : (sValue == 24) ? 22 : (sValue == 25) ? 22 : view.getColumnRange(4).max;
+  hmax = (xValue == 23) ? 30 : (xValue == 24) ? 50 : (xValue == 25) ? 22 : view.getColumnRange(1).max;
+  vmax = (yValue == 23) ? 30 : (yValue == 24) ? 50 : (yValue == 25) ? 22 : view.getColumnRange(2).max;
+  zmax = (zValue == 23) ? 30 : (zValue == 24) ? 50 : (zValue == 25) ? 22 : view.getColumnRange(5).max;
+  cmax = (cValue == 23) ? 30 : (cValue == 24) ? 50 : (cValue == 25) ? 22 : view.getColumnRange(3).max;
+  smax = (sValue == 23) ? 30 : (sValue == 24) ? 50 : (sValue == 25) ? 22 : view.getColumnRange(4).max;
 
 	drawPlotlyChart();
 
