@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include 'header.php'; ?>
+<?php
+header("X-Frame-Options: DENY");
+header("Content-Security-Policy: frame-ancestors 'none'", false);
 
 <head>
   <meta charset="utf-8">
@@ -213,4 +215,5 @@
 
   <script src="contactform/contactform.js"></script>
 </body>
+?>
 </html>
