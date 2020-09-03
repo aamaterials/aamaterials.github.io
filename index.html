@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+header("X-Frame-Options: DENY");
+header("Content-Security-Policy: frame-ancestors 'none'", false); ?>
 
 <head>
   <meta charset="utf-8">
@@ -39,10 +42,8 @@
 </head>
 
 <body>
-  <?php
-  header("X-Frame-Options: DENY"); 
-	header("Content-Security-Policy: frame-ancestors 'none'", false); ?>
-	
+
+
   <!--<section class="hero">-->
   <section class="hero">
 
