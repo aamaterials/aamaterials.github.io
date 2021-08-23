@@ -314,19 +314,19 @@ function switch2D(){
 }
 
 // GET DATA TABLE
-function handleQueryResponse(response) {
-  if (response.isError()) {
-    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-    return;
-  }
+//function handleQueryResponse(response) {
+//  if (response.isError()) {
+//    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+//    return;
+//  }
 
   // Get data, and store it in localStorage
-  dataTable = response.getDataTable();
-  var dataString = JSON.stringify(dataTable);
-  localStorage['jacekmofs'] = dataString;
-  console.log('Saved remote MOF data to local storage.');
-  initialiseChart();
-}
+//  dataTable = response.getDataTable();
+//  var dataString = JSON.stringify(dataTable);
+//  localStorage['edwards'] = dataString;
+//  console.log('Saved remote MOF data to local storage.');
+//  initialiseChart();
+//}
 
 function setAxisSize(){
   var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);

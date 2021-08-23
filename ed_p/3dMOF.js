@@ -229,8 +229,8 @@ function drawBubbleChart(){
 
 	drawPlotlyChart();
 
-  var pressure = pressureList[Math.floor(coarseSliderValue)];
-  pressureOverlay.innerHTML = pressure + ' bar';
+ //var pressure = pressureList[Math.floor(coarseSliderValue)];
+ // pressureOverlay.innerHTML = pressure + ' bar';
 }
 
 function drawPlotlyChart(){
@@ -362,17 +362,23 @@ function setAxisSize(){
 
   // set text locations
   sizeTitle.setAttribute('x', xStart);
+  sizeTitle.setAttribute('y', yMid-20);
   minSizeText.setAttribute('x', xStart+textLength);
   maxSizeText.setAttribute('x', xEnd-textLength);
+  minSizeText.setAttribute('y', yMid+7);
+  maxSizeText.setAttribute('y', yMid+7);
 
   // Set text sizes
   sizeTitle.setAttribute('font-size', fontSize);
+  sizeTitle.setAttribute('font-weight', 'bold');
   minSizeText.setAttribute('font-size', fontSize);
   maxSizeText.setAttribute('font-size', fontSize);
 
   // Set shape locations
   circ1.setAttribute('cx', xStart + textLength + offset + 2);
   circ2.setAttribute('cx', xEnd - textLength - offset - 7);
+  circ1.setAttribute('cy', yMid);
+  circ2.setAttribute('cy', yMid);
 
   var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',41 ' + (xEnd-textLength-2*offset-14) + ',29';
   tri.setAttribute('points', triPoints);
@@ -398,14 +404,14 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
     return cols = [labels, x, y, c, s, z];
 }
 
-function getColumnFromSelectorValue(selectorValue){
+//function getColumnFromSelectorValue(selectorValue){
   // This function needs to convert from a select value to a dataaset column
-  var column = null;
+//  var column = null;
 
   // This logic will all need to change, as explained above.
-  if (selectorValue < 5){
-    column = selectorValue;
- } else if (selectorValue < 26){
+ // if (selectorValue < 5){
+ //   column = selectorValue;
+ //} else if (selectorValue < 26){
     // selector, 1bar, 10bar
     // 5: 5，6
     // 7: 7，8
@@ -418,13 +424,21 @@ function getColumnFromSelectorValue(selectorValue){
 	// 21: 21, 22
 	// 23: 23, 24
 	// 25: 25, 26
-   var pressureOffset = coarseSliderValue;
-   var startColumn = (selectorValue - 5) * 2 + 5;
-   column = startColumn + pressureOffset;
-  }
+  // var pressureOffset = coarseSliderValue;
+  // var startColumn = (selectorValue - 5) * 2 + 5;
+  // column = startColumn + pressureOffset;
+  //}
 
+  //return column;
+//}
+
+function getColumnFromSelectorValue(selectorValue){
+  var column = null;
+  column = selectorValue;
   return column;
+
 }
+
 
 function selectChange(){
   reDraw = true;
