@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Jacek's MOF Data Explorer | Adsorption &amp; Advanced Materials Group, University of Cambridge</title>
+    <title>ED | Adsorption &amp; Advanced Materials Group, University of Cambridge</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -18,7 +18,7 @@
       <div class="w3-col m3 l2 w3-hide-small" style="text-align:center; margin:auto;">
         <img src="../camLogo.jpg" height="45px">
       </div>
-      <div class="w3-col m6 l8" id="title">CO/N2 separation: MOF Data Explorer</div>
+      <div class="w3-col m6 l8" id="title">ED MOF Data Explorer</div>
       <div class="w3-col m3 l2 w3-hide-small" style="text-align:center; margin:auto;">AAM Group</div>
     </div>
 
@@ -56,163 +56,93 @@
           <form>
           <div class="w3-col m6 l3"><span class="control_axis_title">x-axis:</span>
           <select id="xSelect" style="width:180px">
-            <option selected value="1">Void Fraction</option>
-            <option value="2">Metal Density, g/cm&#x00B3;</option>
-            <option value="3">Density, g/cm&#x00B3;</option>
-            <option value="4">PLD, &#x212B;</option>
-            <option value="5">Largest Cavity Diameter, &#x212B;</option>
-            <option value="6">Volumetric Surface Area, m&#x00B2;/cm&#x00B3;</option>
-            <option value="7">Gravimetric Surface Area, m&#x00b2;/g</option>
-            <option value="8">Pore Volume, cm&#x00B3;/g</option>
-            <option value="9">Qst CO, kJ/mol</option>
-            <option value="10">Qst N2, kJ/mol</option>
-            <option value="11">Qst difference, kJ/mol</option>
-            <option value="12">CO uptake at desorption, mmol/g</option>
-            <option value="13">N2 uptake at desorption, mmol/g</option>
-            <option value="14">CO uptake at 40 bar, mmol/g</option>
-            <option value="15">N2 uptake at 40 bar, mmol/g</option>
-            <option value="16">CO uptake at 200 K, mmol/g</option>
-            <option value="17">N2 uptake at 200 K, mmol/g</option>
-            <option value="18">CO uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="19">N2 uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="20">Selectivity at desorption</option>
-            <option value="21">PSA selectivity</option>
-            <option value="22">TSA selectivity</option>
-            <option value="23">PTSA selectivity</option>
-            <option value="24">PSA working capacity, mmol/g</option>
-            <option value="25">TSA working capacity, mmol/g</option>
-            <option value="26">PTSA working capacity, mmol/g</option>
-            <option value="27">PSA regenerability, %</option>
-            <option value="28">TSA regenerability, %</option>
-            <option value="29">PTSA regenerability, %</option>
+            <option value="1">Density, g/cm&#x00B3;</option>
+            <option value="2">Largest Cavity Diameter, &#x212B;</option>
+            <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
+            <option value="4">Void Fraction</option>
+            <option selected value="5">c0_c1 selectivity</option>
+            <option value="6">c0_c2 selectivity</option>
+            <option value="7">c0_c3 selectivity</option>
+            <option value="8">c0_mg/g</option>
+            <option value="9">c1_mg/g</option>
+            <option value="10">c2_mg/g</option>
+            <option value="11">c3_mg/g</option>
+            <option value="12">c0_g/L</option>
+            <option value="13">c1_g/L</option>
+            <option value="14">c2_g/L</option>
+            <option value="15">c3_g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">y-axis:</span>
           <select id="ySelect" style="width:180px">
-            <option value="1">Void Fraction</option>
-            <option selected value="2">Metal Density, g/cm&#x00B3;</option>
-            <option value="3">Density, g/cm&#x00B3;</option>
-            <option value="4">PLD, &#x212B;</option>
-            <option value="5">Largest Cavity Diameter, &#x212B;</option>
-            <option value="6">Volumetric Surface Area, m&#x00B2;/cm&#x00B3;</option>
-            <option value="7">Gravimetric Surface Area, m&#x00b2;/g</option>
-            <option value="8">Pore Volume, cm&#x00B3;/g</option>
-            <option value="9">Qst CO, kJ/mol</option>
-            <option value="10">Qst N2, kJ/mol</option>
-            <option value="11">Qst difference, kJ/mol</option>
-            <option value="12">CO uptake at desorption, mmol/g</option>
-            <option value="13">N2 uptake at desorption, mmol/g</option>
-            <option value="14">CO uptake at 40 bar, mmol/g</option>
-            <option value="15">N2 uptake at 40 bar, mmol/g</option>
-            <option value="16">CO uptake at 200 K, mmol/g</option>
-            <option value="17">N2 uptake at 200 K, mmol/g</option>
-            <option value="18">CO uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="19">N2 uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="20">Selectivity at desorption</option>
-            <option value="21">PSA selectivity</option>
-            <option value="22">TSA selectivity</option>
-            <option value="23">PTSA selectivity</option>
-            <option value="24">PSA working capacity, mmol/g</option>
-            <option value="25">TSA working capacity, mmol/g</option>
-            <option value="26">PTSA working capacity, mmol/g</option>
-            <option value="27">PSA regenerability, %</option>
-            <option value="28">TSA regenerability, %</option>
-            <option value="29">PTSA regenerability, %</option>
+            <option value="1">Density, g/cm&#x00B3;</option>
+            <option value="2">Largest Cavity Diameter, &#x212B;</option>
+            <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
+            <option value="4">Void Fraction</option>
+            <option value="5">c0_c1 selectivity</option>
+            <option value="6">c0_c2 selectivity</option>
+            <option value="7">c0_c3 selectivity</option>
+            <option selected value="8">c0_mg/g</option>
+            <option value="9">c1_mg/g</option>
+            <option value="10">c2_mg/g</option>
+            <option value="11">c3_mg/g</option>
+            <option value="12">c0_g/L</option>
+            <option value="13">c1_g/L</option>
+            <option value="14">c2_g/L</option>
+            <option value="15">c3_g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">c-axis:</span>
           <select id="colorSelect" style="width:180px">
-            <option value="1">Void Fraction</option>
-            <option value="2">Metal Density, g/cm&#x00B3;</option>
-            <option value="3">Density, g/cm&#x00B3;</option>
-            <option selected value="4">PLD, &#x212B;</option>
-            <option value="5">Largest Cavity Diameter, &#x212B;</option>
-            <option value="6">Volumetric Surface Area, m&#x00B2;/cm&#x00B3;</option>
-            <option value="7">Gravimetric Surface Area, m&#x00b2;/g</option>
-            <option value="8">Pore Volume, cm&#x00B3;/g</option>
-            <option value="9">Qst CO, kJ/mol</option>
-            <option value="10">Qst N2, kJ/mol</option>
-            <option value="11">Qst difference, kJ/mol</option>
-            <option value="12">CO uptake at desorption, mmol/g</option>
-            <option value="13">N2 uptake at desorption, mmol/g</option>
-            <option value="14">CO uptake at 40 bar, mmol/g</option>
-            <option value="15">N2 uptake at 40 bar, mmol/g</option>
-            <option value="16">CO uptake at 200 K, mmol/g</option>
-            <option value="17">N2 uptake at 200 K, mmol/g</option>
-            <option value="18">CO uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="19">N2 uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="20">Selectivity at desorption</option>
-            <option value="21">PSA selectivity</option>
-            <option value="22">TSA selectivity</option>
-            <option value="23">PTSA selectivity</option>
-            <option value="24">PSA working capacity, mmol/g</option>
-            <option value="25">TSA working capacity, mmol/g</option>
-            <option value="26">PTSA working capacity, mmol/g</option>
-            <option value="27">PSA regenerability, %</option>
-            <option value="28">TSA regenerability, %</option>
-            <option value="29">PTSA regenerability, %</option>
+            <option selected value="1">Density, g/cm&#x00B3;</option>
+            <option value="2">Largest Cavity Diameter, &#x212B;</option>
+            <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
+            <option value="4">Void Fraction</option>
+            <option value="5">c0_c1 selectivity</option>
+            <option value="6">c0_c2 selectivity</option>
+            <option value="7">c0_c3 selectivity</option>
+            <option value="8">c0_mg/g</option>
+            <option value="9">c1_mg/g</option>
+            <option value="10">c2_mg/g</option>
+            <option value="11">c3_mg/g</option>
+            <option value="12">c0_g/L</option>
+            <option value="13">c1_g/L</option>
+            <option value="14">c2_g/L</option>
+            <option value="15">c3_g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">s-axis:</span>
           <select id="sizeSelect" style="width:180px">
-            <option value="1">Void Fraction</option>
-            <option value="2">Metal Density, g/cm&#x00B3;</option>
-            <option value="3">Density, g/cm&#x00B3;</option>
-            <option value="4">PLD, &#x212B;</option>
-            <option selected value="5">Largest Cavity Diameter, &#x212B;</option>
-            <option value="6">Volumetric Surface Area, m&#x00B2;/cm&#x00B3;</option>
-            <option value="7">Gravimetric Surface Area, m&#x00b2;/g</option>
-            <option value="8">Pore Volume, cm&#x00B3;/g</option>
-            <option value="9">Qst CO, kJ/mol</option>
-            <option value="10">Qst N2, kJ/mol</option>
-            <option value="11">Qst difference, kJ/mol</option>
-            <option value="12">CO uptake at desorption, mmol/g</option>
-            <option value="13">N2 uptake at desorption, mmol/g</option>
-            <option value="14">CO uptake at 40 bar, mmol/g</option>
-            <option value="15">N2 uptake at 40 bar, mmol/g</option>
-            <option value="16">CO uptake at 200 K, mmol/g</option>
-            <option value="17">N2 uptake at 200 K, mmol/g</option>
-            <option value="18">CO uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="19">N2 uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="20">Selectivity at desorption</option>
-            <option value="21">PSA selectivity</option>
-            <option value="22">TSA selectivity</option>
-            <option value="23">PTSA selectivity</option>
-            <option value="24">PSA working capacity, mmol/g</option>
-            <option value="25">TSA working capacity, mmol/g</option>
-            <option value="26">PTSA working capacity, mmol/g</option>
-            <option value="27">PSA regenerability, %</option>
-            <option value="28">TSA regenerability, %</option>
-            <option value="29">PTSA regenerability, %</option>
+            <option value="1">Density, g/cm&#x00B3;</option>
+            <option selected value="2">Largest Cavity Diameter, &#x212B;</option>
+            <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
+            <option value="4">Void Fraction</option>
+            <option value="5">c0_c1 selectivity</option>
+            <option value="6">c0_c2 selectivity</option>
+            <option value="7">c0_c3 selectivity</option>
+            <option value="8">c0_mg/g</option>
+            <option value="9">c1_mg/g</option>
+            <option value="10">c2_mg/g</option>
+            <option value="11">c3_mg/g</option>
+            <option value="12">c0_g/L</option>
+            <option value="13">c1_g/L</option>
+            <option value="14">c2_g/L</option>
+            <option value="15">c3_g/L</option>
           </select></div>
           <div class="w3-col m6 l3" id="zDiv" hidden><span class="control_axis_title">z-axis:</span>
           <select id="zSelect" style="width:180px">
-            <option value="1">Void Fraction</option>
-            <option value="2">Metal Density, g/cm&#x00B3;</option>
-            <option value="3">Density, g/cm&#x00B3;</option>
-            <option value="4">PLD, &#x212B;</option>
-            <option value="5">Largest Cavity Diameter, &#x212B;</option>
-            <option selected value="6">Volumetric Surface Area, m&#x00B2;/cm&#x00B3;</option>
-            <option value="7">Gravimetric Surface Area, m&#x00b2;/g</option>
-            <option value="8">Pore Volume, cm&#x00B3;/g</option>
-            <option value="9">Qst CO, kJ/mol</option>
-            <option value="10">Qst N2, kJ/mol</option>
-            <option value="11">Qst difference, kJ/mol</option>
-            <option value="12">CO uptake at desorption, mmol/g</option>
-            <option value="13">N2 uptake at desorption, mmol/g</option>
-            <option value="14">CO uptake at 40 bar, mmol/g</option>
-            <option value="15">N2 uptake at 40 bar, mmol/g</option>
-            <option value="16">CO uptake at 200 K, mmol/g</option>
-            <option value="17">N2 uptake at 200 K, mmol/g</option>
-            <option value="18">CO uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="19">N2 uptake at 40 bar, 200 K, mmol/g</option>
-            <option value="20">Selectivity at desorption</option>
-            <option value="21">PSA selectivity</option>
-            <option value="22">TSA selectivity</option>
-            <option value="23">PTSA selectivity</option>
-            <option value="24">PSA working capacity, mmol/g</option>
-            <option value="25">TSA working capacity, mmol/g</option>
-            <option value="26">PTSA working capacity, mmol/g</option>
-            <option value="27">PSA regenerability, %</option>
-            <option value="28">TSA regenerability, %</option>
-            <option value="29">PTSA regenerability, %</option>
+            <option value="1">Density, g/cm&#x00B3;</option>
+            <option value="2">Largest Cavity Diameter, &#x212B;</option>
+            <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
+            <option value="4">Void Fraction</option>
+            <option value="5">c0_c1 selectivity</option>
+            <option value="6">c0_c2 selectivity</option>
+            <option value="7">c0_c3 selectivity</option>
+            <option value="8">c0_mg/g</option>
+            <option value="9">c1_mg/g</option>
+            <option value="10">c2_mg/g</option>
+            <option value="11">c3_mg/g</option>
+            <option selected value="12">c0_g/L</option>
+            <option value="13">c1_g/L</option>
+            <option value="14">c2_g/L</option>
+            <option value="15">c3_g/L</option>
           </select></div>
           </form>
         </div>
