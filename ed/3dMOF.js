@@ -48,30 +48,13 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['<b>Identifier</b>', '<b>Void Fraction</b>', '<b>Metal Density, g/cm\u00B3</b>', '<b>Density, g/cm\u00B3</b>',
-                  '<b>PLD \u212B</b>', '<b>Largest Cavity Diameter, \u212B</b>', '<b>Volumetric Surface Area, m\u00B2/cm\u00B3</b>',
-                   '<b>Gravimetric Surface Area, m\u00b2/g</b>', '<b>Pore Volume, cm\u00B3/g</b>',
-                    '<b>Qst CO, kJ/mol</b>',	'<b>Qst N2, kJ/mol</b>',	'<b>Qst difference, kJ/mol</b>',
-                    '<b>CO uptake at desorption, mmol/g</b>',	'<b>N2 uptake at desorption, mmol/g</b>',
-                    '<b>CO uptake at 40 bar, mmol/g</b>',	'<b>N2 uptake at 40 bar, mmol/g</b>',	'<b>CO uptake at 200 K, mmol/g</b>',
-                    '<b>N2 uptake at 200 K, mmol/g</b>',	'<b>CO uptake at 40 bar, 200 K, mmol/g</b>',	'<b>N2 uptake at 40 bar, 200 K, mmol/g</b>',
-                    '<b>Selectivity at desorption</b>',	'<b>PSA selectivity</b>',	'TSA selectivity</b>',	'<b>PTSA selectivity</b>',
-                    '<b>PSA working capacity, mmol/g</b>',	'<b>TSA working capacity, mmol/g</b>',	'<b>PTSA working capacity, mmol/g</b>',
-                    '<b>PSA regenerability, %</b>',	'<b>TSA regenerability, %</b>',	'<b>PTSA regenerability, %</b>'
+  axesLabels = ['<b>Identifier</b>', '<b>Density, g/cm\u00B3</b>', '<b>Largest Cavity Diameter, \u212B</b>', '<b>Gravimetric Surface Area, m\u00b2/g</b>',
+                  '<b>Void Fraction</b>', '<b>c0_c1 selectivity</b>', '<b>c0_c2 selectivity</b>',
+                   '<b>c0_c3 selectivity</b>', '<b>c0, mg/g</b>',
+                    '<b>c1, mg/g</b>',	'<b>c2, mg/g</b>',	'<b>c3, mg/g</b>',
+                    '<b>c0, g/L</b>',	'<b>c1, g/L</b>',
+                    '<b>c2, g/L</b>',	'<b>c3, g/L</b>'
                     ];
-
-/* // Short Labels aren't actually used now
-shortLabels = ['ID', 'VF', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
-                'PLD \u212B', 'LCD, \u212B', 'VSA, m\u00B2/cm\u00B3',
-                 'GSA, m\u00b2/g', 'Pore Volume, cm\u00B3/g',
-                  'Qst CO, kJ/mol',	'Qst N2, kJ/mol',	'Qst diff., kJ/mol',
-                  'CO up (desorption), mmol/g',	'N2 up (desorption), mmol/g',
-                  'CO up (40 bar), mmol/g',	'N2 up (40 bar), mmol/g',	'CO up (200 K), mmol/g',
-                  'N2 up (200 K), mmol/g',	'CO up (40 bar), 200 K, mmol/g',	'N2 up (40 bar, 200 K), mmol/g',
-                  'Selectivity (desorption)',	'PSA selectivity',	'TSA selectivity',	'PTSA selectivity',
-                  'PSA WC, mmol/g',	'TSA WC, mmol/g',	'PTSA WC, mmol/g',
-                  'PSA regenerability, %',	'TSA regenerability, %',	'PTSA regenerability, %'
-                ];*/
 
 	layout = {
           font: {family: 'Open Sans', size: 16},
