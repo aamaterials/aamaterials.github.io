@@ -6,10 +6,8 @@ var dataTable, chart, options;
 var table, view;
 var tableView, filterView;
 var plotlyPlot;
-var slider, colorSelector, sizeSelector, xSelect, ySelect;
-var pressureOverlay;
+var colorSelector, sizeSelector, xSelect, ySelect;
 var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
-var coarseSliderValue; var oldSliderValue = null;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var gettingPointsFromGraph = false;
@@ -25,14 +23,7 @@ var currentSelection = null;
 function init(){
   // This function runs when Google charts js is ready
 
-  // Fill in global variables
-  //pressureList = [1, 10];
-  //pressureOverlay = document.getElementById('pressureOverlay');
-
   plotlyPlot = document.getElementById('chart_div');
-
-  //slider = document.getElementById('slider');
-  //slider.addEventListener('input', onSliderUpdate);
 
   colorSelector = document.getElementById('colorSelect');
   colorSelector.addEventListener('change', selectChange);
@@ -57,65 +48,96 @@ function init(){
   maxSizeText = document.getElementById('sizeAxisMaxText');
   sizeTitle = document.getElementById('sizeAxisTitle');
 
-  axesLabels = ['Name', 'Family', 'Framework Dimensionality', 'Functional Groups',
-  'Functional Group Class', 'Framework volume, \u212B\u00B3', 'Framework Mass, g/mol', 'Framework Density, g/cm\u00B3', 
-  'Void Fraction', 'Accessible surface area, \u212B\u00B2', 'Volumetric Surface Area, m\u00B2/cm\u00B3', 'Gravimetric Surface Area, m\u00b2/g',
-  'Pore Limiting Diameter, \u212B', 'Largest Cavity Diameter, \u212B', 'Percolation', 'R-factor', 'Year', 'In a Chiral Space Group?',
-'Contains chiral atoms?', 'SQUEEZEd?', 'Crystal System', 'Space Group', 'Metals',   
-                'Uptake, wt.%', 'Uptake, g/L', 'Heat of Adsorption, kJ/mol'];
-
-  shortLabels = ['Den., g/cm\u00B3', 'PLD, \u212B', 'LCD, \u212B',
-                  'VSA, m\u00B2/cm\u00B3', 'GSA, m\u00b2/g', 'VF',
-                'Up., mol/kg', 'Up., cm\u00B3(STP)/cm\u00B3', 'Del., mol/kg',
-              'Del., cm\u00B3(STP)/cm\u00B3', 'QST, kJ/mol'];
+  axesLabels = ['<b>Identifier</b>', '<b>Density, g/cm\u00B3</b>', '<b>Largest Cavity Diameter, \u212B</b>', '<b>Gravimetric Surface Area, m\u00b2/g</b>',
+                  '<b>Void Fraction</b>', '<b>c0_c1 selectivity</b>', '<b>c0_c2 selectivity</b>',
+                   '<b>c0_c3 selectivity</b>', '<b>c0, mg/g</b>',
+                    '<b>c1, mg/g</b>',	'<b>c2, mg/g</b>',	'<b>c3, mg/g</b>',
+                    '<b>c0, g/L</b>',	'<b>c1, g/L</b>',
+                    '<b>c2, g/L</b>',	'<b>c3, g/L</b>'
+                    ];
 
 	layout = {
-          font: {family: 'Open Sans'},
-          margin: {l: 50, r: 0, t:20, b:50},
-					scene: {
-						xaxis: {range: [0, 28], title: 'Uptake, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
-						yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3', titlefont: {family: 'PT Sans Narrow'}},
-            zaxis: {range: [0, 28], title: 'Deliverable, mol/kg', titlefont: {family: 'PT Sans Narrow'}},
+          font: {family: 'Open Sans', size: 16},
+          margin: {l: 80, r: 0, t:20, b:50},
+          hovermode: 'closest',
+
+          xaxis: {title: ''}, yaxis: {title: ''},
+          scene: {xaxis: {title: ''}, yaxis: {title: ''}, zaxis: {title: ''},
             aspectratio: {x: 3, y: 1, z: 1},
             camera: {}
-					},
-          xaxis: {range: [0, 28], title: 'Uptake, mol/kg'},
-          yaxis: {range: [0, 320], title: 'Uptake, cm\u00B3(STP)/cm\u00B3'},
-          zaxis: {range: [0, 28], title: 'Deliverable, mol/kg'},
-          hovermode: 'closest'
+          },
 				};
 
-   // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('edwards_bis');
+ // Get data table from browser cache if possible
+  var db;
+  var requestDB = window.indexedDB.open("edwards_bis");
 
-  if (dataString == null){
-    // Download data table if necessary
-    var rangeString = encodeURIComponent('range=A:AQ');
+  requestDB.onupgradeneeded = function(event){
+    console.log("upgrade needed!")
+    db = requestDB.result;
+    db.createObjectStore("edwards_data_bis", {keyPath: "id"});
 
+    var rangeString = encodeURIComponent('range=A:AH');
     var query = new google.visualization.Query(
       'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/gviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
+  };
 
-  }else{
-    console.log('Loading table from local storage.');
-    var parsedData = JSON.parse(dataString);
-    dataTable = new google.visualization.DataTable(parsedData);
-    // Draw initial chart
-    initialiseChart();
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+
+    // Get data from the database
+    var request = db.transaction(["edwards_data_bis"]).objectStore("edwards_data_bis").get("01");
+
+    request.error = function(event){
+      console.log('Some error in database request.')
+    }
+
+    request.onsuccess = function(event){
+      if (request.result != null){
+        console.log('Loading table from local indexedDB.');
+        var dataString = request.result.data;
+        var parsedData = JSON.parse(dataString);
+        dataTable = new google.visualization.DataTable(parsedData);
+        // Draw initial chart
+        initialiseChart();
+      }
+    }
+
+  };
+
+}
+
+// GET DATA TABLE
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
   }
 
+  // Get data, and store it in local indexedDB
+  dataTable = response.getDataTable();
+  var dataString = JSON.stringify(dataTable);
+  var requestDB = window.indexedDB.open("edwards_bis");
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    var request = db.transaction(["edwards_data_bis"], "readwrite").objectStore("edwards_data_bis").add({id: "01", data: dataString});
+
+    request.onsuccess = function(event){console.log('Saved remote MOF data to local indexedDB.');};
+    request.onerror = function(event){console.log('Failed to save data to local indexedDB. Will try loading chart anyway.');};
+  };
+  initialiseChart();
 }
 
 function reloadMOFdata(){
   // Set up query
-  var rangeString = encodeURIComponent('range=A:AQ');
+  var rangeString = encodeURIComponent('range=A:AH');
   var query = new google.visualization.Query(
     'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/gviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
 }
-
 // FIRST DRAW OF CHART
 function initialiseChart(){
   for (i=0; i<dataTable.getNumberOfRows(); i++){
@@ -125,7 +147,7 @@ function initialiseChart(){
 
   dash = new google.visualization.Dashboard(document.getElementById('dashboard'));
   filterTable = new google.visualization.Table(document.getElementById('filterTable_div'));
-  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'));
+  graphFilterTable = new google.visualization.Table(document.getElementById('graph-filterTable_div'))
 
   var stringFilter = new google.visualization.ControlWrapper({
     'controlType': 'StringFilter',
@@ -147,17 +169,16 @@ function initialiseChart(){
   graphFilterView = new google.visualization.DataView(dataTable);
   view = new google.visualization.DataView(dataTable);
 
-  // Draw first chart - note onSliderUpdate() calls drawBubbleChart()
-  // onSliderUpdate();
+  // Draw first chart
+  drawBubbleChart();
+  setAxisSize();
 }
 
 function drawBubbleChart(){
   setAxisSize();
-  xValue = parseInt(xSelector.value);
-  yValue = parseInt(ySelector.value);
-  zValue = parseInt(zSelector.value);
-  cValue = parseInt(colorSelector.value);
-  sValue = parseInt(sizeSelector.value);
+  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
+  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
+  var zValue = parseInt(zSelector.value);
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
@@ -172,16 +193,16 @@ function drawBubbleChart(){
   colorbarTitle = axesLabels[cValue];
   layout.xaxis.title = axesLabels[xValue];
   layout.yaxis.title = axesLabels[yValue];
-  layout.scene.xaxis.title = axesLabels[xValue];
-  layout.scene.zaxis.title = axesLabels[yValue]; // Note z is vertical axis in 3D view
-  layout.scene.yaxis.title = axesLabels[zValue]; // Note z is vertical axis in 3D view
+  layout.scene.xaxis.title = axesLabels[xValue].substring(3, (axesLabels[sValue].length-4));
+  layout.scene.zaxis.title = axesLabels[yValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
+  layout.scene.yaxis.title = axesLabels[zValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
 
   sizeTitle.innerHTML = axesLabels[sValue].substring(3, (axesLabels[sValue].length-4));
   maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
   minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
 
   hmax = view.getColumnRange(1).max;
-  vmax = view.getColumnRange(2).max;
+	vmax = view.getColumnRange(2).max;
   zmax = view.getColumnRange(5).max;
 
   cmax = view.getColumnRange(3).max;
@@ -189,8 +210,6 @@ function drawBubbleChart(){
 
 	drawPlotlyChart();
 
- //var pressure = pressureList[Math.floor(coarseSliderValue)];
- // pressureOverlay.innerHTML = pressure + ' bar';
 }
 
 function drawPlotlyChart(){
@@ -249,17 +268,11 @@ function drawPlotlyChart(){
   }
 
 	if(reDraw){
-      layout.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
-      layout.yaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null;
-      layout.scene.xaxis.range = isNumericalParameter(xValue) ? [0, hmax] : null;
-      layout.scene.zaxis.range = isNumericalParameter(yValue) ? [0, vmax] : null; // Note z is vertical axis in 3D view
-      layout.scene.yaxis.range = isNumericalParameter(zValue) ? [0, zmax] : null;
-
-      layout.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
-      layout.yaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category';
-      layout.scene.xaxis.type = isNumericalParameter(xValue) ? 'scatter' : 'category';
-      layout.scene.zaxis.type = isNumericalParameter(yValue) ? 'scatter' : 'category'; // Note z is vertical axis in 3D view
-      layout.scene.yaxis.type = isNumericalParameter(zValue) ? 'scatter' : 'category';
+    //layout.xaxis.range = [0, hmax];
+    //layout.yaxis.range = [0, vmax];
+    //layout.scene.xaxis.range = [0, hmax];
+  	//layout.scene.zaxis.range = [0, vmax]; // Note z is vertical axis in 3D view
+    //layout.scene.yaxis.range = [0, zmax];
 
     layout.scene.camera = {center: {x: 0, y: 0, z: -0.1},
                     eye: {x: 0.02, y: -2.2, z: 0.1}}; // up = 0 1 0 ?
@@ -300,6 +313,21 @@ function switch2D(){
   drawBubbleChart();
 }
 
+// GET DATA TABLE
+//function handleQueryResponse(response) {
+//  if (response.isError()) {
+//    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+//    return;
+//  }
+
+  // Get data, and store it in localStorage
+//  dataTable = response.getDataTable();
+//  var dataString = JSON.stringify(dataTable);
+//  localStorage['edwards'] = dataString;
+//  console.log('Saved remote MOF data to local storage.');
+//  initialiseChart();
+//}
+
 function setAxisSize(){
   var sizeAxisGroup = document.getElementById('sizeAxisGroup').cloneNode(true);
 
@@ -313,9 +341,10 @@ function setAxisSize(){
 
   var textLength = 30;
   var offset = 6;
+  var yMid = 40;
 
   var exampleText = document.querySelector('text.xtitle');
-  var fontSize = "14px";
+  var fontSize = "19px";
   if (exampleText != null){
     fontSize = exampleText.style.fontSize;
   }
@@ -340,15 +369,9 @@ function setAxisSize(){
   circ1.setAttribute('cy', yMid);
   circ2.setAttribute('cy', yMid);
 
-  var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',41 ' + (xEnd-textLength-2*offset-14) + ',29';
+
+  var triPoints = (xStart + textLength + 2*offset + 4) + ',' + (yMid) + ' ' + (xEnd-textLength-2*offset-14) +',' + (yMid+6) + ' ' + (xEnd-textLength-2*offset-14) + ',' + (yMid-6);
   tri.setAttribute('points', triPoints);
-
-  //var pressureBar = document.getElementById('pressureBar');
-  //var pressureIndicatorText = document.getElementById('pressureOverlay');
-
-  //pressureBar.setAttribute('style', "margin:auto; font-size: " + fontSize + ";");
-  //var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
-  //pressureIndicatorText.setAttribute('style', "font-size: " + indicatorFontSize + "; width: 3.7em; display: inline-block;");
 
 }
 
@@ -364,34 +387,6 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
     return cols = [labels, x, y, c, s, z];
 }
 
-//function getColumnFromSelectorValue(selectorValue){
-  // This function needs to convert from a select value to a dataaset column
-//  var column = null;
-
-  // This logic will all need to change, as explained above.
- // if (selectorValue < 5){
- //   column = selectorValue;
- //} else if (selectorValue < 26){
-    // selector, 1bar, 10bar
-    // 5: 5，6
-    // 7: 7，8
-    // 9: 9, 10
-	// 11: 11, 12
-	// 13: 13, 14
-	// 15: 15, 16
-	// 17: 17, 18
-	// 19: 19, 20
-	// 21: 21, 22
-	// 23: 23, 24
-	// 25: 25, 26
-  // var pressureOffset = coarseSliderValue;
-  // var startColumn = (selectorValue - 5) * 2 + 5;
-  // column = startColumn + pressureOffset;
-  //}
-
-  //return column;
-//}
-
 function getColumnFromSelectorValue(selectorValue){
   var column = null;
   column = selectorValue;
@@ -399,20 +394,9 @@ function getColumnFromSelectorValue(selectorValue){
 
 }
 
-
 function selectChange(){
   reDraw = true;
-  // oldSliderValue = 100;
-  // onSliderUpdate();
-}
-
-function onSliderUpdate(){
-  // Slider varies between 0 and 1.
-  coarseSliderValue = Math.round(slider.value * 2);
-  if (coarseSliderValue != oldSliderValue){
-    oldSliderValue = coarseSliderValue;
-    drawBubbleChart();
-  }
+  drawBubbleChart();
 }
 
 // FILTER AND SEARCH
@@ -566,32 +550,6 @@ function playButtonClick(){
   }
 }
 
-function playSequence(){
-  warningBox = document.getElementById('warningText');
-  if (playing){
-    // Animation can be slow with over 500 points: display warning
-    if (twoD && filterRows.length == 0 || filterRows.length > 500){
-      warningBox.innerHTML = "Animating more than 500 data points may be slow. Try filtering the data!";
-    } else {
-      warningBox.innerHTML = "";
-    }
-
-    if(slider.value<1){
-      // Move slider automatically
-      slider.value = (parseFloat(slider.value) + 0.006).toString();
-      setTimeout(playSequence, 30);
-    }else{
-      // Reset if we've reached the end of the slider
-      slider.value = "0";
-      setTimeout(playSequence, 500);
-    }
-    onSliderUpdate();
-  } else {
-    // Remove warning message if we're not playing
-    warningBox.innerHTML = "";
-  }
-}
-
 // RESIZE
 window.addEventListener('resize', debounce(windowResizeFunction, 200));
 
@@ -627,4 +585,4 @@ function debounce(func, wait, immediate) {
             func.apply(context, args);
         }
     };
-}
+};
