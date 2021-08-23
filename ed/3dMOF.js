@@ -24,13 +24,13 @@ function init(){
   // This function runs when Google charts js is ready
   
   // Fill in global variables
-  //pressureList = [1, 10];
-  //pressureOverlay = document.getElementById('pressureOverlay');
+  pressureList = [1, 10];
+  pressureOverlay = document.getElementById('pressureOverlay');
 
   plotlyPlot = document.getElementById('chart_div');
   
-  //slider = document.getElementById('slider');
-  //slider.addEventListener('input', onSliderUpdate);
+  slider = document.getElementById('slider');
+  slider.addEventListener('input', onSliderUpdate);
 
   colorSelector = document.getElementById('colorSelect');
   colorSelector.addEventListener('change', selectChange);
