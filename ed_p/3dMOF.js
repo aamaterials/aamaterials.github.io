@@ -229,8 +229,8 @@ function drawBubbleChart(){
 
 	drawPlotlyChart();
 
- // var pressure = pressureList[Math.floor(coarseSliderValue)];
- // pressureOverlay.innerHTML = pressure + ' bar';
+  //var pressure = pressureList[Math.floor(coarseSliderValue)];
+  //pressureOverlay.innerHTML = pressure + ' bar';
 }
 
 function drawPlotlyChart(){
@@ -421,7 +421,7 @@ function getColumnFromSelectorValue(selectorValue){
   //  var pressureOffset = coarseSliderValue;
   //  var startColumn = (selectorValue - 5) * 2 + 5;
    // column = startColumn + pressureOffset;
-  }
+  //}
 
   return column;
 }
