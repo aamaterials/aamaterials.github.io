@@ -138,7 +138,6 @@ function reloadMOFdata(){
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
 }
-
 // FIRST DRAW OF CHART
 function initialiseChart(){
   for (i=0; i<dataTable.getNumberOfRows(); i++){
@@ -324,7 +323,7 @@ function handleQueryResponse(response) {
   // Get data, and store it in localStorage
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
-  localStorage['edwards'] = dataString;
+  localStorage['jacekmofs'] = dataString;
   console.log('Saved remote MOF data to local storage.');
   initialiseChart();
 }
