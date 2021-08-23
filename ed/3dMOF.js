@@ -227,7 +227,7 @@ function drawPlotlyChart(){
       colorbar: {title: colorbarTitle, titleside: 'right'},
       //cmin: 0,
       //cmax: cmax,
-      colorscale: 'Jet',
+      colorscale: 'Viridis',
       autocolorscale: false,
       showscale: true,
       opacity: 0.7
