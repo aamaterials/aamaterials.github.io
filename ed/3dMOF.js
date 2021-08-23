@@ -85,30 +85,70 @@ shortLabels = ['ID', 'VF', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
           },
 				};
 
-  // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('edwards');
+ // Get data table from browser cache if possible
+  var db;
+  var requestDB = window.indexedDB.open("edwards");
 
-  if (dataString == null){
-    // Download data table if necessary
-    var rangeString = encodeURIComponent('range=A:AQ');
+  requestDB.onupgradeneeded = function(event){
+    console.log("upgrade needed!")
+    db = requestDB.result;
+    db.createObjectStore("edwards_data", {keyPath: "id"});
 
+    var rangeString = encodeURIComponent('range=A:AH');
     var query = new google.visualization.Query(
       'https://docs.google.com/spreadsheets/d/1WaERXzUFF4FivfVe5NlX9UMLeXi1FJNCB_6dX3iNPp4/gviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
+  };
 
-  }else{
-    console.log('Loading table from local storage.');
-    var parsedData = JSON.parse(dataString);
-    dataTable = new google.visualization.DataTable(parsedData);
-    // Draw initial chart
-    initialiseChart();
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+
+    // Get data from the database
+    var request = db.transaction(["edwards_data"]).objectStore("edwards_data").get("01");
+
+    request.error = function(event){
+      console.log('Some error in database request.')
+    }
+
+    request.onsuccess = function(event){
+      if (request.result != null){
+        console.log('Loading table from local indexedDB.');
+        var dataString = request.result.data;
+        var parsedData = JSON.parse(dataString);
+        dataTable = new google.visualization.DataTable(parsedData);
+        // Draw initial chart
+        initialiseChart();
+      }
+    }
+
+  };
+
+}
+
+// GET DATA TABLE
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+    return;
   }
 
+  // Get data, and store it in local indexedDB
+  dataTable = response.getDataTable();
+  var dataString = JSON.stringify(dataTable);
+  var requestDB = window.indexedDB.open("edwards");
+  requestDB.onsuccess = function(event){
+    db = requestDB.result;
+    var request = db.transaction(["edwards_data"], "readwrite").objectStore("edwards_data").add({id: "01", data: dataString});
+
+    request.onsuccess = function(event){console.log('Saved remote MOF data to local indexedDB.');};
+    request.onerror = function(event){console.log('Failed to save data to local indexedDB. Will try loading chart anyway.');};
+  };
+  initialiseChart();
 }
 
 function reloadMOFdata(){
   // Set up query
-  var rangeString = encodeURIComponent('range=A:AQ');
+  var rangeString = encodeURIComponent('range=A:AH');
   var query = new google.visualization.Query(
     'https://docs.google.com/spreadsheets/d/1WaERXzUFF4FivfVe5NlX9UMLeXi1FJNCB_6dX3iNPp4/gviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
