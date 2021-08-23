@@ -96,7 +96,7 @@ function init(){
 
     var rangeString = encodeURIComponent('range=A:AH');
     var query = new google.visualization.Query(
-      'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/gviz/tq?gid=0&headers=1&' + rangeString);
+      'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/edit?usp=sharinggviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
   };
 
@@ -150,7 +150,7 @@ function reloadMOFdata(){
   // Set up query
   var rangeString = encodeURIComponent('range=A:AH');
   var query = new google.visualization.Query(
-    'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/gviz/tq?gid=0&headers=1&' + rangeString);
+    'https://docs.google.com/spreadsheets/d/154JWdITWClRo1swx4LqA3QOThflEgmJKB2PQggGUE9k/edit?usp=sharinggviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
