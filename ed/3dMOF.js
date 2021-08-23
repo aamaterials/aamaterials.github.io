@@ -86,14 +86,14 @@ shortLabels = ['ID', 'VF', 'Metal Density, g/cm\u00B3', 'Density, g/cm\u00B3',
 				};
 
   // Get data table from browser cache if possible
-  var dataString = localStorage.getItem('jacekmofs');
+  var dataString = localStorage.getItem('edwards');
 
   if (dataString == null){
     // Download data table if necessary
     var rangeString = encodeURIComponent('range=A:AQ');
 
     var query = new google.visualization.Query(
-      'https://docs.google.com/spreadsheets/d/17IfMKn7zs3coqOxG8c3dY12BI3QeSMoXY_4fFsoBHSg/gviz/tq?gid=0&headers=1&' + rangeString);
+      'https://docs.google.com/spreadsheets/d/1WaERXzUFF4FivfVe5NlX9UMLeXi1FJNCB_6dX3iNPp4/gviz/tq?gid=0&headers=1&' + rangeString);
     query.send(handleQueryResponse);
 
   }else{
@@ -110,7 +110,7 @@ function reloadMOFdata(){
   // Set up query
   var rangeString = encodeURIComponent('range=A:AQ');
   var query = new google.visualization.Query(
-    'https://docs.google.com/spreadsheets/d/1BXpfTXTDeg_gcDEWyjUmx_SUkWzwkZDSLilBQaabPO0/gviz/tq?gid=0&headers=1&' + rangeString);
+    'https://docs.google.com/spreadsheets/d/1WaERXzUFF4FivfVe5NlX9UMLeXi1FJNCB_6dX3iNPp4/gviz/tq?gid=0&headers=1&' + rangeString);
   query.send(handleQueryResponse);
   // Close help dialog
   document.getElementById('help-modal').style.display='none';
@@ -301,7 +301,7 @@ function handleQueryResponse(response) {
   // Get data, and store it in localStorage
   dataTable = response.getDataTable();
   var dataString = JSON.stringify(dataTable);
-  localStorage['jacekmofs'] = dataString;
+  localStorage['edwards'] = dataString;
   console.log('Saved remote MOF data to local storage.');
   initialiseChart();
 }
