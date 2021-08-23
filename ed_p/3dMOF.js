@@ -26,13 +26,13 @@ function init(){
   // This function runs when Google charts js is ready
 
   // Fill in global variables
-  pressureList = [1, 10];
-  pressureOverlay = document.getElementById('pressureOverlay');
+  //pressureList = [1, 10];
+  //pressureOverlay = document.getElementById('pressureOverlay');
 
   plotlyPlot = document.getElementById('chart_div');
 
-  slider = document.getElementById('slider');
-  slider.addEventListener('input', onSliderUpdate);
+  //slider = document.getElementById('slider');
+  //slider.addEventListener('input', onSliderUpdate);
 
   colorSelector = document.getElementById('colorSelect');
   colorSelector.addEventListener('change', selectChange);
@@ -188,7 +188,7 @@ function initialiseChart(){
   view = new google.visualization.DataView(dataTable);
 
   // Draw first chart - note onSliderUpdate() calls drawBubbleChart()
-  onSliderUpdate();
+  // onSliderUpdate();
 }
 
 function drawBubbleChart(){
@@ -383,12 +383,12 @@ function setAxisSize(){
   var triPoints = (xStart + textLength + 2*offset + 4) + ',35 ' + (xEnd-textLength-2*offset-14) +',41 ' + (xEnd-textLength-2*offset-14) + ',29';
   tri.setAttribute('points', triPoints);
 
-  var pressureBar = document.getElementById('pressureBar');
-  var pressureIndicatorText = document.getElementById('pressureOverlay');
+  //var pressureBar = document.getElementById('pressureBar');
+  //var pressureIndicatorText = document.getElementById('pressureOverlay');
 
-  pressureBar.setAttribute('style', "margin:auto; font-size: " + fontSize + ";");
-  var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
-  pressureIndicatorText.setAttribute('style', "font-size: " + indicatorFontSize + "; width: 3.7em; display: inline-block;");
+  //pressureBar.setAttribute('style', "margin:auto; font-size: " + fontSize + ";");
+  //var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
+  //pressureIndicatorText.setAttribute('style', "font-size: " + indicatorFontSize + "; width: 3.7em; display: inline-block;");
 
 }
 
@@ -442,8 +442,8 @@ function getColumnFromSelectorValue(selectorValue){
 
 function selectChange(){
   reDraw = true;
-  oldSliderValue = 100;
-  onSliderUpdate();
+  // oldSliderValue = 100;
+  // onSliderUpdate();
 }
 
 function onSliderUpdate(){
