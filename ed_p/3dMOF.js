@@ -229,8 +229,8 @@ function drawBubbleChart(){
 
 	drawPlotlyChart();
 
-  //var pressure = pressureList[Math.floor(coarseSliderValue)];
-  //pressureOverlay.innerHTML = pressure + ' bar';
+  var pressure = pressureList[Math.floor(coarseSliderValue)];
+  pressureOverlay.innerHTML = pressure + ' bar';
 }
 
 function drawPlotlyChart(){
@@ -403,9 +403,9 @@ function getColumnFromSelectorValue(selectorValue){
   var column = null;
 
   // This logic will all need to change, as explained above.
- // if (selectorValue < 5){
+  if (selectorValue < 5){
     column = selectorValue;
- // } else if (selectorValue < 26){
+ } else if (selectorValue < 26){
     // selector, 1bar, 10bar
     // 5: 5，6
     // 7: 7，8
@@ -418,10 +418,10 @@ function getColumnFromSelectorValue(selectorValue){
 	// 21: 21, 22
 	// 23: 23, 24
 	// 25: 25, 26
-  //  var pressureOffset = coarseSliderValue;
-  //  var startColumn = (selectorValue - 5) * 2 + 5;
-   // column = startColumn + pressureOffset;
-  //}
+   var pressureOffset = coarseSliderValue;
+   var startColumn = (selectorValue - 5) * 2 + 5;
+   column = startColumn + pressureOffset;
+  }
 
   return column;
 }
