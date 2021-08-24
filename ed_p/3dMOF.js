@@ -209,9 +209,9 @@ function drawBubbleChart(){
   layout.scene.zaxis.title = axesLabels[yValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
   layout.scene.yaxis.title = axesLabels[zValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
 
-  sizeTitle.innerHTML = axesLabels[sValue];
-    maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
-    minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  sizeTitle.innerHTML = axesLabels[sValue].substring(3, (axesLabels[sValue].length-4));
+  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
+  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
  
 
   hmax = view.getColumnRange(1).max;
