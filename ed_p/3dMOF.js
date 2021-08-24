@@ -215,7 +215,7 @@ function drawBubbleChart(){
  
 
   hmax = view.getColumnRange(1).max;
-	vmax = view.getColumnRange(2).max;
+  vmax = view.getColumnRange(2).max;
   zmax = view.getColumnRange(5).max;
 
   cmax = view.getColumnRange(3).max;
@@ -416,11 +416,11 @@ function getColumnFromSelectorValue(selectorValue){
   // This logic will all need to change, as explained above.
   if (selectorValue < 5){
     column = selectorValue;
-  } else if (selectorValue < 26){
-    // selector, 200bar, 500bar, 900bar
-    // 23: 23, 24, 25
-    // 24: 26, 27, 28
-    // 25: 29, 30, 31
+  } else if (selectorValue < 27){
+    // selector, 1bar, 10bar
+    // 5: 5, 6
+    // 7: 7, 8
+    // 9: 9, 10
     var pressureOffset = coarseSliderValue;
     var startColumn = (selectorValue - 5) * 2 + 5;
     column = startColumn + pressureOffset;
@@ -437,7 +437,7 @@ function selectChange(){
 
 function onSliderUpdate(){
   // Slider varies between 0 and 1.
-  coarseSliderValue = Math.round(slider.value * 2);
+  coarseSliderValue = Math.round(slider.value);
   if (coarseSliderValue != oldSliderValue){
     oldSliderValue = coarseSliderValue;
     drawBubbleChart();
