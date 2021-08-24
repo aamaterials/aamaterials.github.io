@@ -6,8 +6,10 @@ var dataTable, chart, options;
 var table, view;
 var tableView, filterView;
 var plotlyPlot;
-var colorSelector, sizeSelector, xSelect, ySelect;
+var slider, colorSelector, sizeSelector, xSelect, ySelect;
+var pressureOverlay
 var minSizeText; var maxSizeText; var sizeTitle; var colorbartitle;
+var coarseSliderValue; var oldSliderValue = null;
 var filterRows = [];
 var allRows = []; selectAllArray = [];
 var gettingPointsFromGraph = false;
@@ -23,8 +25,15 @@ var currentSelection = null;
 function init(){
   // This function runs when Google charts js is ready
 
+  // Fill in global variables
+  pressureList = [1, 10];
+  pressureOverlay = document.getElementById('pressureOverlay');
+  
   plotlyPlot = document.getElementById('chart_div');
 
+  slider = document.getElementById('slider');
+  slider.addEventListener('input', onSliderUpdate);
+  
   colorSelector = document.getElementById('colorSelect');
   colorSelector.addEventListener('change', selectChange);
 
@@ -170,15 +179,18 @@ function initialiseChart(){
   view = new google.visualization.DataView(dataTable);
 
   // Draw first chart
-  drawBubbleChart();
-  setAxisSize();
+  // drawBubbleChart();
+  // setAxisSize();
+  onSliderUpdate();
 }
 
 function drawBubbleChart(){
   setAxisSize();
-  var xValue = parseInt(xSelector.value); var yValue = parseInt(ySelector.value);
-  var cValue = parseInt(colorSelector.value); var sValue = parseInt(sizeSelector.value);
-  var zValue = parseInt(zSelector.value);
+  xValue = parseInt(xSelector.value);
+  yValue = parseInt(ySelector.value);
+  zValue = parseInt(zSelector.value);
+  cValue = parseInt(colorSelector.value);
+  sValue = parseInt(sizeSelector.value);
 
   columns = getColumns(xValue, yValue, cValue, sValue, zValue);
 
@@ -197,9 +209,14 @@ function drawBubbleChart(){
   layout.scene.zaxis.title = axesLabels[yValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
   layout.scene.yaxis.title = axesLabels[zValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
 
-  sizeTitle.innerHTML = axesLabels[sValue].substring(3, (axesLabels[sValue].length-4));
-  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
-  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  sizeTitle.innerHTML = axesLabels[sValue];
+  if (isNumericalParameter(sValue)) {
+    maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
+    minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  } else {
+    maxSizeText.innerHTML = 'n/a';
+    minSizeText.innerHTML = 'n/a';
+  }
 
   hmax = view.getColumnRange(1).max;
 	vmax = view.getColumnRange(2).max;
@@ -209,6 +226,9 @@ function drawBubbleChart(){
   smax = view.getColumnRange(4).max;
 
 	drawPlotlyChart();
+	
+	var pressure = pressureList[Math.floor(coarseSliderValue)];
+  pressureOverlay.innerHTML = pressure + ' bar';
 
 }
 
@@ -372,6 +392,13 @@ function setAxisSize(){
 
   var triPoints = (xStart + textLength + 2*offset + 4) + ',' + (yMid) + ' ' + (xEnd-textLength-2*offset-14) +',' + (yMid+6) + ' ' + (xEnd-textLength-2*offset-14) + ',' + (yMid-6);
   tri.setAttribute('points', triPoints);
+  
+  var pressureBar = document.getElementById('pressureBar');
+  var pressureIndicatorText = document.getElementById('pressureOverlay');
+
+  pressureBar.setAttribute('style', "margin:auto; font-size: " + fontSize + ";");
+  var indicatorFontSize = (Number(fontSize.substring(0, fontSize.length - 2)) +3);
+  pressureIndicatorText.setAttribute('style', "font-size: " + indicatorFontSize + "; width: 3.7em; display: inline-block;");
 
 }
 
@@ -389,7 +416,20 @@ function getColumns(xValue, yValue, cValue, sValue, zValue){
 
 function getColumnFromSelectorValue(selectorValue){
   var column = null;
-  column = selectorValue;
+  
+  // This logic will all need to change, as explained above.
+  if (selectorValue < 5){
+    column = selectorValue;
+  } else if (selectorValue < 26){
+    // selector, 200bar, 500bar, 900bar
+    // 23: 23, 24, 25
+    // 24: 26, 27, 28
+    // 25: 29, 30, 31
+    var pressureOffset = coarseSliderValue;
+    var startColumn = (selectorValue - 5) * 2 + 5;
+    column = startColumn + pressureOffset;
+  }
+
   return column;
 
 }
@@ -397,6 +437,15 @@ function getColumnFromSelectorValue(selectorValue){
 function selectChange(){
   reDraw = true;
   drawBubbleChart();
+}
+
+function onSliderUpdate(){
+  // Slider varies between 0 and 1.
+  coarseSliderValue = Math.round(slider.value * 2);
+  if (coarseSliderValue != oldSliderValue){
+    oldSliderValue = coarseSliderValue;
+    drawBubbleChart();
+  }
 }
 
 // FILTER AND SEARCH
