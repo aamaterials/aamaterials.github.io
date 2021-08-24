@@ -595,6 +595,32 @@ function playButtonClick(){
   }
 }
 
+function playSequence(){
+  warningBox = document.getElementById('warningText');
+  if (playing){
+    // Animation can be slow with over 500 points: display warning
+    if (twoD && filterRows.length == 0 || filterRows.length > 500){
+      warningBox.innerHTML = "Animating more than 500 data points may be slow. Try filtering the data!";
+    } else {
+      warningBox.innerHTML = "";
+    }
+
+    if(slider.value<1){
+      // Move slider automatically
+      slider.value = (parseFloat(slider.value) + 0.006).toString();
+      setTimeout(playSequence, 30);
+    }else{
+      // Reset if we've reached the end of the slider
+      slider.value = "0";
+      setTimeout(playSequence, 500);
+    }
+    onSliderUpdate();
+  } else {
+    // Remove warning message if we're not playing
+    warningBox.innerHTML = "";
+  }
+}
+
 // RESIZE
 window.addEventListener('resize', debounce(windowResizeFunction, 200));
 
