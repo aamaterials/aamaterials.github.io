@@ -16,10 +16,10 @@
     <!-- Title -->
     <div class="w3-cell-row" style="width: 100%; height:45px">
       <div class="w3-col m3 l2 w3-hide-small" style="text-align:center; margin:auto;">
-        <img src="../camLogo.jpg" height="45px">
+       <!-- <img src="../camLogo.jpg" height="45px">-->
       </div>
       <div class="w3-col m6 l8" id="title">ED MOF Data Explorer</div>
-      <div class="w3-col m3 l2 w3-hide-small" style="text-align:center; margin:auto;">AAM Group</div>
+      <div class="w3-col m3 l2 w3-hide-small" style="text-align:center; margin:auto;"></div>
     </div>
 
     <!-- Chart -->
@@ -67,17 +67,17 @@
             <option value="2">Largest Cavity Diameter, &#x212B;</option>
             <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
             <option value="4">Void Fraction</option>
-            <option selected value="5">c0_c1 selectivity</option>
-            <option value="6">c0_c2 selectivity</option>
-            <option value="7">c0_c3 selectivity</option>
-            <option value="8">c0_mg/g</option>
-            <option value="9">c1_mg/g</option>
-            <option value="10">c2_mg/g</option>
-            <option value="11">c3_mg/g</option>
-            <option value="12">c0_g/L</option>
-            <option value="13">c1_g/L</option>
-            <option value="14">c2_g/L</option>
-            <option value="15">c3_g/L</option>
+            <option selected value="5">Kr/N2 selectivity</option>
+            <option value="6">Kr/Ar selectivity</option>
+            <option value="7">Kr/CF4 selectivity</option>
+            <option value="8">Kr, mg/g</option>
+            <option value="9">N2, mg/g</option>
+            <option value="10">Ar, mg/g</option>
+            <option value="11">CF4, mg/g</option>
+            <option value="12">Kr, g/L</option>
+            <option value="13">N2, g/L</option>
+            <option value="14">Ar, g/L</option>
+            <option value="15">CF4, g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">y-axis:</span>
           <select id="ySelect" style="width:180px">
@@ -85,17 +85,17 @@
             <option value="2">Largest Cavity Diameter, &#x212B;</option>
             <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
             <option value="4">Void Fraction</option>
-            <option value="5">c0_c1 selectivity</option>
-            <option value="6">c0_c2 selectivity</option>
-            <option value="7">c0_c3 selectivity</option>
-            <option selected value="8">c0_mg/g</option>
-            <option value="9">c1_mg/g</option>
-            <option value="10">c2_mg/g</option>
-            <option value="11">c3_mg/g</option>
-            <option value="12">c0_g/L</option>
-            <option value="13">c1_g/L</option>
-            <option value="14">c2_g/L</option>
-            <option value="15">c3_g/L</option>
+            <option value="5">Kr/N2 selectivity</option>
+            <option value="6">Kr/Ar selectivity</option>
+            <option value="7">Kr/CF4 selectivity</option>
+            <option selected value="8">Kr, mg/g</option>
+            <option value="9">N2, mg/g</option>
+            <option value="10">Ar, mg/g</option>
+            <option value="11">CF4, mg/g</option>
+            <option value="12">Kr, g/L</option>
+            <option value="13">N2, g/L</option>
+            <option value="14">Ar, g/L</option>
+            <option value="15">CF4, g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">c-axis:</span>
           <select id="colorSelect" style="width:180px">
@@ -103,17 +103,17 @@
             <option value="2">Largest Cavity Diameter, &#x212B;</option>
             <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
             <option value="4">Void Fraction</option>
-            <option value="5">c0_c1 selectivity</option>
-            <option value="6">c0_c2 selectivity</option>
-            <option value="7">c0_c3 selectivity</option>
-            <option value="8">c0_mg/g</option>
-            <option value="9">c1_mg/g</option>
-            <option value="10">c2_mg/g</option>
-            <option value="11">c3_mg/g</option>
-            <option value="12">c0_g/L</option>
-            <option value="13">c1_g/L</option>
-            <option value="14">c2_g/L</option>
-            <option value="15">c3_g/L</option>
+            <option value="5">Kr/N2 selectivity</option>
+            <option value="6">Kr/Ar selectivity</option>
+            <option value="7">Kr/CF4 selectivity</option>
+            <option value="8">Kr, mg/g</option>
+            <option value="9">N2, mg/g</option>
+            <option value="10">Ar, mg/g</option>
+            <option value="11">CF4, mg/g</option>
+            <option value="12">Kr, g/L</option>
+            <option value="13">N2, g/L</option>
+            <option value="14">Ar, g/L</option>
+            <option value="15">CF4, g/L</option>
           </select></div>
           <div class="w3-col m6 l3"><span class="control_axis_title">s-axis:</span>
           <select id="sizeSelect" style="width:180px">
@@ -121,17 +121,17 @@
             <option selected value="2">Largest Cavity Diameter, &#x212B;</option>
             <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
             <option value="4">Void Fraction</option>
-            <option value="5">c0_c1 selectivity</option>
-            <option value="6">c0_c2 selectivity</option>
-            <option value="7">c0_c3 selectivity</option>
-            <option value="8">c0_mg/g</option>
-            <option value="9">c1_mg/g</option>
-            <option value="10">c2_mg/g</option>
-            <option value="11">c3_mg/g</option>
-            <option value="12">c0_g/L</option>
-            <option value="13">c1_g/L</option>
-            <option value="14">c2_g/L</option>
-            <option value="15">c3_g/L</option>
+            <option value="5">Kr/N2 selectivity</option>
+            <option value="6">Kr/Ar selectivity</option>
+            <option value="7">Kr/CF4 selectivity</option>
+            <option value="8">Kr, mg/g</option>
+            <option value="9">N2, mg/g</option>
+            <option value="10">Ar, mg/g</option>
+            <option value="11">CF4, mg/g</option>
+            <option value="12">Kr, g/L</option>
+            <option value="13">N2, g/L</option>
+            <option value="14">Ar, g/L</option>
+            <option value="15">CF4, g/L</option>
           </select></div>
           <div class="w3-col m6 l3" id="zDiv" hidden><span class="control_axis_title">z-axis:</span>
           <select id="zSelect" style="width:180px">
@@ -139,17 +139,17 @@
             <option value="2">Largest Cavity Diameter, &#x212B;</option>
             <option value="3">Gravimetric Surface Area, m&#x00b2;/g</option>
             <option value="4">Void Fraction</option>
-            <option value="5">c0_c1 selectivity</option>
-            <option value="6">c0_c2 selectivity</option>
-            <option value="7">c0_c3 selectivity</option>
-            <option value="8">c0_mg/g</option>
-            <option value="9">c1_mg/g</option>
-            <option value="10">c2_mg/g</option>
-            <option value="11">c3_mg/g</option>
-            <option selected value="12">c0_g/L</option>
-            <option value="13">c1_g/L</option>
-            <option value="14">c2_g/L</option>
-            <option value="15">c3_g/L</option>
+            <option value="5">Kr/N2 selectivity</option>
+            <option value="6">Kr/Ar selectivity</option>
+            <option value="7">Kr/CF4 selectivity</option>
+            <option value="8">Kr, mg/g</option>
+            <option value="9">N2, mg/g</option>
+            <option value="10">Ar, mg/g</option>
+            <option value="11">CF4, mg/g</option>
+            <option selected value="12">Kr, g/L</option>
+            <option value="13">N2, g/L</option>
+            <option value="14">Ar, g/L</option>
+            <option value="15">CF4, g/L</option>
           </select></div>
           </form>
         </div>

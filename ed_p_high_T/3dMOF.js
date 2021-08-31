@@ -58,11 +58,11 @@ function init(){
   sizeTitle = document.getElementById('sizeAxisTitle');
 
   axesLabels = ['<b>Identifier</b>', '<b>Density, g/cm\u00B3</b>', '<b>Largest Cavity Diameter, \u212B</b>', '<b>Gravimetric Surface Area, m\u00b2/g</b>',
-                  '<b>Void Fraction</b>', '<b>c0_c1 selectivity</b>', '<b>c0_c2 selectivity</b>',
-                   '<b>c0_c3 selectivity</b>', '<b>c0, mg/g</b>',
-                    '<b>c1, mg/g</b>',	'<b>c2, mg/g</b>',	'<b>c3, mg/g</b>',
-                    '<b>c0, g/L</b>',	'<b>c1, g/L</b>',
-                    '<b>c2, g/L</b>',	'<b>c3, g/L</b>'
+                  '<b>Void Fraction</b>', '<b>Kr/N2 selectivity</b>', '<b>Kr/Ar selectivity</b>',
+                   '<b>Kr/CF4 selectivity</b>', '<b>Kr, mg/g</b>',
+                    '<b>N2, mg/g</b>',	'<b>Ar, mg/g</b>',	'<b>CF4, mg/g</b>',
+                    '<b>Kr, g/L</b>',	'<b>N2, g/L</b>',
+                    '<b>Ar, g/L</b>',	'<b>CF4, g/L</b>'
                     ];
 
 	layout = {
