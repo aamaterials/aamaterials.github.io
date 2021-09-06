@@ -210,8 +210,8 @@ function drawBubbleChart(){
   layout.scene.yaxis.title = axesLabels[zValue].substring(3, (axesLabels[sValue].length-4)); // Note z is vertical axis in 3D view
 
   sizeTitle.innerHTML = axesLabels[sValue].substring(3, (axesLabels[sValue].length-4));
-  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(4).replace(/0+$/, "").replace(/\.$/, "");
-  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(3).replace(/0+$/, "").replace(/\.$/, "");
+  maxSizeText.innerHTML = view.getColumnRange(4).max.toPrecision(2).replace(/0+$/, "").replace(/\.$/, "");
+  minSizeText.innerHTML = view.getColumnRange(4).min.toPrecision(1).replace(/0+$/, "").replace(/\.$/, "");
  
 
   hmax = view.getColumnRange(1).max;
@@ -273,10 +273,10 @@ function drawPlotlyChart(){
     if (twoD){
       // Annotations don't work in 3D :(
       var annoText = '<b>' + view.getValue(viewRow, 0) + '</b><br>' +
-        layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(4) + '<br>' +
-        layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(4) + '<br>' +
-        colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(4) + '<br>' +
-        sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(4) + '<br>';
+        layout.xaxis.title + ': ' + view.getValue(viewRow, 1).toPrecision(1) + '<br>' +
+        layout.yaxis.title + ': ' + view.getValue(viewRow, 2).toPrecision(1) + '<br>' +
+        colorbarTitle + ': ' + view.getValue(viewRow, 3).toPrecision(1) + '<br>' +
+        sizeTitle.innerHTML + ': ' + view.getValue(viewRow, 4).toPrecision(1) + '<br>';
       layout.annotations = [{x: xLoc, y: yLoc, text: annoText, showarrow: true,
         arrowhead: 7, arrowsize:1, arrowwidth:2, ax: 140, ay: 10, align: 'right',
         xref: 'x', yref: 'y', bgcolor: '#666666', opacity: 0.8, font: {color: 'white'}}];
